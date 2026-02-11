@@ -46,7 +46,7 @@ export function Header() {
             className="h-8 w-auto sm:h-9"
           />
         </Link>
-        <p className="ml-16 font-body text-[12px] font-medium uppercase tracking-wider text-cream shrink-0 md:ml-24">
+        <p className="ml-4 font-body text-[12px] font-medium uppercase tracking-wider text-cream shrink-0 md:ml-24">
           {siteConfig.tagline}
         </p>
       </div>
