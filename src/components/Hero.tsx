@@ -113,15 +113,15 @@ export function Hero() {
         {/* Middle: headline + description (per reference: serif left + sans right, indent line 2) */}
         <div className="flex flex-1 flex-col items-center justify-center">
           <div className="w-full max-w-4xl">
-            {/* Main headline: line 1 — Crafting (serif, cream) | STORIES (sans, white); line 2 — Capturing (serif, cream, indented) | CONTENT (sans, white), right block aligned */}
-            <h1 className="font-heading text-4xl leading-tight sm:text-5xl md:text-6xl lg:text-7xl">
+            {/* Main headline: centered block, line 2 has relative indent */}
+            <h1 className="mx-auto w-fit font-heading text-4xl leading-tight sm:text-5xl md:text-6xl lg:text-7xl">
               <span className="flex items-baseline gap-4">
                 <span className="text-cream">Crafting</span>
                 <span className="font-body text-2xl font-medium uppercase tracking-wider text-white sm:text-3xl md:text-4xl">
                   Stories
                 </span>
               </span>
-              <span className="mt-2 flex items-baseline gap-4 pl-12 sm:mt-3 sm:pl-16 md:pl-24">
+              <span className="flex items-baseline gap-4 pl-12 sm:pl-16 md:pl-24">
                 <span className="text-cream">Capturing</span>
                 <span className="font-body text-2xl font-medium uppercase tracking-wider text-white sm:text-3xl md:text-4xl">
                   Content
