@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Hero } from "@/components/Hero";
 import { Section } from "@/components/Section";
 import { ProjectGrid } from "@/components/ProjectGrid";
 import { TextBlock } from "@/components/TextBlock";
@@ -12,32 +13,15 @@ export default async function HomePage() {
     getTextBlocksByLocationKeys(["home.hero", "home.services", "home.cta"]),
   ]);
 
-  const heroBlock = textBlocks.find((b) => b.locationKey === "home.hero");
   const servicesBlock = textBlocks.find((b) => b.locationKey === "home.services");
   const ctaBlock = textBlocks.find((b) => b.locationKey === "home.cta");
 
   return (
     <>
-      {/* Hero */}
-      <Section className="pt-20 md:pt-28">
-        {heroBlock ? (
-          <TextBlock block={heroBlock} headingSize="large" />
-        ) : (
-          <div>
-            <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-normal tracking-tight text-neutral-900 dark:text-neutral-100">
-              We craft brands and experiences that stand out.
-            </h1>
-            <p className="mt-6 text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl">
-              3colorstudio is a design studio focused on identity, digital, and
-              editorial work. We partner with ambitious clients to create work
-              that is bold, clear, and lasting.
-            </p>
-          </div>
-        )}
-      </Section>
+      <Hero />
 
       {/* Featured projects */}
-      <Section className="border-t border-neutral-200 dark:border-neutral-800">
+      <Section id="featured" className="border-t border-neutral-200 dark:border-neutral-800">
         <h2 className="font-heading text-2xl font-normal text-neutral-900 dark:text-neutral-100 mb-10">
           Featured projects
         </h2>

@@ -1,5 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import { siteConfig } from "@/config/site";
+
+const LOGO_SRC = "/3colorstudiologowhitetrimmed.svg";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -11,9 +14,16 @@ export function Footer() {
           <div>
             <Link
               href="/"
-              className="font-heading text-lg font-normal text-neutral-900 dark:text-white"
+              className="inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 dark:focus-visible:ring-white rounded"
+              aria-label={`${siteConfig.name} — Home`}
             >
-              {siteConfig.name}
+              <Image
+                src={LOGO_SRC}
+                alt=""
+                width={108}
+                height={49}
+                className="h-7 w-auto invert dark:invert-0"
+              />
             </Link>
             <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
               © {currentYear} {siteConfig.name}. All rights reserved.

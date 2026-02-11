@@ -1,39 +1,32 @@
 /**
  * 3colorstudio design system — typography
- * Font roles: headings (Staatliches), body (Inter), accent (Reenie Beanie), display (Krona One)
+ * Raleway (body), Schnyder (headings)
+ *
+ * To use Schnyder: add Schnyder-Regular.woff2 to src/assets/fonts/,
+ * then replace fontHeading below with:
+ *
+ *   import localFont from "next/font/local";
+ *   export const fontHeading = localFont({
+ *     src: "../assets/fonts/Schnyder-Regular.woff2",
+ *     variable: "--font-heading",
+ *     display: "swap",
+ *     fallback: ["Georgia", "serif"],
+ *   });
  */
 
-import {
-  Staatliches,
-  Inter,
-  Reenie_Beanie,
-  Krona_One,
-} from "next/font/google";
+import { Raleway, Libre_Baskerville } from "next/font/google";
 
-export const fontHeading = Staatliches({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-heading",
-  display: "swap",
-});
-
-export const fontBody = Inter({
+export const fontBody = Raleway({
   subsets: ["latin"],
   variable: "--font-body",
   display: "swap",
 });
 
-export const fontAccent = Reenie_Beanie({
+/** Headings: Schnyder preferred. Using Libre Baskerville until you add Schnyder-Regular.woff2 to src/assets/fonts/ */
+export const fontHeading = Libre_Baskerville({
   weight: "400",
   subsets: ["latin"],
-  variable: "--font-accent",
-  display: "swap",
-});
-
-export const fontDisplay = Krona_One({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-heading",
   display: "swap",
 });
 
@@ -41,6 +34,4 @@ export const fontDisplay = Krona_One({
 export const fontVariables = [
   fontHeading.variable,
   fontBody.variable,
-  fontAccent.variable,
-  fontDisplay.variable,
 ].join(" ");
