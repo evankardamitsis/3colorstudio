@@ -2,15 +2,32 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { siteConfig } from "@/config/site";
 
 const HERO_BG_SRC = "/demo_hero_bg.png";
 const HERO_EMAIL = "hello@3colorstudio.com";
 
 export function Hero() {
+  const [showSideInfo, setShowSideInfo] = useState(true);
+
+  useEffect(() => {
+    const sentinel = document.getElementById("contact-section-end");
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Hide side info when we've reached or passed the end of ContactSection (sentinel top at or above viewport bottom)
+        setShowSideInfo(entry.boundingClientRect.top > window.innerHeight);
+      },
+      { threshold: 0, rootMargin: "0px" }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
-      className="relative flex min-h-screen w-full flex-col"
+      className="relative flex min-h-screen w-full flex-col overflow-x-hidden"
       aria-label="Hero"
     >
       {/* Background image */}
@@ -31,8 +48,10 @@ export function Hero() {
         aria-hidden
       />
 
-      {/* Left: vertical email text — fixed towards bottom, 10% padding like header */}
-      <div className="fixed bottom-24 left-[10%] z-10">
+      {/* Left: vertical email text — fixed only while Hero is in view; hidden once past Hero (before ContactSection) */}
+      <div
+        className={`fixed bottom-24 left-[10%] z-10 transition-opacity duration-300 ${showSideInfo ? "opacity-100" : "pointer-events-none opacity-0"}`}
+      >
         <a
           href={`mailto:${HERO_EMAIL}`}
           className="block origin-left -rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-widest text-cream/90 hover:text-cream transition-colors"
@@ -41,8 +60,10 @@ export function Hero() {
         </a>
       </div>
 
-      {/* Right: vertical follow text + social icons — fixed towards bottom, icons smaller and aligned with text */}
-      <div className="fixed bottom-24 right-[10%] z-20 flex flex-col items-end gap-2">
+      {/* Right: vertical follow text + social icons — fixed only while Hero is in view; hidden once past Hero (before ContactSection) */}
+      <div
+        className={`fixed bottom-24 right-[10%] z-20 flex flex-col items-end gap-2 transition-opacity duration-300 ${showSideInfo ? "opacity-100" : "pointer-events-none opacity-0"}`}
+      >
         <span className="block origin-right rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-[0.25em] text-white">
           FOLLOW 3.COLORSTUDIO
         </span>
@@ -109,21 +130,21 @@ export function Hero() {
       </div>
 
       {/* Center column: middle content + bottom CTA */}
-      <div className="relative z-10 flex min-h-0 flex-1 flex-col px-[10%] pt-0">
+      <div className="relative z-10 flex min-h-0 min-w-0 flex-1 flex-col overflow-x-hidden px-4 sm:px-[10%] pt-0">
         {/* Middle: headline + description (per reference: serif left + sans right, indent line 2) */}
-        <div className="flex flex-1 flex-col items-center justify-center">
-          <div className="w-full max-w-4xl">
-            {/* Main headline: centered block, line 2 has relative indent */}
-            <h1 className="mx-auto w-fit font-heading text-4xl leading-tight sm:text-5xl md:text-6xl lg:text-7xl">
-              <span className="flex items-baseline gap-4">
+        <div className="flex flex-1 flex-col items-center justify-center min-w-0">
+          <div className="w-full max-w-4xl min-w-0 px-1">
+            {/* Main headline: centered block, line 2 has relative indent; smaller on mobile to avoid overflow */}
+            <h1 className="mx-auto w-fit max-w-full font-heading text-4xl leading-tight sm:text-5xl md:text-6xl lg:text-7xl">
+              <span className="flex items-baseline gap-2 sm:gap-4 flex-wrap justify-center">
                 <span className="text-cream">Crafting</span>
-                <span className="font-body text-2xl font-medium uppercase tracking-wider text-white sm:text-3xl md:text-4xl">
+                <span className="font-body text-xl font-medium uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl">
                   Stories
                 </span>
               </span>
-              <span className="flex items-baseline gap-4 pl-12 sm:pl-16 md:pl-24">
+              <span className="flex items-baseline gap-2 sm:gap-4 pl-6 sm:pl-12 md:pl-16 lg:pl-24 flex-wrap justify-center">
                 <span className="text-cream">Capturing</span>
-                <span className="font-body text-2xl font-medium uppercase tracking-wider text-white sm:text-3xl md:text-4xl">
+                <span className="font-body text-xl font-medium uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl">
                   Content
                 </span>
               </span>

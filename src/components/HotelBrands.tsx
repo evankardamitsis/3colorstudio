@@ -21,9 +21,9 @@ export function HotelBrands() {
   ];
 
   return (
-    <section className="w-full bg-black py-16 md:py-20" aria-label="Hotel brands">
+    <section className="w-full overflow-x-hidden bg-black pt-2 pb-16 md:py-20" aria-label="Hotel brands">
       {/* Marquee 1: hotel logos — same speed as text marquee, scrolls across full screen */}
-      <div className="relative overflow-hidden whitespace-nowrap pt-12">
+      <div className="relative overflow-x-hidden overflow-y-hidden whitespace-nowrap pt-12">
         {/* Border-top: 1px white, 17% opacity */}
         <div className="absolute left-0 right-0 top-0 border-t border-white/17" />
         <div className="inline-flex animate-marquee items-center gap-12 px-4 md:gap-16">
@@ -45,7 +45,7 @@ export function HotelBrands() {
       </div>
 
       {/* Marquee 2: HOTEL BRANDS text (cream) — full width, visible */}
-      <div className="mt-10 min-h-16 overflow-hidden whitespace-nowrap md:mt-14 md:min-h-24 lg:min-h-32">
+      <div className="mt-10 min-h-16 overflow-x-hidden overflow-y-hidden whitespace-nowrap md:mt-14 md:min-h-24 lg:min-h-32">
         <div className="inline-flex animate-marquee items-center py-4">
           <span className="hotel-brands-marquee-text inline-block px-6 text-cream">
             {MARQUEE_TEXT}

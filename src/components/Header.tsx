@@ -51,8 +51,8 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed top-6 left-0 right-0 z-50 flex w-full items-center justify-between px-[10%] py-4">
-        <div className="flex min-w-0 flex-1 items-center">
+      <header className="fixed top-6 left-0 right-0 z-50 flex w-full items-center justify-between px-4 sm:px-[10%] py-4">
+        <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-4">
           <Link
             href="/"
             className="flex shrink-0 items-center hover:opacity-90 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-cream focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded"
@@ -66,12 +66,12 @@ export function Header() {
               className="h-8 w-auto sm:h-9"
             />
           </Link>
-          <p className="ml-4 font-body text-[12px] font-medium uppercase tracking-wider text-cream shrink-0 md:ml-24">
+          <p className="font-body text-[10px] sm:text-[12px] font-medium uppercase tracking-wider text-cream shrink-0 md:ml-24">
             {siteConfig.tagline}
           </p>
         </div>
 
-        <div className="flex shrink-0 items-center">
+        <div className="flex shrink-0 items-center mr-6 sm:mr-0">
           <button
             type="button"
             onClick={() => {
@@ -101,11 +101,10 @@ export function Header() {
         aria-modal="true"
         aria-label="Main menu"
         aria-hidden={visibilityHidden}
-        className="fixed inset-0 z-100 flex flex-col bg-[#E72F4E] text-white transition-[opacity,transform] duration-400 ease-out"
+        className="fixed inset-0 z-100 flex flex-col bg-[#E72F4E] text-white transition-[transform] duration-400 ease-out"
         style={{
           visibility: visibilityHidden ? "hidden" : "visible",
-          opacity: isMenuOpen ? 1 : 0,
-          transform: isMenuOpen ? "translateY(0)" : "translateY(12px)",
+          transform: isMenuOpen ? "translateY(0)" : "translateY(-100%)",
           pointerEvents: isMenuOpen ? "auto" : "none",
         }}
       >
@@ -125,15 +124,15 @@ export function Header() {
         </div>
 
         {/* Center: Main nav (left-aligned) */}
-        <div className="flex flex-1 flex-col justify-center px-[10%] pt-4">
-          <nav className="flex flex-col gap-6 md:gap-8" aria-label="Main navigation">
+        <div className="flex flex-col justify-start px-[10%] md:flex-1">
+          <nav className="flex flex-col gap-4 md:gap-6 lg:gap-8" aria-label="Main navigation">
             {/* Projects + sub */}
             <div>
               <div className="flex items-center gap-3">
                 <Link
                   href="/projects"
                   onClick={() => setIsMenuOpen(false)}
-                  className="inline-block font-heading text-3xl md:text-4xl lg:text-5xl text-white transition-all duration-150 ease-out hover:translate-x-1 hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
+                  className="inline-block font-heading text-[56px] text-white transition-all duration-150 ease-out hover:translate-x-1 hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
                 >
                   Projects
                 </Link>
@@ -145,7 +144,7 @@ export function Header() {
                     <Link
                       href={href}
                       onClick={() => setIsMenuOpen(false)}
-                      className="inline-block font-body text-[32px] font-medium uppercase tracking-wider text-white transition-all duration-150 ease-out hover:translate-x-1 hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
+                      className="inline-block font-body text-[24px] font-medium uppercase tracking-wider text-white transition-all duration-150 ease-out hover:translate-x-1 hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
                     >
                       {label}
                     </Link>
@@ -157,7 +156,7 @@ export function Header() {
             <Link
               href="/about"
               onClick={() => setIsMenuOpen(false)}
-              className="inline-block font-heading text-3xl md:text-4xl lg:text-5xl text-white transition-all duration-150 ease-out hover:translate-x-1 hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
+              className="inline-block font-heading text-[56px] text-white transition-all duration-150 ease-out hover:translate-x-1 hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
             >
               About
             </Link>
@@ -165,7 +164,7 @@ export function Header() {
             <Link
               href="/contact"
               onClick={() => setIsMenuOpen(false)}
-              className="inline-block font-heading text-3xl md:text-4xl lg:text-5xl text-white transition-all duration-150 ease-out hover:translate-x-1 hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
+              className="inline-block font-heading text-[56px] text-white transition-all duration-150 ease-out hover:translate-x-1 hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
             >
               Contact
             </Link>
@@ -173,7 +172,7 @@ export function Header() {
         </div>
 
         {/* Bottom left: Logo + (Follow… + social below) */}
-        <div className="flex shrink-0 flex-wrap items-end gap-4 px-[10%] py-8 md:py-10">
+        <div className="flex shrink-0 flex-wrap items-end gap-4 px-[10%] mt-32 py-4 md:mt-0 md:py-8 lg:py-10">
           <Link
             href="/"
             onClick={() => setIsMenuOpen(false)}

@@ -25,12 +25,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="overflow-x-hidden">
       <body
-        className={`${fontVariables} font-body antialiased min-h-screen flex flex-col`}
+        className={`${fontVariables} font-body antialiased min-h-screen flex flex-col overflow-x-hidden`}
       >
         <Header />
-        <main className="flex-1">{children}</main>
+        <main className="min-w-0 flex-1 overflow-x-hidden">{children}</main>
         <Footer />
       </body>
     </html>

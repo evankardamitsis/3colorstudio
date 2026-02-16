@@ -45,7 +45,7 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
 
   return (
     <section
-      className="relative w-full bg-black py-16 md:py-24 lg:py-28"
+      className="relative w-full overflow-x-hidden bg-black py-16 md:py-24 lg:py-28"
       aria-labelledby="what-we-do-heading"
     >
       <div className="mx-auto w-full max-w-[1600px] px-[10%]">

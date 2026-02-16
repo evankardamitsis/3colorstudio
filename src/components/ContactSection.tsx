@@ -6,7 +6,7 @@ const CONTACT_BUTTON_SVG = "/TextFlex_%20CONTACT%20US%20CONTACT%20US%20CONTACT%2
 
 export function ContactSection() {
   return (
-    <section className="relative w-full bg-black py-32 lg:py-40">
+    <section className="relative w-full overflow-x-hidden bg-black pt-32 pb-4 md:py-32 lg:py-40">
       <div className="relative mx-auto w-full max-w-[1600px] px-[10%]">
         <div className="relative mx-auto aspect-4/3 w-full max-w-3xl overflow-hidden">
           <Image
@@ -47,6 +47,8 @@ export function ContactSection() {
           </Link>
         </div>
       </div>
+      {/* Sentinel for Hero side info: hide when this enters view (end of ContactSection) */}
+      <div id="contact-section-end" aria-hidden className="absolute bottom-0 left-0 h-px w-px" />
     </section>
   );
 }

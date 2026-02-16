@@ -9,14 +9,14 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full bg-black py-12 md:py-16">
-      <div className="w-full px-[10%]">
-        <div className="flex flex-wrap justify-between items-center gap-8 lg:gap-12 text-white">
-          {/* Left: Logo */}
+    <footer className="w-full bg-black py-10 sm:py-12 md:py-16">
+      <div className="w-full px-5 sm:px-[10%]">
+        <div className="flex flex-col items-center gap-6 text-center md:flex-row md:flex-wrap md:items-center md:gap-8 md:text-left lg:justify-between lg:gap-12 lg:text-left text-white">
+          {/* Logo */}
           <div className="shrink-0">
             <Link
               href="/"
-              className="flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded"
+              className="flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded md:justify-start"
               aria-label={`${siteConfig.name} — Home`}
             >
               <Image
@@ -29,35 +29,35 @@ export function Footer() {
             </Link>
           </div>
 
-          {/* Center-left: Email — centered in left half of remaining space */}
-          <div className="flex-1 min-w-[200px] text-center lg:text-left">
+          {/* Email */}
+          <div className="w-full md:flex-1 md:min-w-[180px] md:text-left">
             <a
               href={`mailto:${CONTACT_EMAIL}`}
-              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream hover:opacity-80 transition-opacity"
+              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream hover:opacity-80 transition-opacity break-all"
             >
               {CONTACT_EMAIL.toUpperCase()}
             </a>
           </div>
 
-          {/* Center-right: Legal links — substantial spacing */}
-          <div className="flex shrink-0 gap-8 lg:gap-12">
+          {/* Legal links */}
+          <div className="flex flex-wrap justify-center gap-6 md:gap-8 lg:shrink-0 lg:gap-12">
             <Link
               href="/terms"
-              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream hover:opacity-80 transition-opacity whitespace-nowrap"
+              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream hover:opacity-80 transition-opacity"
             >
               Terms & Conditions
             </Link>
             <Link
               href="/privacy"
-              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream hover:opacity-80 transition-opacity whitespace-nowrap"
+              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream hover:opacity-80 transition-opacity"
             >
               Privacy Policy
             </Link>
           </div>
 
-          {/* Right: Copyright and developer credit */}
-          <div className="w-full shrink-0 text-right lg:w-auto lg:shrink">
-            <p className="font-body text-[12px] font-medium uppercase tracking-wider text-cream whitespace-nowrap">
+          {/* Copyright */}
+          <div className="w-full md:w-auto lg:shrink">
+            <p className="font-body text-[12px] font-medium uppercase tracking-wider text-cream md:text-right">
               ©3COLORSTUDIO {currentYear} | DESIGNED & DEVELOPED BY{" "}
               <a
                 href="https://www.belowthefold.gr/"

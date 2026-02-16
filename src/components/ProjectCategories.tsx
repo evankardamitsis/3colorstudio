@@ -55,10 +55,12 @@ export function ProjectCategories() {
   }, []);
 
   const scrollToIndex = (index: number) => {
-    if (!carouselRef.current) return;
-    const card = carouselRef.current.children[index] as HTMLElement;
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    const card = carousel.children[index] as HTMLElement;
     if (card) {
-      card.scrollIntoView({ behavior: "smooth", block: "start" });
+      const cardLeft = card.offsetLeft;
+      carousel.scrollTo({ left: cardLeft, behavior: "smooth" });
       setCurrentIndex(index);
       setActiveCategory(CATEGORIES[index]);
     }
@@ -70,10 +72,10 @@ export function ProjectCategories() {
 
     const handleScroll = () => {
       const cards = Array.from(carousel.children) as HTMLElement[];
-      const scrollTop = carousel.scrollTop;
-      const cardHeight = cards[0]?.offsetHeight || 0;
+      const scrollLeft = carousel.scrollLeft;
+      const cardWidth = cards[0]?.offsetWidth || 0;
       const gap = 24;
-      const newIndex = Math.round(scrollTop / (cardHeight + gap));
+      const newIndex = Math.round(scrollLeft / (cardWidth + gap));
 
       if (newIndex >= 0 && newIndex < CATEGORIES.length && newIndex !== currentIndex) {
         setCurrentIndex(newIndex);
@@ -86,7 +88,7 @@ export function ProjectCategories() {
   }, [currentIndex]);
 
   return (
-    <section className="project-categories-striped w-full border-2 border-black py-16 md:py-24">
+    <section className="project-categories-striped w-full overflow-x-hidden border-2 border-black py-16 md:py-24">
       <div className="mx-auto w-full max-w-[1600px] px-[10%]">
         <div className="hidden lg:grid lg:grid-cols-2 lg:gap-8 lg:items-stretch">
           <div className="flex flex-col gap-4">
@@ -133,19 +135,19 @@ export function ProjectCategories() {
         <div className="lg:hidden">
           <div
             ref={carouselRef}
-            className="flex snap-y snap-mandatory flex-col gap-6 overflow-y-auto"
-            style={{ maxHeight: "80vh" }}
+            className="flex snap-x snap-mandatory flex-row gap-6 overflow-x-auto overflow-y-hidden px-[5%] pb-2"
+            style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
           >
             {CATEGORIES.map((category) => (
               <div
                 key={category.id}
-                className="flex min-h-[600px] snap-start flex-col rounded-lg border border-black bg-[#E04855]"
+                className="flex min-h-[520px] w-[85vw] max-w-[400px] shrink-0 snap-start flex-col rounded-lg border border-black bg-[#E04855]"
               >
-                <div className="flex flex-1 flex-col p-6">
+                <div className="flex shrink-0 flex-col px-8 py-8 sm:px-10 sm:py-10">
                   <h3 className="mb-3 font-heading text-2xl font-bold text-black">
                     {category.title}
                   </h3>
-                  <p className="mb-4 flex-1 text-sm leading-relaxed text-black/90 uppercase">
+                  <p className="mb-4 text-sm leading-relaxed text-black/90 uppercase">
                     {category.description}
                   </p>
                   <div className="flex items-center justify-end gap-2 text-black">
@@ -161,7 +163,7 @@ export function ProjectCategories() {
                     />
                   </div>
                 </div>
-                <div className="relative h-[400px] w-full">
+                <div className="relative min-h-0 flex-1 w-full">
                   <Image
                     src={category.image}
                     alt={category.title}
