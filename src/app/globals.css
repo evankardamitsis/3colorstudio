@@ -41,3 +41,54 @@ body {
 .prose a:hover {
   opacity: 0.85;
 }
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-text {
+  font-size: 48px;
+  color: #E72F4E;
+  font-family: "Schnyder M", "Schnyder", var(--font-heading), Georgia, serif;
+  font-weight: 500;
+  line-height: 1;
+}
+
+@media (min-width: 640px) {
+  .marquee-text {
+    font-size: 80px;
+  }
+}
+
+@media (min-width: 768px) {
+  .marquee-text {
+    font-size: 120px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .marquee-text {
+    font-size: 190px;
+  }
+}
+
+/* Project categories — horizontal striped background (plain black stripes) */
+.project-categories-striped {
+  background-color: #E04855;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 5px,
+    #000 5px,
+    #000 6px
+  );
+}

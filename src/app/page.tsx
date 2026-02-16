@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Hero } from "@/components/Hero";
 import { WhatWeDo } from "@/components/WhatWeDo";
+import { ProjectsHomeMarquee } from "@/components/ProjectsHomeMarquee";
+import { ProjectCategories } from "@/components/ProjectCategories";
 import { Section } from "@/components/Section";
 import { ProjectGrid } from "@/components/ProjectGrid";
 import { TextBlock } from "@/components/TextBlock";
@@ -22,6 +24,10 @@ export default async function HomePage() {
       <Hero />
 
       <WhatWeDo />
+
+      <ProjectsHomeMarquee />
+
+      <ProjectCategories />
 
       {/* Featured projects */}
       <Section id="featured" className="border-t border-neutral-200 dark:border-neutral-800">
