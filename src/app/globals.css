@@ -55,6 +55,10 @@ body {
   animation: marquee 30s linear infinite;
 }
 
+.animate-marquee-fast {
+  animation: marquee 12s linear infinite;
+}
+
 .marquee-text {
   font-size: 48px;
   color: #E72F4E;
@@ -77,6 +81,33 @@ body {
 
 @media (min-width: 1024px) {
   .marquee-text {
+    font-size: 190px;
+  }
+}
+
+/* Hotel brands text marquee — cream color, same sizing as .marquee-text */
+.hotel-brands-marquee-text {
+  font-size: 48px;
+  color: #EDEADC;
+  font-family: "Schnyder M", "Schnyder", var(--font-heading), Georgia, serif;
+  font-weight: 500;
+  line-height: 1;
+}
+
+@media (min-width: 640px) {
+  .hotel-brands-marquee-text {
+    font-size: 80px;
+  }
+}
+
+@media (min-width: 768px) {
+  .hotel-brands-marquee-text {
+    font-size: 120px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hotel-brands-marquee-text {
     font-size: 190px;
   }
 }

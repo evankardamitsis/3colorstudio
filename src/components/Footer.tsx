@@ -3,18 +3,20 @@ import Image from "next/image";
 import { siteConfig } from "@/config/site";
 
 const LOGO_SRC = "/3colorstudiologowhitetrimmed.svg";
+const CONTACT_EMAIL = "hello@3colorstudio.com";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50">
-      <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          <div>
+    <footer className="w-full bg-black py-12 md:py-16">
+      <div className="w-full px-[10%]">
+        <div className="flex flex-wrap justify-between items-center gap-8 lg:gap-12 text-white">
+          {/* Left: Logo */}
+          <div className="shrink-0">
             <Link
               href="/"
-              className="inline-flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900 dark:focus-visible:ring-white rounded"
+              className="flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded"
               aria-label={`${siteConfig.name} — Home`}
             >
               <Image
@@ -22,53 +24,50 @@ export function Footer() {
                 alt=""
                 width={108}
                 height={49}
-                className="h-7 w-auto invert dark:invert-0"
+                className="h-8 w-auto sm:h-9"
               />
             </Link>
-            <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-              © {currentYear} {siteConfig.name}. All rights reserved.
-            </p>
           </div>
-          <div className="flex flex-wrap gap-6">
-            {siteConfig.nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
-              >
-                {item.label}
-              </Link>
-            ))}
-            {siteConfig.links.instagram !== "#" && (
+
+          {/* Center-left: Email — centered in left half of remaining space */}
+          <div className="flex-1 min-w-[200px] text-center lg:text-left">
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream hover:opacity-80 transition-opacity"
+            >
+              {CONTACT_EMAIL.toUpperCase()}
+            </a>
+          </div>
+
+          {/* Center-right: Legal links — substantial spacing */}
+          <div className="flex shrink-0 gap-8 lg:gap-12">
+            <Link
+              href="/terms"
+              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream hover:opacity-80 transition-opacity whitespace-nowrap"
+            >
+              Terms & Conditions
+            </Link>
+            <Link
+              href="/privacy"
+              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream hover:opacity-80 transition-opacity whitespace-nowrap"
+            >
+              Privacy Policy
+            </Link>
+          </div>
+
+          {/* Right: Copyright and developer credit */}
+          <div className="w-full shrink-0 text-right lg:w-auto lg:shrink">
+            <p className="font-body text-[12px] font-medium uppercase tracking-wider text-cream whitespace-nowrap">
+              ©3COLORSTUDIO {currentYear} | DESIGNED & DEVELOPED BY{" "}
               <a
-                href={siteConfig.links.instagram}
+                href="https://www.belowthefold.gr/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
+                className="text-purple-400 hover:opacity-80 transition-opacity"
               >
-                Instagram
+                BELOW THE FOLD
               </a>
-            )}
-            {siteConfig.links.behance !== "#" && (
-              <a
-                href={siteConfig.links.behance}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
-              >
-                Behance
-              </a>
-            )}
-            {siteConfig.links.linkedin !== "#" && (
-              <a
-                href={siteConfig.links.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
-              >
-                LinkedIn
-              </a>
-            )}
+            </p>
           </div>
         </div>
       </div>
