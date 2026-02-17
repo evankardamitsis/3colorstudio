@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 
 interface Category {
@@ -93,10 +94,11 @@ export function ProjectCategories() {
         <div className="hidden lg:grid lg:grid-cols-2 lg:gap-0 lg:items-stretch">
           <div className="flex flex-col gap-0">
             {CATEGORIES.map((category) => (
-              <div
+              <Link
                 key={category.id}
+                href={`/projects/category/${category.id}`}
                 onMouseEnter={() => setActiveCategory(category)}
-                className="group relative cursor-pointer rounded-lg border border-black bg-[#E04855] p-6 transition-all hover:bg-[#c93d4a]"
+                className="group relative block cursor-pointer rounded-lg border border-black bg-[#E04855] p-6 transition-all hover:bg-[#c93d4a]"
               >
                 <h3 className="mb-3 font-heading text-2xl font-bold text-black">
                   {category.title}
@@ -116,7 +118,7 @@ export function ProjectCategories() {
                     className="shrink-0"
                   />
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
@@ -139,8 +141,9 @@ export function ProjectCategories() {
             style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
           >
             {CATEGORIES.map((category) => (
-              <div
+              <Link
                 key={category.id}
+                href={`/projects/category/${category.id}`}
                 className="flex min-h-[520px] w-[85vw] max-w-[400px] shrink-0 snap-start flex-col rounded-lg border border-black bg-[#E04855]"
               >
                 <div className="flex shrink-0 flex-col px-8 py-8 sm:px-10 sm:py-10">
@@ -173,7 +176,7 @@ export function ProjectCategories() {
                     unoptimized={category.image.startsWith("https://placehold.co")}
                   />
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 

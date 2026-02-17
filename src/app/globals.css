@@ -123,3 +123,30 @@ body {
     #000 6px
   );
 }
+
+/* Lightbox fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Hide hero side info on mobile */
+.hero-side-info-left,
+.hero-side-info-right {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .hero-side-info-left {
+    display: block !important;
+  }
+  .hero-side-info-right {
+    display: flex !important;
+  }
+}

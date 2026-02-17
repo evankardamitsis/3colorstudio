@@ -49,7 +49,7 @@ export function Hero() {
 
       {/* Left: vertical email text — fixed only while Hero is in view; hidden once past Hero (before ContactSection) */}
       <div
-        className={`fixed bottom-24 left-[10%] z-10 transition-opacity duration-300 ${showSideInfo ? "opacity-100" : "pointer-events-none opacity-0"}`}
+        className={`hero-side-info-left fixed bottom-24 left-[10%] z-10 transition-opacity duration-300 ${showSideInfo ? "md:opacity-100" : "md:pointer-events-none md:opacity-0"}`}
       >
         <a
           href={`mailto:${HERO_EMAIL}`}
@@ -61,7 +61,7 @@ export function Hero() {
 
       {/* Right: vertical follow text + social icons — fixed only while Hero is in view; hidden once past Hero (before ContactSection) */}
       <div
-        className={`group fixed bottom-24 right-[10%] z-20 flex flex-col items-end gap-2 transition-opacity duration-300 ${showSideInfo ? "opacity-100" : "pointer-events-none opacity-0"}`}
+        className={`hero-side-info-right fixed bottom-24 right-[10%] z-20 group flex-col items-end gap-2 transition-opacity duration-300 ${showSideInfo ? "md:opacity-100" : "md:pointer-events-none md:opacity-0"}`}
       >
         <span className="block origin-right rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-[0.25em] text-white transition-colors duration-150 hover:text-[#E72F4E] group-hover:text-[#E72F4E]">
           FOLLOW 3.COLORSTUDIO

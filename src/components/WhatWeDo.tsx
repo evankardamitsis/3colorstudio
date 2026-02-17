@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { Lightbox } from "./Lightbox";
 
 const DEFAULT_GALLERY = [
   { src: "https://placehold.co/280x700/1a1a1a/333?text=1", alt: "Hotel and pool" },
@@ -19,6 +20,8 @@ export interface WhatWeDoProps {
 
 export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
   const galleryRef = useRef<HTMLDivElement>(null);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const scroll = (dir: "left" | "right") => {
     const el = galleryRef.current;
@@ -88,7 +91,11 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                   <div
                     key={i}
                     data-reel
-                    className="relative min-h-[280px] min-w-[140px] shrink-0 snap-start sm:min-h-[320px] sm:min-w-[160px] md:min-h-[380px] md:min-w-[200px] lg:min-h-[450px] lg:min-w-[240px]"
+                    className="relative min-h-[280px] min-w-[140px] shrink-0 snap-start cursor-pointer sm:min-h-[320px] sm:min-w-[160px] md:min-h-[380px] md:min-w-[200px] lg:min-h-[450px] lg:min-w-[240px] transition-opacity duration-200 hover:opacity-90"
+                    onClick={() => {
+                      setLightboxIndex(i);
+                      setLightboxOpen(true);
+                    }}
                   >
                     <Image
                       src={img.src}
@@ -151,6 +158,18 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
           </div>
         </div>
       </div>
+
+      {/* Lightbox */}
+      <Lightbox
+        isOpen={lightboxOpen}
+        items={images.map((img) => ({
+          src: img.src,
+          alt: img.alt,
+        }))}
+        currentIndex={lightboxIndex}
+        onClose={() => setLightboxOpen(false)}
+        onNavigate={(index) => setLightboxIndex(index)}
+      />
     </section>
   );
 }

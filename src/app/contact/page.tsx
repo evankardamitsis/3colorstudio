@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { Section } from "@/components/Section";
+import Image from "next/image";
 import { siteConfig } from "@/config/site";
+
+const HERO_EMAIL = "hello@3colorstudio.com";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -9,74 +11,186 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <Section className="pt-20 md:pt-28">
-      <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-normal tracking-tight text-neutral-900 dark:text-neutral-100 mb-4">
-        Contact
-      </h1>
-      <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-xl mb-12">
-        Have a project in mind or want to say hello? Fill out the form below and
-        we’ll get back to you.
-      </p>
-
-      <form className="max-w-xl space-y-6" noValidate>
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5"
-          >
-            Name
-          </label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            autoComplete="name"
-            className="w-full px-4 py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 dark:focus:ring-neutral-100 focus:border-transparent"
-            placeholder="Your name"
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5"
-          >
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            autoComplete="email"
-            className="w-full px-4 py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 dark:focus:ring-neutral-100 focus:border-transparent"
-            placeholder="you@example.com"
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="message"
-            className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1.5"
-          >
-            Message
-          </label>
-          <textarea
-            id="message"
-            name="message"
-            rows={5}
-            className="w-full px-4 py-2.5 rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 dark:focus:ring-neutral-100 focus:border-transparent resize-y min-h-[120px]"
-            placeholder="Tell us about your project..."
-          />
-        </div>
-        <button
-          type="button"
-          className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium text-white bg-neutral-900 dark:bg-white dark:text-neutral-900 rounded-lg hover:opacity-90 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900"
+    <>
+      {/* Left: vertical email text */}
+      <div className="hero-side-info-left fixed bottom-24 left-[10%] z-10">
+        <a
+          href={`mailto:${HERO_EMAIL}`}
+          className="block origin-left -rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-widest text-cream/90 transition-colors duration-150 hover:text-[#E72F4E]"
         >
-          Send message
-        </button>
-      </form>
+          Email us at {HERO_EMAIL}
+        </a>
+      </div>
 
-      <p className="mt-8 text-sm text-neutral-500 dark:text-neutral-400">
-        This form is for display only. Backend submission is not implemented yet.
-      </p>
-    </Section>
+      {/* Right: vertical follow text + social icons */}
+      <div className="hero-side-info-right group fixed bottom-24 right-[10%] z-20 flex-col items-end gap-2">
+        <span className="block origin-right rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-[0.25em] text-white transition-colors duration-150 hover:text-[#E72F4E] group-hover:text-[#E72F4E]">
+          FOLLOW 3.COLORSTUDIO
+        </span>
+        <div className="flex flex-col items-end gap-2 mr-[-8px]">
+          {siteConfig.links.instagram && siteConfig.links.instagram !== "#" ? (
+            <a
+              href={siteConfig.links.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
+              aria-label="Instagram"
+            >
+              <Image
+                src="/instagram.svg"
+                alt=""
+                width={24}
+                height={24}
+                className="h-4 w-4 block"
+                aria-hidden
+              />
+            </a>
+          ) : (
+            <span className="inline-block h-4 w-4">
+              <Image
+                src="/instagram.svg"
+                alt=""
+                width={24}
+                height={24}
+                className="h-4 w-4 block"
+                aria-hidden
+              />
+            </span>
+          )}
+          {siteConfig.links.facebook && siteConfig.links.facebook !== "#" ? (
+            <a
+              href={siteConfig.links.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
+              aria-label="Facebook"
+            >
+              <Image
+                src="/facebook.svg"
+                alt=""
+                width={24}
+                height={24}
+                className="h-4 w-4 block"
+                aria-hidden
+              />
+            </a>
+          ) : (
+            <span className="inline-block h-4 w-4">
+              <Image
+                src="/facebook.svg"
+                alt=""
+                width={24}
+                height={24}
+                className="h-4 w-4 block"
+                aria-hidden
+              />
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Main contact content */}
+      <section className="relative w-full overflow-x-hidden bg-black min-h-screen flex flex-col">
+        <div className="relative mx-auto w-full max-w-[1600px] px-[10%] flex-1 flex flex-col justify-center py-32">
+          {/* Contact heading and content - positioned just above video */}
+          <div className="relative mx-auto w-full max-w-3xl flex flex-col items-center text-center mb-[-40px] md:mb-[-60px] z-10">
+            <h1 className="mb-12 font-heading text-4xl font-normal text-[#E04855] md:text-5xl lg:text-6xl">
+              Contact <span className="text-2xl md:text-3xl lg:text-4xl">us</span>
+            </h1>
+
+            {/* Email section */}
+            <div className="mb-12">
+              <p className="mb-4 font-body text-sm font-medium uppercase tracking-wider text-white md:text-base">
+                Email Us
+              </p>
+              <a
+                href={`mailto:${HERO_EMAIL}`}
+                className="font-body text-sm font-medium uppercase tracking-wider text-white transition-colors duration-150 hover:text-[#E72F4E] md:text-base"
+              >
+                {HERO_EMAIL.toUpperCase()}
+              </a>
+            </div>
+
+            {/* Social section */}
+            <div className="mb-12">
+              <p className="mb-6 font-body text-sm font-medium uppercase tracking-wider text-white md:text-base">
+                Find Us On Social
+              </p>
+              <div className="flex items-center justify-center gap-6">
+                {siteConfig.links.instagram && siteConfig.links.instagram !== "#" ? (
+                  <a
+                    href={siteConfig.links.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
+                    aria-label="Instagram"
+                  >
+                    <Image
+                      src="/instagram.svg"
+                      alt="Instagram"
+                      width={32}
+                      height={32}
+                      className="h-8 w-8"
+                    />
+                  </a>
+                ) : (
+                  <span className="inline-block h-8 w-8">
+                    <Image
+                      src="/instagram.svg"
+                      alt=""
+                      width={32}
+                      height={32}
+                      className="h-8 w-8"
+                      aria-hidden
+                    />
+                  </span>
+                )}
+                {siteConfig.links.facebook && siteConfig.links.facebook !== "#" ? (
+                  <a
+                    href={siteConfig.links.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
+                    aria-label="Facebook"
+                  >
+                    <Image
+                      src="/facebook.svg"
+                      alt="Facebook"
+                      width={32}
+                      height={32}
+                      className="h-8 w-8"
+                    />
+                  </a>
+                ) : (
+                  <span className="inline-block h-8 w-8">
+                    <Image
+                      src="/facebook.svg"
+                      alt=""
+                      width={32}
+                      height={32}
+                      className="h-8 w-8"
+                      aria-hidden
+                    />
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Central video/image */}
+          <div className="relative mx-auto aspect-4/3 w-full max-w-3xl overflow-hidden">
+            <video
+              src="/contact_video_square.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="h-full w-full object-cover object-center"
+              aria-hidden
+            />
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

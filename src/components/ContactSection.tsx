@@ -3,27 +3,33 @@ import Link from "next/link";
 
 const CONTACT_BUTTON_SVG = "/TextFlex_%20CONTACT%20US%20CONTACT%20US%20CONTACT%20US.svg";
 
-export function ContactSection() {
+interface ContactSectionProps {
+  hideVideo?: boolean;
+}
+
+export function ContactSection({ hideVideo = false }: ContactSectionProps) {
   return (
     <section className="relative w-full overflow-x-hidden bg-black pt-32 pb-4 md:py-32 lg:py-40">
       <div className="relative mx-auto w-full max-w-[1600px] px-[10%]">
-        <div className="relative mx-auto aspect-4/3 w-full max-w-3xl overflow-hidden">
-          <video
-            src="/contact_video_square.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-cover object-center"
-            aria-hidden
-          />
-        </div>
+        {!hideVideo && (
+          <div className="relative mx-auto aspect-4/3 w-full max-w-3xl overflow-hidden">
+            <video
+              src="/contact_video_square.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="h-full w-full object-cover object-center"
+              aria-hidden
+            />
+          </div>
+        )}
 
-        <div className="flex flex-col items-center pt-24 pb-12 text-center md:pt-32 md:pb-2 lg:pt-40 ">
+        <div className={`flex flex-col items-center pb-12 text-center ${hideVideo ? "pt-12 md:pt-16 lg:pt-20" : "pt-24 md:pt-32 lg:pt-40 md:pb-2"}`}>
           <h2 className="mb-12 font-heading text-4xl font-normal text-[#E04855] md:text-5xl lg:text-6xl">
             Contact <span className="text-2xl md:text-3xl lg:text-4xl">us</span>
           </h2>
-          <p className="mb-10 max-w-2xl font-body text-sm leading-relaxed text-[#E04855] uppercase md:text-base">
+          <p className="mb-10 max-w-2xl font-body text-sm leading-relaxed text-[#E04855] uppercase md:text-base lg:text-[18px]">
             We would love to hear more about your{" "}
             <strong className="font-semibold">vision</strong> and the experience
             you want your guests to remember. Our{" "}
