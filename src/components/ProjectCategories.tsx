@@ -90,8 +90,8 @@ export function ProjectCategories() {
   return (
     <section className="project-categories-striped w-full overflow-x-hidden border-2 border-black py-16 md:py-24">
       <div className="mx-auto w-full max-w-[1600px] px-[10%]">
-        <div className="hidden lg:grid lg:grid-cols-2 lg:gap-8 lg:items-stretch">
-          <div className="flex flex-col gap-4">
+        <div className="hidden lg:grid lg:grid-cols-2 lg:gap-0 lg:items-stretch">
+          <div className="flex flex-col gap-0">
             {CATEGORIES.map((category) => (
               <div
                 key={category.id}

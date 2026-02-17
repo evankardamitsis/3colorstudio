@@ -1,20 +1,19 @@
 "use client";
 
-import Image from "next/image";
-
 export function ProjectsHomeMarquee() {
   const marqueeText = "OUR PROJECTS OUR PROJECTS OUR PROJECTS";
 
   return (
     <section className="relative w-full h-[1080px] min-h-[700px] overflow-hidden lg:h-[1200px]">
       <div className="absolute inset-0 z-0">
-        <Image
-          src="/projects_marquee_placeholder.png"
-          alt=""
-          fill
-          className="object-cover object-center"
-          priority
-          sizes="100vw"
+        <video
+          src="/projects_home_video.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="h-full w-full object-cover object-center"
+          aria-hidden
         />
       </div>
 

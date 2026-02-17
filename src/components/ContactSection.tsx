@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const CONTACT_IMG = "/contact_img.png";
 const CONTACT_BUTTON_SVG = "/TextFlex_%20CONTACT%20US%20CONTACT%20US%20CONTACT%20US.svg";
 
 export function ContactSection() {
@@ -9,13 +8,14 @@ export function ContactSection() {
     <section className="relative w-full overflow-x-hidden bg-black pt-32 pb-4 md:py-32 lg:py-40">
       <div className="relative mx-auto w-full max-w-[1600px] px-[10%]">
         <div className="relative mx-auto aspect-4/3 w-full max-w-3xl overflow-hidden">
-          <Image
-            src={CONTACT_IMG}
-            alt=""
-            fill
-            className="object-cover object-center"
-            sizes="(max-width: 768px) 100vw, 48rem"
-            priority={false}
+          <video
+            src="/contact_video_square.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover object-center"
+            aria-hidden
           />
         </div>
 

@@ -78,19 +78,21 @@ export function Header() {
               setVisibilityHidden(false);
               setIsMenuOpen(true);
             }}
-            className="group flex items-center gap-2 font-body text-xs font-medium uppercase tracking-wider text-cream transition-all duration-150 hover:opacity-100 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-cream focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded"
+            className="group flex items-center gap-2 font-body text-xs font-medium uppercase tracking-wider text-cream transition-all duration-150 hover:text-[#E72F4E] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-cream focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded"
             aria-label="Open menu"
             aria-expanded={isMenuOpen}
           >
-            <span className="transition-transform duration-150 ease-out group-hover:translate-x-0.5">Menu</span>
-            <Image
-              src={BURGER_ICON_SRC}
-              alt=""
-              width={48}
-              height={48}
-              className="h-9 w-9 shrink-0 transition-transform duration-150 ease-out group-hover:scale-110 group-active:scale-95"
-              aria-hidden
-            />
+            <span className="transition-all duration-150 ease-out group-hover:translate-x-0.5">Menu</span>
+            <div className="h-9 w-9 shrink-0 transition-all duration-150 ease-out group-hover:scale-110 group-active:scale-95">
+              <Image
+                src={BURGER_ICON_SRC}
+                alt=""
+                width={48}
+                height={48}
+                className="h-full w-full transition-all duration-150 group-hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
+                aria-hidden
+              />
+            </div>
           </button>
         </div>
       </header>

@@ -33,7 +33,7 @@ export function Footer() {
           <div className="w-full md:flex-1 md:min-w-[180px] md:text-left">
             <a
               href={`mailto:${CONTACT_EMAIL}`}
-              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream hover:opacity-80 transition-opacity break-all"
+              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream transition-colors duration-150 hover:text-[#E72F4E] break-all"
             >
               {CONTACT_EMAIL.toUpperCase()}
             </a>
@@ -43,13 +43,13 @@ export function Footer() {
           <div className="flex flex-wrap justify-center gap-6 md:gap-8 lg:shrink-0 lg:gap-12">
             <Link
               href="/terms"
-              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream hover:opacity-80 transition-opacity"
+              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream transition-colors duration-150 hover:text-[#E72F4E]"
             >
               Terms & Conditions
             </Link>
             <Link
               href="/privacy"
-              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream hover:opacity-80 transition-opacity"
+              className="font-body text-[12px] font-medium uppercase tracking-wider text-cream transition-colors duration-150 hover:text-[#E72F4E]"
             >
               Privacy Policy
             </Link>

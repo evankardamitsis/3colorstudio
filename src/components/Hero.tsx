@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { siteConfig } from "@/config/site";
 
@@ -54,7 +53,7 @@ export function Hero() {
       >
         <a
           href={`mailto:${HERO_EMAIL}`}
-          className="block origin-left -rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-widest text-cream/90 hover:text-cream transition-colors"
+          className="block origin-left -rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-widest text-cream/90 transition-colors duration-150 hover:text-[#E72F4E]"
         >
           Email us at {HERO_EMAIL}
         </a>
@@ -62,9 +61,9 @@ export function Hero() {
 
       {/* Right: vertical follow text + social icons — fixed only while Hero is in view; hidden once past Hero (before ContactSection) */}
       <div
-        className={`fixed bottom-24 right-[10%] z-20 flex flex-col items-end gap-2 transition-opacity duration-300 ${showSideInfo ? "opacity-100" : "pointer-events-none opacity-0"}`}
+        className={`group fixed bottom-24 right-[10%] z-20 flex flex-col items-end gap-2 transition-opacity duration-300 ${showSideInfo ? "opacity-100" : "pointer-events-none opacity-0"}`}
       >
-        <span className="block origin-right rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-[0.25em] text-white">
+        <span className="block origin-right rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-[0.25em] text-white transition-colors duration-150 hover:text-[#E72F4E] group-hover:text-[#E72F4E]">
           FOLLOW 3.COLORSTUDIO
         </span>
         <div className="flex flex-col items-end gap-2 mr-[-8px]">
@@ -73,7 +72,7 @@ export function Hero() {
               href={siteConfig.links.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block cursor-pointer hover:opacity-80 transition-opacity"
+              className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
               aria-label="Instagram"
             >
               <Image
@@ -102,7 +101,7 @@ export function Hero() {
               href={siteConfig.links.facebook}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block cursor-pointer hover:opacity-80 transition-opacity"
+              className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
               aria-label="Facebook"
             >
               <Image
@@ -158,14 +157,11 @@ export function Hero() {
         </div>
 
         {/* Bottom: Explore More + icon */}
-        <div className="flex flex-col items-center pb-12">
-          <Link
-            href="/projects"
-            className="flex flex-col items-center gap-3 hover:opacity-90 transition-opacity"
-          >
-            <span className="font-body text-[12px] font-medium uppercase tracking-widest text-cream">
-              Explore More
-            </span>
+        <div className="group flex flex-col items-center pb-12 cursor-pointer">
+          <span className="font-body text-[12px] font-medium uppercase tracking-widest text-cream transition-colors duration-150 group-hover:text-[#E72F4E]">
+            Explore More
+          </span>
+          <div className="transition-all duration-150 group-hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]">
             <Image
               src="/explore_icon.svg"
               alt=""
@@ -174,7 +170,7 @@ export function Hero() {
               className="h-[35px] w-[35px]"
               aria-hidden
             />
-          </Link>
+          </div>
         </div>
       </div>
     </section>

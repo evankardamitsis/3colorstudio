@@ -108,7 +108,7 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                   <button
                     type="button"
                     onClick={() => scroll("left")}
-                    className="cursor-pointer flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white text-white transition-opacity hover:opacity-90 sm:h-10 sm:w-10"
+                    className="group cursor-pointer flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white text-white transition-all duration-150 hover:border-[#E72F4E] hover:text-[#E72F4E] sm:h-10 sm:w-10"
                     aria-label="Previous reel"
                   >
                     <svg
@@ -128,7 +128,7 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                   <button
                     type="button"
                     onClick={() => scroll("right")}
-                    className="cursor-pointer flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white text-white transition-opacity hover:opacity-90 sm:h-10 sm:w-10"
+                    className="group cursor-pointer flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white text-white transition-all duration-150 hover:border-[#E72F4E] hover:text-[#E72F4E] sm:h-10 sm:w-10"
                     aria-label="Next reel"
                   >
                     <svg
