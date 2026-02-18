@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Lightbox } from "./Lightbox";
 
 interface ProjectDisplayProps {
@@ -21,17 +21,27 @@ export function ProjectDisplay({
 }: ProjectDisplayProps) {
   const galleryRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<Map<number, HTMLVideoElement>>(new Map());
+  const reelRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [centeredIndex, setCenteredIndex] = useState(0);
 
   const setVideoRef = (index: number, element: HTMLVideoElement | null) => {
     if (element) {
       videoRefs.current.set(index, element);
     } else {
       videoRefs.current.delete(index);
+    }
+  };
+
+  const setReelRef = (index: number, element: HTMLDivElement | null) => {
+    if (element) {
+      reelRefs.current.set(index, element);
+    } else {
+      reelRefs.current.delete(index);
     }
   };
 
@@ -77,38 +87,168 @@ export function ProjectDisplay({
     }
   };
 
+  // Detect centered item on mobile for scaling animation
+  useEffect(() => {
+    if (reels.length === 0) return;
+    const el = galleryRef.current;
+    if (!el) return;
+
+    const updateCenteredItem = () => {
+      const container = el;
+      const containerRect = container.getBoundingClientRect();
+      const containerCenter = containerRect.left + containerRect.width / 2;
+
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+
+      reelRefs.current.forEach((reelEl, index) => {
+        const reelRect = reelEl.getBoundingClientRect();
+        const reelCenter = reelRect.left + reelRect.width / 2;
+        const distance = Math.abs(containerCenter - reelCenter);
+
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+
+      setCenteredIndex(closestIndex);
+    };
+
+    // Update on scroll with throttling
+    let rafId: number | null = null;
+    const handleScroll = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        updateCenteredItem();
+        rafId = null;
+      });
+    };
+
+    // Update on resize
+    const handleResize = () => {
+      updateCenteredItem();
+    };
+
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize);
+    
+    // Set initial scroll position to show first item at left edge (accounting for padding)
+    const setInitialScroll = () => {
+      // Calculate padding based on screen size (same as CSS padding: calc(50vw - half_item_width))
+      let itemHalfWidth = 80; // default mobile: 160px / 2
+      if (window.innerWidth >= 1280) itemHalfWidth = 170; // xl: 340px / 2
+      else if (window.innerWidth >= 1024) itemHalfWidth = 140; // lg: 280px / 2
+      else if (window.innerWidth >= 768) itemHalfWidth = 120; // md: 240px / 2
+      else if (window.innerWidth >= 640) itemHalfWidth = 100; // sm: 200px / 2
+      
+      const viewportWidth = window.innerWidth;
+      const paddingLeft = (viewportWidth / 2) - itemHalfWidth;
+      el.scrollLeft = paddingLeft;
+    };
+    
+    // Wait for layout, then set initial scroll
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setInitialScroll();
+        updateCenteredItem();
+      });
+    });
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      el.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [reels.length]);
+
+  // Autoplay videos on mobile when they come into view
+  useEffect(() => {
+    if (reels.length === 0) return;
+
+    // Wait for videos to be mounted
+    const checkVideos = () => {
+      const videos = Array.from(videoRefs.current.values());
+      if (videos.length === 0) {
+        // Retry after a short delay if videos aren't ready
+        setTimeout(checkVideos, 100);
+        return;
+      }
+
+      // Check if mobile (screen width < 768px)
+      const isMobile = () => window.innerWidth < 768;
+
+      const observers: IntersectionObserver[] = [];
+
+      videos.forEach((video) => {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting && isMobile()) {
+                // Play video when visible on mobile
+                video.play().catch(() => {
+                  // Ignore autoplay errors (browser may block)
+                });
+              } else if (!entry.isIntersecting && isMobile()) {
+                // Pause video when not visible on mobile
+                video.pause();
+              }
+            });
+          },
+          {
+            threshold: 0.5, // Play when 50% visible
+          }
+        );
+
+        observer.observe(video);
+        observers.push(observer);
+      });
+
+      return () => {
+        observers.forEach((observer) => observer.disconnect());
+      };
+    };
+
+    const cleanup = checkVideos();
+    return cleanup;
+  }, [reels.length]);
+
   const scroll = (dir: "left" | "right") => {
     const el = galleryRef.current;
     if (!el || reels.length === 0) return;
 
-    const firstReel = el.querySelector<HTMLElement>("[data-reel]");
-    if (!firstReel) return;
-    const inner = el.firstElementChild as HTMLElement;
-    const computedStyle = inner ? window.getComputedStyle(inner) : window.getComputedStyle(el);
-    const gap = parseFloat(computedStyle.gap) || 8;
-    const itemWidth = firstReel.getBoundingClientRect().width;
-    const step = dir === "left" ? -(itemWidth + gap) : itemWidth + gap;
-    const maxScroll = el.scrollWidth - el.clientWidth;
-    const target = Math.max(0, Math.min(maxScroll, el.scrollLeft + step));
-    el.scrollTo({ left: target, behavior: "smooth" });
+    // Scroll to center the next/previous item (all screen sizes)
+    const nextIndex = dir === "right"
+      ? Math.min(centeredIndex + 1, reels.length - 1)
+      : Math.max(centeredIndex - 1, 0);
+
+    const targetReel = reelRefs.current.get(nextIndex);
+    if (!targetReel) return;
+
+    const containerRect = el.getBoundingClientRect();
+    const reelRect = targetReel.getBoundingClientRect();
+    const scrollLeft = el.scrollLeft;
+    const targetScroll = scrollLeft + (reelRect.left - containerRect.left) - (containerRect.width / 2) + (reelRect.width / 2);
+
+    el.scrollTo({ left: targetScroll, behavior: "smooth" });
   };
 
   return (
-    <section className="w-full bg-black py-16 md:py-24 lg:py-32 overflow-x-hidden">
-      <div className="mx-auto w-full px-4 sm:px-[10%]">
+    <section className="w-full bg-black py-12 sm:py-16 md:py-24 lg:py-32 overflow-x-visible">
+      <div className="mx-auto w-full px-4 sm:px-6 md:px-[10%]">
         {/* Project title */}
-        <h2 className="mb-6 text-center font-heading text-[32px] font-normal text-white">
+        <h2 className="mb-4 sm:mb-6 text-center font-heading text-2xl sm:text-[28px] md:text-[32px] font-normal text-white px-2">
           {title}
         </h2>
 
         {/* Project description */}
-        <p className="mx-auto mb-12 max-w-5xl text-center font-body text-[14px] uppercase leading-relaxed text-white">
+        <p className="mx-auto mb-8 sm:mb-10 md:mb-12 max-w-5xl text-center font-body text-xs sm:text-[13px] md:text-[14px] uppercase leading-relaxed text-white px-2">
           {description}
         </p>
 
         {/* Featured image or video */}
         {(featuredImage || featuredVideo) && (
-          <div className="relative mb-12 aspect-21/9 w-full overflow-hidden rounded-lg">
+          <div className="relative mb-8 sm:mb-10 md:mb-12 w-full overflow-hidden rounded-lg aspect-video sm:aspect-21/9">
             {featuredVideo ? (
               <video
                 src={featuredVideo}
@@ -126,7 +266,7 @@ export function ProjectDisplay({
                   alt=""
                   fill
                   className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 80rem"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80rem"
                   priority
                 />
               )
@@ -134,10 +274,10 @@ export function ProjectDisplay({
           </div>
         )}
 
-        {/* Project reels - left aligns with content, overflow only to the right */}
+        {/* Project reels - centered carousel with snap and enlarge on all screens */}
         {reels.length > 0 && (
           <>
-            <div className="relative z-0 w-[calc(100vw-1rem)] max-w-full sm:w-[calc(100vw-10%)] sm:max-w-full">
+            <div className="relative z-0 w-screen max-w-[100vw] left-[50vw] -translate-x-1/2">
               <div
                 ref={galleryRef}
                 className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing"
@@ -146,14 +286,23 @@ export function ProjectDisplay({
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="flex w-max min-w-full snap-x snap-mandatory gap-2 lg:gap-3">
+                <div className="flex w-max min-w-full snap-x snap-mandatory gap-4 sm:gap-4 md:gap-3 pl-[calc(50vw-80px)] sm:pl-[calc(50vw-100px)] md:pl-[calc(50vw-120px)] lg:pl-[calc(50vw-140px)] xl:pl-[calc(50vw-170px)] pr-[calc(50vw-80px)] sm:pr-[calc(50vw-100px)] md:pr-[calc(50vw-120px)] lg:pr-[calc(50vw-140px)] xl:pr-[calc(50vw-170px)]">
                   {reels.map((reel, i) => {
                     const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(reel.src);
+                    const isCentered = centeredIndex === i;
                     return (
                       <div
                         key={i}
+                        ref={(el) => setReelRef(i, el)}
                         data-reel
-                        className="relative min-h-[360px] min-w-[200px] shrink-0 snap-start cursor-pointer sm:min-h-[420px] sm:min-w-[240px] md:min-h-[500px] md:min-w-[280px] lg:min-h-[560px] lg:w-[340px] transition-opacity duration-200 hover:opacity-90"
+                        className={`relative shrink-0 cursor-pointer transition-all duration-500 ease-out snap-center
+                          h-[280px] w-[160px]
+                          sm:h-[360px] sm:w-[200px]
+                          md:h-[420px] md:w-[240px]
+                          lg:h-[500px] lg:w-[280px]
+                          xl:h-[560px] xl:w-[340px]
+                          ${isCentered ? 'scale-[1.15] z-10' : 'scale-100 z-0 opacity-80'}
+                          hover:opacity-90`}
                         onClick={(e) => {
                           // Prevent lightbox from opening if user was dragging
                           if (isDragging) {
@@ -164,7 +313,8 @@ export function ProjectDisplay({
                           setLightboxOpen(true);
                         }}
                         onMouseEnter={() => {
-                          if (isVideo) {
+                          // Only play on hover for desktop (md and up)
+                          if (isVideo && window.innerWidth >= 768) {
                             const video = videoRefs.current.get(i);
                             if (video) {
                               video.play().catch(() => {
@@ -174,7 +324,8 @@ export function ProjectDisplay({
                           }
                         }}
                         onMouseLeave={() => {
-                          if (isVideo) {
+                          // Only pause on hover leave for desktop (md and up)
+                          if (isVideo && window.innerWidth >= 768) {
                             const video = videoRefs.current.get(i);
                             if (video) {
                               video.pause();
@@ -186,11 +337,11 @@ export function ProjectDisplay({
                           <video
                             ref={(el) => setVideoRef(i, el)}
                             src={reel.src}
-                            className="h-full w-full object-cover"
+                            className="h-full w-full object-cover rounded-sm"
                             muted
                             playsInline
                             loop
-                            preload="metadata"
+                            preload="auto"
                             aria-label={reel.alt}
                           />
                         ) : (
@@ -198,8 +349,8 @@ export function ProjectDisplay({
                             src={reel.src}
                             alt={reel.alt}
                             fill
-                            className="object-cover"
-                            sizes="(max-width: 640px) 200px, (max-width: 768px) 240px, (max-width: 1024px) 280px, 340px"
+                            className="object-cover rounded-sm"
+                            sizes="(max-width: 640px) 160px, (max-width: 768px) 200px, (max-width: 1024px) 240px, (max-width: 1280px) 280px, 340px"
                             unoptimized={reel.src.startsWith("https://placehold.co")}
                           />
                         )}
@@ -211,23 +362,24 @@ export function ProjectDisplay({
             </div>
 
             {/* Nav arrows: below reels, right-aligned to content (z-30 above hero side info z-20) */}
-            <div className="relative z-30 mt-4 flex w-full justify-end sm:mt-5 md:mt-6">
-              <div className="flex gap-3">
+            <div className="relative z-30 mt-4 sm:mt-5 md:mt-6 flex w-full justify-end pr-4 sm:pr-6 md:pr-0">
+              <div className="flex gap-2 sm:gap-3">
                 <button
                   type="button"
                   onClick={() => scroll("left")}
-                  className="group cursor-pointer flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white text-white transition-all duration-150 hover:border-[#E72F4E] hover:text-[#E72F4E] sm:h-10 sm:w-10"
+                  className="group cursor-pointer flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full border border-white text-white transition-all duration-150 hover:border-[#E72F4E] hover:text-[#E72F4E]"
                   aria-label="Previous reel"
                 >
                   <svg
-                    width="14"
-                    height="14"
+                    width="12"
+                    height="12"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    className="sm:w-[14px] sm:h-[14px]"
                     aria-hidden
                   >
                     <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -236,18 +388,19 @@ export function ProjectDisplay({
                 <button
                   type="button"
                   onClick={() => scroll("right")}
-                  className="group cursor-pointer flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white text-white transition-all duration-150 hover:border-[#E72F4E] hover:text-[#E72F4E] sm:h-10 sm:w-10"
+                  className="group cursor-pointer flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full border border-white text-white transition-all duration-150 hover:border-[#E72F4E] hover:text-[#E72F4E]"
                   aria-label="Next reel"
                 >
                   <svg
-                    width="14"
-                    height="14"
+                    width="12"
+                    height="12"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    className="sm:w-[14px] sm:h-[14px]"
                     aria-hidden
                   >
                     <path d="M5 12h14M12 5l7 7-7 7" />
