@@ -22,28 +22,30 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
   const galleryRef = useRef<HTMLDivElement>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  // Duplicate images for linear infinite loop (scroll through 1..6, 1..6; jump only at very end)
+  const imagesLoop = images.length > 0 ? [...images, ...images] : [];
 
   const scroll = (dir: "left" | "right") => {
     const el = galleryRef.current;
-    if (!el) return;
-    const maxScroll = el.scrollWidth - el.clientWidth;
-    const atStart = el.scrollLeft <= 1;
-    const atEnd = el.scrollLeft >= maxScroll - 1;
+    if (!el || images.length === 0) return;
+    const maxScroll = Math.max(0, el.scrollWidth - el.clientWidth);
+    const atStart = el.scrollLeft <= 10;
+    const atEnd = el.scrollLeft >= maxScroll - 10;
+
+    const firstReel = el.querySelector<HTMLElement>("[data-reel]");
+    if (!firstReel) return;
+    const computedStyle = window.getComputedStyle(el);
+    const gap = parseFloat(computedStyle.gap) || 8;
+    const reelWidth = firstReel.getBoundingClientRect().width + gap;
+    const step = dir === "left" ? -reelWidth : reelWidth;
 
     if (dir === "right" && atEnd) {
-      el.scrollTo({ left: 0, behavior: "smooth" });
+      el.scrollLeft = 0;
     } else if (dir === "left" && atStart) {
-      el.scrollTo({ left: maxScroll, behavior: "smooth" });
+      el.scrollLeft = maxScroll;
     } else {
-      const firstReel = el.querySelector<HTMLElement>("[data-reel]");
-      if (!firstReel) return;
-      const computedStyle = window.getComputedStyle(el);
-      const gap = parseFloat(computedStyle.gap) || 8; // Default to 8px if gap not found
-      const reelWidth = firstReel.getBoundingClientRect().width + gap;
-      const step = dir === "left" ? -reelWidth : reelWidth;
       el.scrollBy({ left: step, behavior: "smooth" });
     }
-    // No need to update scroll state since we removed disabled states
   };
 
   return (
@@ -87,13 +89,13 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                 ref={galleryRef}
                 className="flex w-full snap-x snap-mandatory gap-2 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:gap-3"
               >
-                {images.map((img, i) => (
+                {imagesLoop.map((img, i) => (
                   <div
                     key={i}
                     data-reel
                     className="relative min-h-[280px] min-w-[140px] shrink-0 snap-start cursor-pointer sm:min-h-[320px] sm:min-w-[160px] md:min-h-[380px] md:min-w-[200px] lg:min-h-[450px] lg:min-w-[240px] transition-opacity duration-200 hover:opacity-90"
                     onClick={() => {
-                      setLightboxIndex(i);
+                      setLightboxIndex(i % images.length);
                       setLightboxOpen(true);
                     }}
                   >

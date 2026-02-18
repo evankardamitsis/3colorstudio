@@ -22,39 +22,42 @@ export function ProjectDisplay({
   const galleryRef = useRef<HTMLDivElement>(null);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  // Duplicate reels for linear infinite loop (scroll through 1..6, 1..6; jump only at very end)
+  const reelsLoop = reels.length > 0 ? [...reels, ...reels] : [];
 
   const scroll = (dir: "left" | "right") => {
     const el = galleryRef.current;
-    if (!el) return;
-    const maxScroll = el.scrollWidth - el.clientWidth;
-    const atStart = el.scrollLeft <= 1;
-    const atEnd = el.scrollLeft >= maxScroll - 1;
+    if (!el || reels.length === 0) return;
+    const maxScroll = Math.max(0, el.scrollWidth - el.clientWidth);
+    const atStart = el.scrollLeft <= 10;
+    const atEnd = el.scrollLeft >= maxScroll - 10;
+
+    const firstReel = el.querySelector<HTMLElement>("[data-reel]");
+    if (!firstReel) return;
+    const computedStyle = window.getComputedStyle(el);
+    const gap = parseFloat(computedStyle.gap) || 8;
+    const reelWidth = firstReel.getBoundingClientRect().width + gap;
+    const step = dir === "left" ? -reelWidth : reelWidth;
 
     if (dir === "right" && atEnd) {
-      el.scrollTo({ left: 0, behavior: "smooth" });
+      el.scrollLeft = 0;
     } else if (dir === "left" && atStart) {
-      el.scrollTo({ left: maxScroll, behavior: "smooth" });
+      el.scrollLeft = maxScroll;
     } else {
-      const firstReel = el.querySelector<HTMLElement>("[data-reel]");
-      if (!firstReel) return;
-      const computedStyle = window.getComputedStyle(el);
-      const gap = parseFloat(computedStyle.gap) || 8;
-      const reelWidth = firstReel.getBoundingClientRect().width + gap;
-      const step = dir === "left" ? -reelWidth : reelWidth;
       el.scrollBy({ left: step, behavior: "smooth" });
     }
   };
 
   return (
-    <section className="w-full bg-black py-16 md:py-24 lg:py-32">
-      <div className="mx-auto w-full max-w-[1600px] px-[10%]">
+    <section className="w-full bg-black py-16 md:py-24 lg:py-32 overflow-x-hidden">
+      <div className="mx-auto w-full px-4 sm:px-[10%]">
         {/* Project title */}
         <h2 className="mb-6 text-center font-heading text-[32px] font-normal text-white">
           {title}
         </h2>
 
         {/* Project description */}
-        <p className="mx-auto mb-12 max-w-4xl text-center font-body text-[14px] uppercase leading-relaxed text-white">
+        <p className="mx-auto mb-12 max-w-5xl text-center font-body text-[14px] uppercase leading-relaxed text-white">
           {description}
         </p>
 
@@ -86,37 +89,41 @@ export function ProjectDisplay({
           </div>
         )}
 
-        {/* Project reels */}
+        {/* Project reels - full-bleed to the right edge of screen */}
         {reels.length > 0 && (
-          <div className="relative w-full">
-            <div
-              ref={galleryRef}
-              className="flex w-full snap-x snap-mandatory gap-2 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:gap-3"
-            >
-              {reels.map((reel, i) => (
-                <div
-                  key={i}
-                  data-reel
-                  className="relative min-h-[280px] min-w-[140px] shrink-0 snap-start cursor-pointer sm:min-h-[320px] sm:min-w-[160px] md:min-h-[380px] md:min-w-[200px] lg:min-h-[450px] lg:w-[calc((100%-4*12px)/5)] transition-opacity duration-200 hover:opacity-90"
-                  onClick={() => {
-                    setLightboxIndex(i);
-                    setLightboxOpen(true);
-                  }}
-                >
-                  <Image
-                    src={reel.src}
-                    alt={reel.alt}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 140px, (max-width: 768px) 160px, (max-width: 1024px) 200px, calc((100vw - 20%) / 5)"
-                    unoptimized={reel.src.startsWith("https://placehold.co")}
-                  />
+          <>
+            <div className="relative z-0 w-screen left-1/2 -translate-x-1/2">
+              <div
+                ref={galleryRef}
+                className="pl-4 sm:pl-[10%] pr-0 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              >
+                <div className="flex w-max min-w-full snap-x snap-mandatory gap-2 lg:gap-3">
+                  {reelsLoop.map((reel, i) => (
+                    <div
+                      key={i}
+                      data-reel
+                      className="relative min-h-[360px] min-w-[200px] shrink-0 snap-start cursor-pointer sm:min-h-[420px] sm:min-w-[240px] md:min-h-[500px] md:min-w-[280px] lg:min-h-[560px] lg:w-[340px] transition-opacity duration-200 hover:opacity-90"
+                      onClick={() => {
+                        setLightboxIndex(i % reels.length);
+                        setLightboxOpen(true);
+                      }}
+                    >
+                      <Image
+                        src={reel.src}
+                        alt={reel.alt}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 200px, (max-width: 768px) 240px, (max-width: 1024px) 280px, 340px"
+                        unoptimized={reel.src.startsWith("https://placehold.co")}
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
 
-            {/* Nav arrows: below reels, right-aligned */}
-            <div className="mt-4 flex w-full justify-end sm:mt-5 md:mt-6">
+            {/* Nav arrows: below reels, right-aligned to content (z-30 above hero side info z-20) */}
+            <div className="relative z-30 mt-4 flex w-full justify-end sm:mt-5 md:mt-6">
               <div className="flex gap-3">
                 <button
                   type="button"
@@ -160,7 +167,7 @@ export function ProjectDisplay({
                 </button>
               </div>
             </div>
-          </div>
+          </>
         )}
       </div>
 
