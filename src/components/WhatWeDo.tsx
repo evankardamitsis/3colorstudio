@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { Lightbox } from "./Lightbox";
 
 const DEFAULT_GALLERY = [
@@ -26,9 +26,6 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  // Two copies for seamless infinite loop (no duplicate of last item)
-  const imagesLoop = images.length > 0 ? [...images, ...images] : [];
-  const singleSetWidth = useRef<number>(0);
 
   const setVideoRef = (index: number, element: HTMLVideoElement | null) => {
     if (element) {
@@ -57,7 +54,9 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
     const rect = el.getBoundingClientRect();
     const x = e.pageX - rect.left;
     const walk = (x - startX) * 2; // Scroll speed multiplier
-    el.scrollLeft = scrollLeft - walk;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    const newScrollLeft = Math.max(0, Math.min(maxScroll, scrollLeft - walk));
+    el.scrollLeft = newScrollLeft;
   };
 
   const handleMouseUp = () => {
@@ -78,57 +77,6 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
     }
   };
 
-  // Calculate exact width of one set (n items + (n-1) gaps between them)
-  useEffect(() => {
-    const el = galleryRef.current;
-    if (!el || images.length === 0) return;
-    
-    const firstReel = el.querySelector<HTMLElement>("[data-reel]");
-    if (!firstReel) return;
-    const inner = el.firstElementChild as HTMLElement;
-    if (!inner) return;
-    const computedStyle = window.getComputedStyle(inner);
-    const gap = parseFloat(computedStyle.gap) || 8;
-    const itemWidth = firstReel.getBoundingClientRect().width;
-    singleSetWidth.current = images.length * itemWidth + (images.length - 1) * gap;
-    
-    el.scrollLeft = 0;
-  }, [images.length]);
-
-  // Infinite scroll loop handler (2 copies): wrap to first at right end, last at left end
-  useEffect(() => {
-    const el = galleryRef.current;
-    if (!el || images.length === 0) return;
-
-    let rafId: number | null = null;
-    const handleScroll = () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      
-      rafId = requestAnimationFrame(() => {
-        const scrollLeft = el.scrollLeft;
-        const singleSet = singleSetWidth.current;
-        const maxScroll = el.scrollWidth - el.clientWidth;
-        
-        if (singleSet === 0) return;
-        
-        // At the right end: jump to start so we show the first item (no double last)
-        if (scrollLeft >= maxScroll - 1) {
-          el.scrollLeft = 0;
-        }
-        // At the left end: jump to end so we show the last item
-        else if (scrollLeft <= 1) {
-          el.scrollLeft = maxScroll;
-        }
-      });
-    };
-
-    el.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      if (rafId) cancelAnimationFrame(rafId);
-      el.removeEventListener("scroll", handleScroll);
-    };
-  }, [images.length]);
-
   const scroll = (dir: "left" | "right") => {
     const el = galleryRef.current;
     if (!el || images.length === 0) return;
@@ -140,8 +88,9 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
     const gap = parseFloat(computedStyle.gap) || 8;
     const itemWidth = firstReel.getBoundingClientRect().width;
     const step = dir === "left" ? -(itemWidth + gap) : itemWidth + gap;
-
-    el.scrollBy({ left: step, behavior: "smooth" });
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    const target = Math.max(0, Math.min(maxScroll, el.scrollLeft + step));
+    el.scrollTo({ left: target, behavior: "smooth" });
   };
 
   return (
@@ -189,7 +138,7 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseLeave}
               >
-                {imagesLoop.map((img, i) => {
+                {images.map((img, i) => {
                   const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(img.src);
                   return (
                     <div
@@ -202,7 +151,7 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                           e.preventDefault();
                           return;
                         }
-                        setLightboxIndex(i % images.length);
+                        setLightboxIndex(i);
                         setLightboxOpen(true);
                       }}
                       onMouseEnter={() => {
