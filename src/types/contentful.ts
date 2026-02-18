@@ -20,19 +20,17 @@ export interface ContentfulRichText {
   };
 }
 
-// —— Project (raw from CMS) ——
+// —— Project (raw from CMS). Field IDs: projectTitle, slug, projectDescription, coverImage, featuredImage, featuredVideo, gallery, category (Reference to projectCategory) ——
 export interface ContentfulProject {
   sys: { id: string };
-  title?: string | null;
+  projectTitle?: string | null;
   slug?: string | null;
-  excerpt?: string | null;
+  projectDescription?: string | null;
   coverImage?: { url: string; title?: string | null } | null;
+  featuredImage?: { url: string; title?: string | null } | null;
+  featuredVideo?: { url: string } | null;
   gallery?: Array<{ url: string; title?: string | null }> | null;
-  services?: string[] | null;
-  year?: number | string | null;
-  client?: string | null;
-  body?: ContentfulRichText | string | null;
-  featured?: boolean | null;
+  category?: { slug?: string | null } | null;
 }
 
 // —— Page text block (raw from CMS) ——
@@ -42,4 +40,22 @@ export interface ContentfulPageTextBlock {
   heading?: string | null;
   body?: string | ContentfulRichText | null;
   locationKey?: string | null;
+}
+
+// —— Project category (raw from CMS, content type: projectCategory) ——
+export interface ContentfulProjectCategory {
+  sys: { id: string };
+  slug?: string | null;
+  title?: string | null;
+  subtitle?: string | null;
+  backgroundImage?: { url: string } | null;
+  backgroundVideo?: { url: string } | null;
+}
+
+// —— Homepage (raw from CMS, content type: homepage). Fields: heroImage, heroVideo, homepageReels ——
+export interface ContentfulHomepage {
+  sys: { id: string };
+  heroImage?: { url: string } | null;
+  heroVideo?: { url: string } | null;
+  homepageReels?: Array<{ url: string; title?: string | null }> | null;
 }

@@ -4,11 +4,20 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { siteConfig } from "@/config/site";
 
-const HERO_BG_SRC = "/demo_hero_bg.png";
 const HERO_EMAIL = "hello@3colorstudio.com";
+const DEFAULT_HERO_IMAGE = "/demo_hero_bg.png";
 
-export function Hero() {
+export interface HeroProps {
+  /** Hero background image URL (from Contentful homepage.heroImage). */
+  heroImage?: string | null;
+  /** Hero background video URL (from Contentful homepage.heroVideo). When set, video is shown instead of image. */
+  heroVideo?: string | null;
+}
+
+export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
   const [showSideInfo, setShowSideInfo] = useState(true);
+  const imageSrc = heroImage ?? DEFAULT_HERO_IMAGE;
+  const videoSrc = heroVideo ?? null;
 
   useEffect(() => {
     const sentinel = document.getElementById("contact-section-end");
@@ -29,16 +38,28 @@ export function Hero() {
       className="relative flex min-h-screen w-full flex-col overflow-x-hidden"
       aria-label="Hero"
     >
-      {/* Background image */}
+      {/* Background image or video */}
       <div className="absolute inset-0 z-0">
-        <Image
-          src={HERO_BG_SRC}
-          alt=""
-          fill
-          className="object-cover object-center"
-          priority
-          sizes="100vw"
-        />
+        {videoSrc ? (
+          <video
+            src={videoSrc}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="h-full w-full object-cover object-center"
+            aria-hidden
+          />
+        ) : (
+          <Image
+            src={imageSrc}
+            alt=""
+            fill
+            className="object-cover object-center"
+            priority
+            sizes="100vw"
+          />
+        )}
       </div>
 
       {/* Optional subtle overlay for text readability */}

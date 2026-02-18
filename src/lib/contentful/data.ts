@@ -9,10 +9,22 @@ import {
   GET_ALL_PROJECTS,
   GET_PROJECT_BY_SLUG,
   GET_TEXT_BLOCKS_BY_LOCATION_KEYS,
+  GET_PROJECT_CATEGORIES,
+  GET_PROJECT_CATEGORY_BY_SLUG,
+  GET_PROJECTS_BY_CATEGORY,
+  GET_HOMEPAGE,
 } from "./queries";
-import { mapProject, mapProjectList, mapTextBlockList } from "./mappers";
-import type { Project, PageTextBlock } from "@/types/app";
-import { mockProjects, mockTextBlocks } from "./mockData";
+import {
+  mapProject,
+  mapProjectList,
+  mapTextBlockList,
+  mapProjectCategory,
+  mapProjectCategoryList,
+  mapToCategoryProjectList,
+  mapHomepage,
+} from "./mappers";
+import type { Project, PageTextBlock, ProjectCategory, CategoryProject, Homepage } from "@/types/app";
+import { mockProjects, mockTextBlocks, mockProjectCategories, mockCategoryProjects, mockHomepage } from "./mockData";
 
 // —— Featured projects (home) ——
 export async function getFeaturedProjects(options?: { revalidate?: number }): Promise<Project[]> {
@@ -94,6 +106,92 @@ export async function getTextBlocksByLocationKey(
   options?: { revalidate?: number }
 ): Promise<PageTextBlock[]> {
   return getTextBlocksByLocationKeys([locationKey], options);
+}
+
+// —— Project categories (category page hero) ——
+export async function getProjectCategories(options?: {
+  revalidate?: number;
+}): Promise<ProjectCategory[]> {
+  const data = await contentfulFetch<{
+    projectCategoryCollection?: { items?: unknown[] };
+  }>(GET_PROJECT_CATEGORIES, undefined, {
+    next: { revalidate: options?.revalidate ?? 60 },
+  });
+
+  const items = data?.projectCategoryCollection?.items;
+  if (Array.isArray(items) && items.length > 0) {
+    const mapped = mapProjectCategoryList(
+      items as Parameters<typeof mapProjectCategoryList>[0]
+    );
+    if (mapped.length > 0) return mapped;
+  }
+
+  return mockProjectCategories;
+}
+
+export async function getProjectCategoryBySlug(
+  slug: string,
+  options?: { revalidate?: number }
+): Promise<ProjectCategory | null> {
+  const data = await contentfulFetch<{
+    projectCategoryCollection?: { items?: unknown[] };
+  }>(GET_PROJECT_CATEGORY_BY_SLUG, { slug }, {
+    next: { revalidate: options?.revalidate ?? 60 },
+  });
+
+  const items = data?.projectCategoryCollection?.items;
+  if (Array.isArray(items) && items.length > 0) {
+    return mapProjectCategory(items[0] as Parameters<typeof mapProjectCategory>[0]);
+  }
+
+  return mockProjectCategories.find((c) => c.slug === slug) ?? null;
+}
+
+// —— Homepage (hero + reels) ——
+export async function getHomepage(options?: { revalidate?: number }): Promise<Homepage> {
+  const data = await contentfulFetch<{
+    homepageCollection?: { items?: unknown[] };
+  }>(GET_HOMEPAGE, undefined, {
+    next: { revalidate: options?.revalidate ?? 60 },
+  });
+
+  const items = data?.homepageCollection?.items;
+  if (Array.isArray(items) && items.length > 0) {
+    const mapped = mapHomepage(items[0] as Parameters<typeof mapHomepage>[0]);
+    if (mapped) return mapped;
+  }
+
+  return mockHomepage;
+}
+
+// —— Projects by category (category page list) ——
+export async function getProjectsByCategory(
+  categorySlug: string,
+  options?: { revalidate?: number }
+): Promise<CategoryProject[]> {
+  const data = await contentfulFetch<{
+    projectCategoryCollection?: {
+      items?: Array<{
+        linkedFrom?: { entryCollection?: { items?: unknown[] } };
+      }>;
+    };
+  }>(GET_PROJECTS_BY_CATEGORY, { categorySlug }, {
+    next: { revalidate: options?.revalidate ?? 60 },
+  });
+
+  const categoryItems = data?.projectCategoryCollection?.items;
+  const items =
+    Array.isArray(categoryItems) && categoryItems.length > 0
+      ? categoryItems[0]?.linkedFrom?.entryCollection?.items
+      : undefined;
+  if (Array.isArray(items) && items.length > 0) {
+    const mapped = mapToCategoryProjectList(
+      items as Parameters<typeof mapToCategoryProjectList>[0]
+    );
+    if (mapped.length > 0) return mapped;
+  }
+
+  return mockCategoryProjects[categorySlug] ?? [];
 }
 
 export { isContentfulConfigured };

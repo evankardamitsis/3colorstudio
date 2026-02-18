@@ -4,21 +4,28 @@ import { ProjectsHomeMarquee } from "@/components/ProjectsHomeMarquee";
 import { ProjectCategories } from "@/components/ProjectCategories";
 import { ContactSection } from "@/components/ContactSection";
 import { HotelBrands } from "@/components/HotelBrands";
-
+import { getHomepage, getProjectCategories } from "@/lib/contentful/data";
 
 export const revalidate = 60;
 
 export default async function HomePage() {
+  const [homepage, projectCategories] = await Promise.all([
+    getHomepage(),
+    getProjectCategories(),
+  ]);
 
   return (
     <>
-      <Hero />
+      <Hero
+        heroImage={homepage.heroImage}
+        heroVideo={homepage.heroVideo}
+      />
 
-      <WhatWeDo />
+      <WhatWeDo images={homepage.homepageReels} />
 
       <ProjectsHomeMarquee />
 
-      <ProjectCategories />
+      <ProjectCategories categories={projectCategories} />
 
       <ContactSection />
 

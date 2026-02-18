@@ -2,74 +2,69 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
+import type { ProjectCategory } from "@/types/app";
 
-interface Category {
+const PLACEHOLDER_IMAGE = "https://placehold.co/800x600/1a1a1a/fff?text=Category";
+
+/** Internal shape for the carousel (derived from ProjectCategory). */
+interface CategoryCard {
   id: string;
   title: string;
   description: string;
   image: string;
 }
 
-const CATEGORIES: Category[] = [
-  {
-    id: "lifestyle",
-    title: "Lifestyle And Content",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    image: "https://placehold.co/800x600/1a1a1a/fff?text=Lifestyle",
-  },
-  {
-    id: "culinary",
-    title: "Culinary And Bars",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    image: "/card.png",
-  },
-  {
-    id: "brand",
-    title: "Brand Video",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    image: "https://placehold.co/800x600/1a1a1a/fff?text=Brand+Video",
-  },
-  {
-    id: "events",
-    title: "Events",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    image: "https://placehold.co/800x600/1a1a1a/fff?text=Events",
-  },
-];
+export interface ProjectCategoriesProps {
+  /** Categories from Contentful (getProjectCategories). */
+  categories: ProjectCategory[];
+}
 
-export function ProjectCategories() {
-  const [activeCategory, setActiveCategory] = useState<Category>(CATEGORIES[0]);
+function toCategoryCard(c: ProjectCategory): CategoryCard {
+  return {
+    id: c.slug,
+    title: c.title,
+    description: c.subtitle,
+    image: c.backgroundImage ?? PLACEHOLDER_IMAGE,
+  };
+}
+
+export function ProjectCategories({ categories }: ProjectCategoriesProps) {
+  const categoryCards = useMemo(() => categories.map(toCategoryCard), [categories]);
+  const [activeCategory, setActiveCategory] = useState<CategoryCard | null>(() => categoryCards[0] ?? null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
 
+  const displayCategory = activeCategory ?? categoryCards[0] ?? null;
+
   useEffect(() => {
+    if (categoryCards.length === 0) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => {
-        const next = (prev + 1) % CATEGORIES.length;
-        setActiveCategory(CATEGORIES[next]);
+        const next = (prev + 1) % categoryCards.length;
+        setActiveCategory(categoryCards[next]);
         return next;
       });
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [categoryCards]);
 
   const scrollToIndex = (index: number) => {
     const carousel = carouselRef.current;
-    if (!carousel) return;
+    if (!carousel || index < 0 || index >= categoryCards.length) return;
     const card = carousel.children[index] as HTMLElement;
     if (card) {
       const cardLeft = card.offsetLeft;
       carousel.scrollTo({ left: cardLeft, behavior: "smooth" });
       setCurrentIndex(index);
-      setActiveCategory(CATEGORIES[index]);
+      setActiveCategory(categoryCards[index]);
     }
   };
 
   useEffect(() => {
     const carousel = carouselRef.current;
-    if (!carousel) return;
+    if (!carousel || categoryCards.length === 0) return;
 
     const handleScroll = () => {
       const cards = Array.from(carousel.children) as HTMLElement[];
@@ -78,22 +73,24 @@ export function ProjectCategories() {
       const gap = 24;
       const newIndex = Math.round(scrollLeft / (cardWidth + gap));
 
-      if (newIndex >= 0 && newIndex < CATEGORIES.length && newIndex !== currentIndex) {
+      if (newIndex >= 0 && newIndex < categoryCards.length && newIndex !== currentIndex) {
         setCurrentIndex(newIndex);
-        setActiveCategory(CATEGORIES[newIndex]);
+        setActiveCategory(categoryCards[newIndex]);
       }
     };
 
     carousel.addEventListener("scroll", handleScroll);
     return () => carousel.removeEventListener("scroll", handleScroll);
-  }, [currentIndex]);
+  }, [currentIndex, categoryCards]);
+
+  if (categoryCards.length === 0) return null;
 
   return (
     <section className="project-categories-striped w-full overflow-x-hidden border-2 border-black py-16 md:py-24">
       <div className="mx-auto w-full max-w-[1600px] px-[10%]">
         <div className="hidden lg:grid lg:grid-cols-2 lg:gap-0 lg:items-stretch">
           <div className="flex flex-col gap-0">
-            {CATEGORIES.map((category) => (
+            {categoryCards.map((category) => (
               <Link
                 key={category.id}
                 href={`/projects/category/${category.id}`}
@@ -123,14 +120,16 @@ export function ProjectCategories() {
           </div>
 
           <div className="relative min-h-0 overflow-hidden rounded-lg border border-black lg:h-full">
-            <Image
-              src={activeCategory.image}
-              alt={activeCategory.title}
-              fill
-              className="object-cover transition-opacity duration-300"
-              sizes="(max-width: 1024px) 0px, 50vw"
-              unoptimized={activeCategory.image.startsWith("https://placehold.co")}
-            />
+            {displayCategory && (
+              <Image
+                src={displayCategory.image}
+                alt={displayCategory.title}
+                fill
+                className="object-cover transition-opacity duration-300"
+                sizes="(max-width: 1024px) 0px, 50vw"
+                unoptimized={displayCategory.image.startsWith("https://placehold.co")}
+              />
+            )}
           </div>
         </div>
 
@@ -140,7 +139,7 @@ export function ProjectCategories() {
             className="flex snap-x snap-mandatory flex-row gap-6 overflow-x-auto overflow-y-hidden px-[5%] pb-2"
             style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
           >
-            {CATEGORIES.map((category) => (
+            {categoryCards.map((category) => (
               <Link
                 key={category.id}
                 href={`/projects/category/${category.id}`}
@@ -181,7 +180,7 @@ export function ProjectCategories() {
           </div>
 
           <div className="mt-6 flex justify-center gap-2">
-            {CATEGORIES.map((_, index) => (
+            {categoryCards.map((_, index) => (
               <button
                 key={index}
                 onClick={() => scrollToIndex(index)}

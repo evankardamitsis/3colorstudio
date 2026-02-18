@@ -4,16 +4,10 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { siteConfig } from "@/config/site";
+import type { ProjectCategory } from "@/types/app";
 
 const LOGO_SRC = "/3colorstudiologowhitetrimmed.svg";
 const BURGER_ICON_SRC = "/burger_icon.svg";
-
-const PROJECT_SUBLINKS = [
-  { label: "LIFESTYLE & CONTENT", href: "/projects#lifestyle" },
-  { label: "CULINARY & BARS", href: "/projects#culinary" },
-  { label: "BRAND VIDEO", href: "/projects#brand-video" },
-  { label: "EVENTS", href: "/projects#events" },
-] as const;
 
 function CloseIcon({ className }: { className?: string }) {
   return (
@@ -35,9 +29,19 @@ function CloseIcon({ className }: { className?: string }) {
   );
 }
 
-export function Header() {
+interface HeaderProps {
+  /** Project categories from Contentful (for Projects submenu links). */
+  projectCategories?: ProjectCategory[];
+}
+
+export function Header({ projectCategories = [] }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [visibilityHidden, setVisibilityHidden] = useState(true);
+
+  const projectSublinks = projectCategories.map((c) => ({
+    label: c.title.toUpperCase(),
+    href: `/projects/category/${c.slug}`,
+  }));
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -141,7 +145,7 @@ export function Header() {
                 <span className="h-px w-8 bg-white shrink-0" aria-hidden />
               </div>
               <ul className="mt-3 flex flex-col gap-2 pl-2 md:mt-4">
-                {PROJECT_SUBLINKS.map(({ label, href }) => (
+                {projectSublinks.map(({ label, href }) => (
                   <li key={href}>
                     <Link
                       href={href}

@@ -2,7 +2,7 @@
  * Fallback content when Contentful is not configured or returns no data.
  */
 
-import type { Project, PageTextBlock } from "@/types/app";
+import type { Project, PageTextBlock, ProjectCategory, CategoryProject, Homepage } from "@/types/app";
 
 const baseUrl = "https://placehold.co/1200x900/1a1a1a/666?text=Project";
 
@@ -90,3 +90,101 @@ export const mockTextBlocks: PageTextBlock[] = [
     locationKey: "about.intro",
   },
 ];
+
+export const mockHomepage: Homepage = {
+  heroImage: "/demo_hero_bg.png",
+  heroVideo: null,
+  homepageReels: [
+    { src: "https://placehold.co/280x700/1a1a1a/333?text=1", alt: "Hotel and pool" },
+    { src: "https://placehold.co/280x700/1a1a1a/333?text=2", alt: "Dining" },
+    { src: "https://placehold.co/280x700/1a1a1a/333?text=3", alt: "Experience" },
+    { src: "https://placehold.co/280x700/1a1a1a/333?text=4", alt: "Resort" },
+    { src: "https://placehold.co/280x700/1a1a1a/333?text=5", alt: "Lifestyle" },
+    { src: "https://placehold.co/280x700/1a1a1a/333?text=6", alt: "Brand" },
+  ],
+};
+
+const reelPlaceholder = (n: number) => ({
+  src: `https://placehold.co/280x700/1a1a1a/fff?text=Reel+${n}`,
+  alt: `Reel ${n}`,
+});
+
+export const mockProjectCategories: ProjectCategory[] = [
+  {
+    slug: "lifestyle",
+    title: "Lifestyle And Content",
+    subtitle: "A FILM PRODUCTION AGENCY DEDICATED TO HOTEL BRANDS",
+    backgroundImage: "/project_demo.png",
+    backgroundVideo: null,
+  },
+  {
+    slug: "culinary",
+    title: "Culinary And Bars",
+    subtitle: "A FILM PRODUCTION AGENCY DEDICATED TO HOTEL BRANDS",
+    backgroundImage: "/project_demo.png",
+    backgroundVideo: null,
+  },
+  {
+    slug: "brand",
+    title: "Brand Video",
+    subtitle: "A FILM PRODUCTION AGENCY DEDICATED TO HOTEL BRANDS",
+    backgroundImage: "/project_demo.png",
+    backgroundVideo: null,
+  },
+  {
+    slug: "events",
+    title: "Events",
+    subtitle: "A FILM PRODUCTION AGENCY DEDICATED TO HOTEL BRANDS",
+    backgroundImage: "/project_demo.png",
+    backgroundVideo: null,
+  },
+];
+
+const categoryProjectDesc =
+  "WE PRODUCE AND SHOOT COMPELLING NARRATIVES THAT BRING HOTEL BRANDS TO LIFE FILMING CAPTIVATING VISUALS WE SHOWCASE THE AUTHENTICITY OF A HOTEL EXPERIENCE, ELEVATE THE BRAND IDENTITY AND ENGAGE WITH THE GUESTS BY FUSING IMAGINATIVE INSPIRATION WITH A VISION FOR THE FUTURE, WE PRODUCE STRIKING AND ENDURING VISUAL TALES";
+
+export const mockCategoryProjects: Record<string, CategoryProject[]> = {
+  lifestyle: [
+    {
+      id: "lifestyle-1",
+      title: "Armyra by Papaionannou",
+      description: categoryProjectDesc,
+      featuredImage: "/project_img_demo.png",
+      reels: [1, 2, 3, 4, 5, 6, 7].map(reelPlaceholder),
+    },
+    {
+      id: "lifestyle-2",
+      title: "Luxury Resort Lifestyle Content",
+      description: categoryProjectDesc,
+      featuredImage: "/project_img_demo.png",
+      reels: [1, 2, 3, 4, 5].map(reelPlaceholder),
+    },
+  ],
+  culinary: [
+    {
+      id: "culinary-1",
+      title: "Chef Ioannis Parikos — Culinary Excellence",
+      description: categoryProjectDesc,
+      featuredImage: "/project_img_demo.png",
+      reels: [1, 2, 3, 4, 5].map(reelPlaceholder),
+    },
+  ],
+  brand: [
+    {
+      id: "brand-1",
+      title: "Brand Video Showcase",
+      description: categoryProjectDesc,
+      featuredImage: "/project_img_demo.png",
+      reels: [1, 2, 3, 4].map(reelPlaceholder),
+    },
+  ],
+  events: [
+    {
+      id: "events-1",
+      title: "Events Production",
+      description: categoryProjectDesc,
+      featuredImage: "/project_img_demo.png",
+      reels: [1, 2, 3, 4, 5, 6].map(reelPlaceholder),
+    },
+  ],
+};

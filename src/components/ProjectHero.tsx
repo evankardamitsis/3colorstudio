@@ -7,7 +7,6 @@ import { siteConfig } from "@/config/site";
 interface ProjectHeroProps {
   categoryTitle: string;
   subtitle?: string;
-  featuredName?: string;
   backgroundImage?: string;
   backgroundVideo?: string;
   ctaText?: string;
@@ -19,7 +18,6 @@ const HERO_EMAIL = "hello@3colorstudio.com";
 export function ProjectHero({
   categoryTitle,
   subtitle = "A FILM PRODUCTION AGENCY DEDICATED TO HOTEL BRANDS",
-  featuredName,
   backgroundImage,
   backgroundVideo,
   ctaText = "SEE THE PROJECTS",
@@ -119,13 +117,6 @@ export function ProjectHero({
         {/* Middle: category title + subtitle */}
         <div className="flex flex-1 flex-col items-center justify-center min-w-0">
           <div className="w-full max-w-4xl min-w-0 px-1 text-center">
-            {/* Featured name (optional, above title) */}
-            {featuredName && (
-              <p className="mb-4 font-body text-sm font-medium uppercase tracking-wider text-white/80 md:text-base">
-                {featuredName}
-              </p>
-            )}
-
             {/* Main category title */}
             <h1 className="font-heading text-5xl leading-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
               {categoryTitle}

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Lightbox } from "./Lightbox";
 
 const DEFAULT_GALLERY = [
@@ -20,32 +20,128 @@ export interface WhatWeDoProps {
 
 export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
   const galleryRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<Map<number, HTMLVideoElement>>(new Map());
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  // Duplicate images for linear infinite loop (scroll through 1..6, 1..6; jump only at very end)
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  // Two copies for seamless infinite loop (no duplicate of last item)
   const imagesLoop = images.length > 0 ? [...images, ...images] : [];
+  const singleSetWidth = useRef<number>(0);
+
+  const setVideoRef = (index: number, element: HTMLVideoElement | null) => {
+    if (element) {
+      videoRefs.current.set(index, element);
+    } else {
+      videoRefs.current.delete(index);
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = galleryRef.current;
+    if (!el) return;
+    setIsDragging(true);
+    const rect = el.getBoundingClientRect();
+    setStartX(e.pageX - rect.left);
+    setScrollLeft(el.scrollLeft);
+    el.style.cursor = "grabbing";
+    el.style.userSelect = "none";
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const el = galleryRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.pageX - rect.left;
+    const walk = (x - startX) * 2; // Scroll speed multiplier
+    el.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    const el = galleryRef.current;
+    if (el) {
+      el.style.cursor = "grab";
+      el.style.userSelect = "";
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+    const el = galleryRef.current;
+    if (el) {
+      el.style.cursor = "grab";
+      el.style.userSelect = "";
+    }
+  };
+
+  // Calculate exact width of one set (n items + (n-1) gaps between them)
+  useEffect(() => {
+    const el = galleryRef.current;
+    if (!el || images.length === 0) return;
+    
+    const firstReel = el.querySelector<HTMLElement>("[data-reel]");
+    if (!firstReel) return;
+    const inner = el.firstElementChild as HTMLElement;
+    if (!inner) return;
+    const computedStyle = window.getComputedStyle(inner);
+    const gap = parseFloat(computedStyle.gap) || 8;
+    const itemWidth = firstReel.getBoundingClientRect().width;
+    singleSetWidth.current = images.length * itemWidth + (images.length - 1) * gap;
+    
+    el.scrollLeft = 0;
+  }, [images.length]);
+
+  // Infinite scroll loop handler (2 copies): wrap to first at right end, last at left end
+  useEffect(() => {
+    const el = galleryRef.current;
+    if (!el || images.length === 0) return;
+
+    let rafId: number | null = null;
+    const handleScroll = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      
+      rafId = requestAnimationFrame(() => {
+        const scrollLeft = el.scrollLeft;
+        const singleSet = singleSetWidth.current;
+        const maxScroll = el.scrollWidth - el.clientWidth;
+        
+        if (singleSet === 0) return;
+        
+        // At the right end: jump to start so we show the first item (no double last)
+        if (scrollLeft >= maxScroll - 1) {
+          el.scrollLeft = 0;
+        }
+        // At the left end: jump to end so we show the last item
+        else if (scrollLeft <= 1) {
+          el.scrollLeft = maxScroll;
+        }
+      });
+    };
+
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      el.removeEventListener("scroll", handleScroll);
+    };
+  }, [images.length]);
 
   const scroll = (dir: "left" | "right") => {
     const el = galleryRef.current;
     if (!el || images.length === 0) return;
-    const maxScroll = Math.max(0, el.scrollWidth - el.clientWidth);
-    const atStart = el.scrollLeft <= 10;
-    const atEnd = el.scrollLeft >= maxScroll - 10;
 
     const firstReel = el.querySelector<HTMLElement>("[data-reel]");
     if (!firstReel) return;
-    const computedStyle = window.getComputedStyle(el);
+    const inner = el.firstElementChild as HTMLElement;
+    const computedStyle = inner ? window.getComputedStyle(inner) : window.getComputedStyle(el);
     const gap = parseFloat(computedStyle.gap) || 8;
-    const reelWidth = firstReel.getBoundingClientRect().width + gap;
-    const step = dir === "left" ? -reelWidth : reelWidth;
+    const itemWidth = firstReel.getBoundingClientRect().width;
+    const step = dir === "left" ? -(itemWidth + gap) : itemWidth + gap;
 
-    if (dir === "right" && atEnd) {
-      el.scrollLeft = 0;
-    } else if (dir === "left" && atStart) {
-      el.scrollLeft = maxScroll;
-    } else {
-      el.scrollBy({ left: step, behavior: "smooth" });
-    }
+    el.scrollBy({ left: step, behavior: "smooth" });
   };
 
   return (
@@ -87,28 +183,71 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
 
               <div
                 ref={galleryRef}
-                className="flex w-full snap-x snap-mandatory gap-2 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:gap-3"
+                className="flex w-full snap-x snap-mandatory gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:gap-3 cursor-grab active:cursor-grabbing"
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseLeave}
               >
-                {imagesLoop.map((img, i) => (
-                  <div
-                    key={i}
-                    data-reel
-                    className="relative min-h-[280px] min-w-[140px] shrink-0 snap-start cursor-pointer sm:min-h-[320px] sm:min-w-[160px] md:min-h-[380px] md:min-w-[200px] lg:min-h-[450px] lg:min-w-[240px] transition-opacity duration-200 hover:opacity-90"
-                    onClick={() => {
-                      setLightboxIndex(i % images.length);
-                      setLightboxOpen(true);
-                    }}
-                  >
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 140px, (max-width: 768px) 160px, (max-width: 1024px) 200px, 240px"
-                      unoptimized
-                    />
-                  </div>
-                ))}
+                {imagesLoop.map((img, i) => {
+                  const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(img.src);
+                  return (
+                    <div
+                      key={i}
+                      data-reel
+                      className="relative min-h-[280px] min-w-[140px] shrink-0 snap-start cursor-pointer sm:min-h-[320px] sm:min-w-[160px] md:min-h-[380px] md:min-w-[200px] lg:min-h-[450px] lg:min-w-[240px] transition-opacity duration-200 hover:opacity-90"
+                      onClick={(e) => {
+                        // Prevent lightbox from opening if user was dragging
+                        if (isDragging) {
+                          e.preventDefault();
+                          return;
+                        }
+                        setLightboxIndex(i % images.length);
+                        setLightboxOpen(true);
+                      }}
+                      onMouseEnter={() => {
+                        if (isVideo) {
+                          const video = videoRefs.current.get(i);
+                          if (video) {
+                            video.play().catch(() => {
+                              // Ignore autoplay errors
+                            });
+                          }
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        if (isVideo) {
+                          const video = videoRefs.current.get(i);
+                          if (video) {
+                            video.pause();
+                          }
+                        }
+                      }}
+                    >
+                      {isVideo ? (
+                        <video
+                          ref={(el) => setVideoRef(i, el)}
+                          src={img.src}
+                          className="h-full w-full object-cover"
+                          muted
+                          playsInline
+                          loop
+                          preload="metadata"
+                          aria-label={img.alt}
+                        />
+                      ) : (
+                        <Image
+                          src={img.src}
+                          alt={img.alt}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 640px) 140px, (max-width: 768px) 160px, (max-width: 1024px) 200px, 240px"
+                          unoptimized
+                        />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Nav arrows: below reels, right-aligned */}
