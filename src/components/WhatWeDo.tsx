@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Lightbox } from "./Lightbox";
 
 const DEFAULT_GALLERY = [
@@ -21,17 +21,27 @@ export interface WhatWeDoProps {
 export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
   const galleryRef = useRef<HTMLDivElement>(null);
   const videoRefs = useRef<Map<number, HTMLVideoElement>>(new Map());
+  const reelRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [centeredIndex, setCenteredIndex] = useState(0);
 
   const setVideoRef = (index: number, element: HTMLVideoElement | null) => {
     if (element) {
       videoRefs.current.set(index, element);
     } else {
       videoRefs.current.delete(index);
+    }
+  };
+
+  const setReelRef = (index: number, element: HTMLDivElement | null) => {
+    if (element) {
+      reelRefs.current.set(index, element);
+    } else {
+      reelRefs.current.delete(index);
     }
   };
 
@@ -77,25 +87,103 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
     }
   };
 
+  // Detect centered item on mobile for scaling
+  useEffect(() => {
+    if (images.length === 0) return;
+    const el = galleryRef.current;
+    if (!el) return;
+
+    const isMobile = () => window.innerWidth < 768;
+
+    const updateCenteredItem = () => {
+      if (!isMobile()) {
+        setCenteredIndex(0);
+        return;
+      }
+      const container = el;
+      const containerRect = container.getBoundingClientRect();
+      const containerCenter = containerRect.left + containerRect.width / 2;
+      let closestIndex = 0;
+      let closestDistance = Infinity;
+      reelRefs.current.forEach((reelEl, index) => {
+        const reelRect = reelEl.getBoundingClientRect();
+        const reelCenter = reelRect.left + reelRect.width / 2;
+        const distance = Math.abs(containerCenter - reelCenter);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+      setCenteredIndex(closestIndex);
+    };
+
+    let rafId: number | null = null;
+    const handleScroll = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        updateCenteredItem();
+        rafId = null;
+      });
+    };
+    const handleResize = () => updateCenteredItem();
+
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize);
+    updateCenteredItem();
+
+    // Initial scroll on mobile: first item at left edge
+    const setInitialScroll = () => {
+      if (!isMobile()) return;
+      const viewportWidth = window.innerWidth;
+      const itemHalfWidth = 70; // 140px / 2
+      const paddingLeft = viewportWidth / 2 - itemHalfWidth;
+      el.scrollLeft = paddingLeft;
+    };
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setInitialScroll();
+      });
+    });
+
+    return () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      el.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [images.length]);
+
   const scroll = (dir: "left" | "right") => {
     const el = galleryRef.current;
     if (!el || images.length === 0) return;
 
-    const firstReel = el.querySelector<HTMLElement>("[data-reel]");
-    if (!firstReel) return;
-    const inner = el.firstElementChild as HTMLElement;
-    const computedStyle = inner ? window.getComputedStyle(inner) : window.getComputedStyle(el);
-    const gap = parseFloat(computedStyle.gap) || 8;
-    const itemWidth = firstReel.getBoundingClientRect().width;
-    const step = dir === "left" ? -(itemWidth + gap) : itemWidth + gap;
-    const maxScroll = el.scrollWidth - el.clientWidth;
-    const target = Math.max(0, Math.min(maxScroll, el.scrollLeft + step));
-    el.scrollTo({ left: target, behavior: "smooth" });
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      const nextIndex = dir === "right"
+        ? Math.min(centeredIndex + 1, images.length - 1)
+        : Math.max(centeredIndex - 1, 0);
+      const targetReel = reelRefs.current.get(nextIndex);
+      if (!targetReel) return;
+      const containerRect = el.getBoundingClientRect();
+      const reelRect = targetReel.getBoundingClientRect();
+      const targetScroll = el.scrollLeft + (reelRect.left - containerRect.left) - (containerRect.width / 2) + (reelRect.width / 2);
+      el.scrollTo({ left: targetScroll, behavior: "smooth" });
+    } else {
+      const firstReel = el.querySelector<HTMLElement>("[data-reel]");
+      if (!firstReel) return;
+      const inner = el.firstElementChild as HTMLElement;
+      const computedStyle = inner ? window.getComputedStyle(inner) : window.getComputedStyle(el);
+      const gap = parseFloat(computedStyle.gap) || 8;
+      const itemWidth = firstReel.getBoundingClientRect().width;
+      const step = dir === "left" ? -(itemWidth + gap) : itemWidth + gap;
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      const target = Math.max(0, Math.min(maxScroll, el.scrollLeft + step));
+      el.scrollTo({ left: target, behavior: "smooth" });
+    }
   };
 
   return (
     <section
-      className="relative w-full overflow-x-hidden bg-black py-16 md:py-24 lg:py-28"
+      className="relative w-full overflow-x-visible md:overflow-x-hidden bg-black py-16 md:py-24 lg:py-28"
       aria-labelledby="what-we-do-heading"
     >
       <div className="mx-auto w-full max-w-[1600px] px-[10%]">
@@ -116,9 +204,9 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
             visual tales.
           </p>
 
-          {/* Reels: gallery centered; vertical title absolutely to the left on lg only */}
-          <div className="relative mt-10 w-full">
-            <div className="relative mx-auto w-full max-w-[288px] sm:max-w-[328px] md:max-w-[408px] lg:max-w-[996px]">
+          {/* Reels: on mobile overflow evenly from both sides; vertical title on lg only */}
+          <div className="relative mt-10 w-full overflow-visible">
+            <div className="relative mx-auto w-full max-w-[288px] sm:max-w-[328px] md:max-w-[408px] lg:max-w-[996px] overflow-visible">
               {/* Vertical title: absolute, left of gallery, hidden below lg */}
               <h2
                 id="what-we-do-heading"
@@ -130,21 +218,32 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                 <span className="ml-4 text-4xl">DO</span>
               </h2>
 
-              <div
-                ref={galleryRef}
-                className="flex w-full snap-x snap-mandatory gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:gap-3 cursor-grab active:cursor-grabbing"
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                onMouseLeave={handleMouseLeave}
-              >
-                {images.map((img, i) => {
-                  const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(img.src);
-                  return (
-                    <div
-                      key={i}
-                      data-reel
-                      className="relative min-h-[280px] min-w-[140px] shrink-0 snap-start cursor-pointer sm:min-h-[320px] sm:min-w-[160px] md:min-h-[380px] md:min-w-[200px] lg:min-h-[450px] lg:min-w-[240px] transition-opacity duration-200 hover:opacity-90"
+              {/* Mobile: full viewport width, centered, overflow evenly from both sides; desktop: constrained */}
+              <div className="relative z-0 w-screen max-w-[100vw] left-1/2 -ml-[50vw] md:left-0 md:ml-0 md:w-full md:max-w-none">
+                <div
+                  ref={galleryRef}
+                  className="flex w-full snap-x snap-mandatory gap-4 md:gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:gap-3 cursor-grab active:cursor-grabbing"
+                  onMouseDown={handleMouseDown}
+                  onMouseMove={handleMouseMove}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <div className="flex w-max min-w-full gap-4 md:gap-2 lg:gap-3 pl-[calc(50vw-70px)] md:pl-0 pr-[calc(50vw-70px)] md:pr-0">
+                    {images.map((img, i) => {
+                      const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(img.src);
+                      const isCentered = centeredIndex === i;
+                      return (
+                        <div
+                          key={i}
+                          ref={(el) => setReelRef(i, el)}
+                          data-reel
+                          className={`relative shrink-0 cursor-pointer transition-all duration-500 ease-out snap-center md:snap-start
+                            h-[280px] w-[140px]
+                            sm:h-[320px] sm:w-[160px]
+                            md:h-[380px] md:min-w-[200px]
+                            lg:h-[450px] lg:min-w-[240px]
+                            ${isCentered ? "scale-[1.15] z-10 md:scale-100" : "scale-100 z-0 opacity-75 md:opacity-100"}
+                            md:transition-opacity md:duration-200 hover:opacity-90`}
                       onClick={(e) => {
                         // Prevent lightbox from opening if user was dragging
                         if (isDragging) {
@@ -194,9 +293,11 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                           unoptimized
                         />
                       )}
-                    </div>
-                  );
-                })}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
 
               {/* Nav arrows: below reels, right-aligned */}

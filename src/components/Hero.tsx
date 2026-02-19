@@ -154,17 +154,17 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
         {/* Middle: headline + description (per reference: serif left + sans right, indent line 2) */}
         <div className="flex flex-1 flex-col items-center justify-center min-w-0">
           <div className="w-full max-w-4xl min-w-0 px-1">
-            {/* Main headline: centered block, line 2 has relative indent; smaller on mobile to avoid overflow */}
-            <h1 className="mx-auto w-fit max-w-full font-heading text-4xl leading-tight sm:text-5xl md:text-6xl lg:text-7xl">
-              <span className="flex items-baseline gap-2 sm:gap-4 flex-wrap justify-center">
+            {/* Main headline: first line with negative ml (further left); second line centered; "Stories" and "Content" in Raleway light */}
+            <h1 className="mx-auto w-fit max-w-full font-heading text-5xl leading-tight sm:text-6xl md:text-7xl lg:text-8xl">
+              <span className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center ml-auto lg:-ml-[50%] ">
                 <span className="text-cream">Crafting</span>
-                <span className="font-body text-xl font-medium uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl">
+                <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl">
                   Stories
                 </span>
               </span>
-              <span className="flex items-baseline gap-2 sm:gap-4 pl-6 sm:pl-12 md:pl-16 lg:pl-24 flex-wrap justify-center">
+              <span className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center mt-[-10px] lg:mt-[-20px]">
                 <span className="text-cream">Capturing</span>
-                <span className="font-body text-xl font-medium uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl">
+                <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl">
                   Content
                 </span>
               </span>
@@ -179,7 +179,7 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
 
         {/* Bottom: Explore More + icon */}
         <div className="group flex flex-col items-center pb-12 cursor-pointer">
-          <span className="font-body text-[12px] font-medium uppercase tracking-widest text-cream transition-colors duration-150 group-hover:text-[#E72F4E]">
+          <span className="font-body text-[12px] font-medium uppercase tracking-widest text-cream transition-colors duration-150 group-hover:text-[#E72F4E] mb-2">
             Explore More
           </span>
           <div className="transition-all duration-150 group-hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]">
