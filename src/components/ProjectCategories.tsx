@@ -97,10 +97,10 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
                 onMouseEnter={() => setActiveCategory(category)}
                 className="group relative block cursor-pointer rounded-lg border border-black bg-[#E04855] p-6 transition-all hover:bg-[#c93d4a]"
               >
-                <h3 className="mb-3 font-heading text-2xl font-bold text-black">
+                <h3 className="mb-3 font-heading text-[36px] font-bold text-black">
                   {category.title}
                 </h3>
-                <p className="mb-4 text-sm uppercase leading-relaxed text-black/90">
+                <p className="mb-4 text-[18px] uppercase leading-relaxed text-black/90">
                   {category.description}
                 </p>
                 <div className="flex items-center justify-end gap-2 text-black">
@@ -146,10 +146,10 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
                 className="flex min-h-[520px] w-[85vw] max-w-[400px] shrink-0 snap-start flex-col rounded-lg border border-black bg-[#E04855]"
               >
                 <div className="flex shrink-0 flex-col px-8 py-8 sm:px-10 sm:py-10">
-                  <h3 className="mb-3 font-heading text-2xl font-bold text-black">
+                  <h3 className="mb-3 font-heading text-[36px] font-bold text-black">
                     {category.title}
                   </h3>
-                  <p className="mb-4 text-sm leading-relaxed text-black/90 uppercase">
+                  <p className="mb-4 text-[18px] leading-relaxed text-black/90 uppercase">
                     {category.description}
                   </p>
                   <div className="flex items-center justify-end gap-2 text-black">

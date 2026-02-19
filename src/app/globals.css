@@ -60,7 +60,7 @@ body {
 }
 
 .marquee-text {
-  font-size: 48px;
+  font-size: 72px;
   color: #E72F4E;
   font-family: "Schnyder M", "Schnyder", var(--font-heading), Georgia, serif;
   font-weight: 500;
@@ -69,7 +69,7 @@ body {
 
 @media (min-width: 640px) {
   .marquee-text {
-    font-size: 80px;
+    font-size: 96px;
   }
 }
 
