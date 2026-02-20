@@ -1,9 +1,12 @@
 "use client";
 
+import { FadeIn } from "@/components/animations";
+
 export function ProjectsHomeMarquee() {
   const marqueeText = "OUR PROJECTS OUR PROJECTS OUR PROJECTS";
 
   return (
+    <FadeIn>
     <section className="relative w-full h-[1080px] min-h-[700px] overflow-hidden lg:h-[1200px]">
       <div className="absolute inset-0 z-0">
         <video
@@ -34,5 +37,6 @@ export function ProjectsHomeMarquee() {
         </div>
       </div>
     </section>
+    </FadeIn>
   );
 }

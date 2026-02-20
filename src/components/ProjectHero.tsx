@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { siteConfig } from "@/config/site";
+import { StaggerOnMount, StaggerOnMountItem, FadeInOnMount } from "@/components/animations";
 
 interface ProjectHeroProps {
   categoryTitle: string;
@@ -29,7 +31,12 @@ export function ProjectHero({
       aria-label={`${categoryTitle} projects`}
     >
       {/* Background image or video */}
-      <div className="absolute inset-0 z-0">
+      <motion.div
+        className="absolute inset-0 z-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      >
         {backgroundVideo ? (
           <video
             src={backgroundVideo}
@@ -52,7 +59,7 @@ export function ProjectHero({
             />
           )
         )}
-      </div>
+      </motion.div>
 
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 z-1 bg-black/40" aria-hidden />
@@ -116,24 +123,25 @@ export function ProjectHero({
       <div className="relative z-10 flex min-h-0 min-w-0 flex-1 flex-col overflow-x-hidden px-4 sm:px-[10%] pt-0">
         {/* Middle: category title + subtitle */}
         <div className="flex flex-1 flex-col items-center justify-center min-w-0">
-          <div className="w-full max-w-4xl min-w-0 px-1 text-center">
-            {/* Main category title */}
+          <StaggerOnMount className="w-full max-w-4xl min-w-0 px-1 text-center" staggerDelay={0.12}>
+            <StaggerOnMountItem>
             <h1 className="font-heading text-5xl leading-tight text-white sm:text-6xl md:text-7xl lg:text-8xl">
               {categoryTitle}
             </h1>
-
-            {/* Subtitle */}
+            </StaggerOnMountItem>
+            <StaggerOnMountItem>
             <p className="mt-6 font-body text-xs font-medium uppercase tracking-[0.2em] text-white sm:text-sm">
               {subtitle}
             </p>
-          </div>
+            </StaggerOnMountItem>
+          </StaggerOnMount>
         </div>
 
         {/* Bottom: CTA */}
-        <div className="flex flex-col items-center pb-12">
+        <FadeInOnMount delay={0.4} className="flex flex-col items-center pb-12">
           <Link
             href={ctaLink}
-            className="group flex flex-col items-center gap-3 transition-opacity hover:opacity-90"
+            className="group flex flex-col items-center gap-3 transition-all duration-300 hover:opacity-90 hover:translate-y-[-2px] active:translate-y-0"
           >
             <div className="flex items-center gap-3">
               <span className="h-px w-8 bg-white shrink-0" aria-hidden />
@@ -143,7 +151,7 @@ export function ProjectHero({
               <span className="h-px w-8 bg-white shrink-0" aria-hidden />
             </div>
           </Link>
-        </div>
+        </FadeInOnMount>
       </div>
     </section>
   );

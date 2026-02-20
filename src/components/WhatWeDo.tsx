@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 import { Lightbox } from "./Lightbox";
+import { FadeInUp, FadeIn } from "@/components/animations";
 
 const DEFAULT_GALLERY = [
   { src: "https://placehold.co/280x700/1a1a1a/333?text=1", alt: "Hotel and pool" },
@@ -190,7 +191,8 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
       <div className="mx-auto w-full max-w-[1600px] px-[10%]">
         <div className="flex flex-col items-center">
           {/* Descriptive text */}
-          <p className="max-w-4xl text-center font-body text-sm uppercase leading-relaxed text-white md:text-base">
+          <FadeInUp>
+            <p className="max-w-4xl text-center font-body text-sm uppercase leading-relaxed text-white md:text-base">
             We produce and shoot{" "}
             <em className="font-body font-medium not-italic text-white">
               compelling narratives
@@ -204,11 +206,13 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
             with a vision for the future, we produce striking and enduring
             visual tales.
           </p>
+          </FadeInUp>
 
           {/* Reels: on mobile overflow evenly from both sides; vertical title on lg only */}
           <div className="relative mt-10 w-full overflow-visible">
             <div className="relative mx-auto w-full max-w-[288px] sm:max-w-[328px] md:max-w-[408px] lg:max-w-[996px] overflow-visible">
               {/* Vertical title: absolute, left of gallery, hidden below lg */}
+              <FadeIn delay={0.15}>
               <h2
                 id="what-we-do-heading"
                 className="absolute right-full top-0 hidden min-h-[250px] items-center justify-end pr-4 font-heading font-normal text-cream origin-left -rotate-90 whitespace-nowrap text-5xl lg:flex"
@@ -218,6 +222,7 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                 <span className="ml-4 text-4xl">WE</span>{" "}
                 <span className="ml-4 text-4xl">DO</span>
               </h2>
+              </FadeIn>
 
               {/* Mobile: full viewport width, centered, overflow evenly from both sides; desktop: constrained */}
               <div className="relative z-0 w-screen max-w-[100vw] left-1/2 -ml-[50vw] md:left-0 md:ml-0 md:w-full md:max-w-none">
@@ -307,7 +312,7 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                   <button
                     type="button"
                     onClick={() => scroll("left")}
-                    className="group cursor-pointer flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white text-white transition-all duration-150 hover:border-[#E72F4E] hover:text-[#E72F4E] sm:h-10 sm:w-10"
+                    className="group cursor-pointer flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white text-white transition-all duration-300 hover:border-[#E72F4E] hover:text-[#E72F4E] hover:scale-110 active:scale-95 sm:h-10 sm:w-10"
                     aria-label="Previous reel"
                   >
                     <svg
@@ -327,7 +332,7 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                   <button
                     type="button"
                     onClick={() => scroll("right")}
-                    className="group cursor-pointer flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white text-white transition-all duration-150 hover:border-[#E72F4E] hover:text-[#E72F4E] sm:h-10 sm:w-10"
+                    className="group cursor-pointer flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white text-white transition-all duration-300 hover:border-[#E72F4E] hover:text-[#E72F4E] hover:scale-110 active:scale-95 sm:h-10 sm:w-10"
                     aria-label="Next reel"
                   >
                     <svg

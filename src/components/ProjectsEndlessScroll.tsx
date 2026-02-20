@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ProjectDisplay } from "./ProjectDisplay";
+import { FadeInUp } from "./animations";
 
 interface Project {
   id: string;
@@ -69,7 +70,8 @@ export function ProjectsEndlessScroll({
   return (
     <>
       {displayedProjects.map((project, index) => (
-        <div key={project.id}>
+        <FadeInUp key={project.id} delay={index === 0 ? 0 : 0.05}>
+        <div>
           <ProjectDisplay
             title={project.title}
             description={project.description}
@@ -81,6 +83,7 @@ export function ProjectsEndlessScroll({
             <div className="w-full border-t border-[#3D3D3D]" />
           )}
         </div>
+        </FadeInUp>
       ))}
       {hasMore && (
         <div ref={observerTarget} className="h-20 w-full" aria-hidden>

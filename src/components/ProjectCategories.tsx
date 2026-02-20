@@ -4,6 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect, useMemo } from "react";
 import type { ProjectCategory } from "@/types/app";
+import {
+  FadeInStagger,
+  FadeInStaggerItem,
+  FadeInScale,
+  FadeInUp,
+} from "@/components/animations";
 
 const PLACEHOLDER_IMAGE = "https://placehold.co/800x600/1a1a1a/fff?text=Category";
 
@@ -89,13 +95,14 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
     <section className="project-categories-striped w-full overflow-x-hidden border-2 border-black py-16 md:py-24">
       <div className="mx-auto w-full max-w-[1600px] px-[10%]">
         <div className="hidden lg:grid lg:grid-cols-2 lg:gap-0 lg:items-stretch">
-          <div className="flex flex-col gap-0">
+          <FadeInStagger className="flex flex-col gap-0" staggerDelay={0.1}>
             {categoryCards.map((category) => (
+              <FadeInStaggerItem key={category.id}>
               <Link
                 key={category.id}
                 href={`/projects/category/${category.id}`}
                 onMouseEnter={() => setActiveCategory(category)}
-                className="group relative block cursor-pointer rounded-lg border border-black bg-[#E04855] p-6 transition-all hover:bg-[#c93d4a]"
+                className="group relative block cursor-pointer rounded-lg border border-black bg-[#E04855] p-6 transition-all duration-300 hover:bg-[#c93d4a] hover:scale-[1.01] active:scale-[0.99]"
               >
                 <h3 className="mb-3 font-heading text-[36px] font-bold text-black">
                   {category.title}
@@ -116,10 +123,11 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
                   />
                 </div>
               </Link>
+              </FadeInStaggerItem>
             ))}
-          </div>
+          </FadeInStagger>
 
-          <div className="relative min-h-0 overflow-hidden rounded-lg border border-black lg:h-full">
+          <FadeInScale delay={0.15} className="relative min-h-0 overflow-hidden rounded-lg border border-black lg:h-full">
             {displayCategory && (
               <Image
                 src={displayCategory.image}
@@ -130,10 +138,10 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
                 unoptimized={displayCategory.image.startsWith("https://placehold.co")}
               />
             )}
-          </div>
+          </FadeInScale>
         </div>
 
-        <div className="lg:hidden">
+        <FadeInUp className="lg:hidden" delay={0.1}>
           <div
             ref={carouselRef}
             className="flex snap-x snap-mandatory flex-row gap-6 overflow-x-auto overflow-y-hidden px-[5%] pb-2"
@@ -184,7 +192,7 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
               <button
                 key={index}
                 onClick={() => scrollToIndex(index)}
-                className={`h-2 rounded-full transition-all ${index === currentIndex
+                className={`h-2 rounded-full transition-all duration-300 ${index === currentIndex
                   ? "w-8 bg-black"
                   : "w-2 bg-black/50"
                   }`}
@@ -192,7 +200,7 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
               />
             ))}
           </div>
-        </div>
+        </FadeInUp>
       </div>
     </section>
   );

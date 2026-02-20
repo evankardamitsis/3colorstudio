@@ -3,6 +3,12 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { siteConfig } from "@/config/site";
+import { motion } from "framer-motion";
+import {
+  StaggerOnMount,
+  StaggerOnMountItem,
+  FadeInOnMount,
+} from "@/components/animations";
 
 const HERO_EMAIL = "hello@3colorstudio.com";
 const DEFAULT_HERO_IMAGE = "/demo_hero_bg.png";
@@ -39,7 +45,12 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
       aria-label="Hero"
     >
       {/* Background image or video */}
-      <div className="absolute inset-0 z-0">
+      <motion.div
+        className="absolute inset-0 z-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      >
         {videoSrc ? (
           <video
             src={videoSrc}
@@ -60,7 +71,7 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
             sizes="100vw"
           />
         )}
-      </div>
+      </motion.div>
 
       {/* Optional subtle overlay for text readability */}
       <div
@@ -69,6 +80,7 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
       />
 
       {/* Left: vertical email text — fixed only while Hero is in view; hidden once past Hero (before ContactSection) */}
+      <FadeInOnMount delay={0.5} duration={0.5}>
       <div
         className={`hero-side-info-left fixed bottom-24 left-[10%] z-10 transition-opacity duration-300 ${showSideInfo ? "md:opacity-100" : "md:pointer-events-none md:opacity-0"}`}
       >
@@ -79,8 +91,10 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
           Email us at {HERO_EMAIL}
         </a>
       </div>
+      </FadeInOnMount>
 
       {/* Right: vertical follow text + social icons — fixed only while Hero is in view; hidden once past Hero (before ContactSection) */}
+      <FadeInOnMount delay={0.55} duration={0.5}>
       <div
         className={`hero-side-info-right fixed bottom-24 right-[10%] z-20 group flex-col items-end gap-2 transition-opacity duration-300 ${showSideInfo ? "md:opacity-100" : "md:pointer-events-none md:opacity-0"}`}
       >
@@ -148,37 +162,40 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
           )}
         </div>
       </div>
+      </FadeInOnMount>
 
       {/* Center column: middle content + bottom CTA */}
       <div className="relative z-10 flex min-h-0 min-w-0 flex-1 flex-col overflow-x-hidden px-4 sm:px-[10%] pt-0">
         {/* Middle: headline + description (per reference: serif left + sans right, indent line 2) */}
         <div className="flex flex-1 flex-col items-center justify-center min-w-0">
-          <div className="w-full max-w-4xl min-w-0 px-1">
-            {/* Main headline: first line with negative ml (further left); second line centered; "Stories" and "Content" in Raleway light */}
+          <StaggerOnMount className="w-full max-w-4xl min-w-0 px-1" staggerDelay={0.14}>
+            {/* Main headline: first line with negative ml (further left); second line centered */}
             <h1 className="mx-auto w-fit max-w-full font-heading text-5xl leading-tight sm:text-6xl md:text-7xl lg:text-8xl">
-              <span className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center ml-auto lg:-ml-[50%] ">
+              <StaggerOnMountItem className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center ml-auto lg:-ml-[50%]">
                 <span className="text-cream">Crafting</span>
                 <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl">
                   Stories
                 </span>
-              </span>
-              <span className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center mt-[-10px] lg:mt-[-20px]">
+              </StaggerOnMountItem>
+              <StaggerOnMountItem className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center mt-[-10px] lg:mt-[-20px]">
                 <span className="text-cream">Capturing</span>
                 <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl">
                   Content
                 </span>
-              </span>
+              </StaggerOnMountItem>
             </h1>
 
             {/* Sub-headline: centered, white, small caps */}
-            <p className="mt-8 text-center font-body text-xs font-medium uppercase tracking-[0.2em] text-white sm:text-sm">
-              A film production agency dedicated to hotel brands
-            </p>
-          </div>
+            <StaggerOnMountItem>
+              <p className="mt-8 text-center font-body text-xs font-medium uppercase tracking-[0.2em] text-white sm:text-sm">
+                A film production agency dedicated to hotel brands
+              </p>
+            </StaggerOnMountItem>
+          </StaggerOnMount>
         </div>
 
         {/* Bottom: Explore More + icon */}
-        <div className="group flex flex-col items-center pb-12 cursor-pointer">
+        <FadeInOnMount delay={0.6} className="group flex flex-col items-center pb-12 cursor-pointer transition-transform duration-300 hover:-translate-y-1 active:translate-y-0">
           <span className="font-body text-[12px] font-medium uppercase tracking-widest text-cream transition-colors duration-150 group-hover:text-[#E72F4E] mb-2">
             Explore More
           </span>
@@ -192,7 +209,7 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
               aria-hidden
             />
           </div>
-        </div>
+        </FadeInOnMount>
       </div>
     </section>
   );

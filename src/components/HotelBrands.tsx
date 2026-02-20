@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { FadeInUp } from "@/components/animations";
 
 const HOTEL_LOGOS = [
   { src: "/conrad_logo.svg", alt: "Conrad" },
@@ -21,6 +22,7 @@ export function HotelBrands() {
   ];
 
   return (
+    <FadeInUp>
     <section className="w-full overflow-x-hidden bg-black pt-2 pb-16 md:py-20" aria-label="Hotel brands">
       {/* Marquee 1: hotel logos — same speed as text marquee, scrolls across full screen */}
       <div className="relative overflow-x-hidden overflow-y-hidden whitespace-nowrap pt-12">
@@ -56,5 +58,6 @@ export function HotelBrands() {
         </div>
       </div>
     </section>
+    </FadeInUp>
   );
 }
