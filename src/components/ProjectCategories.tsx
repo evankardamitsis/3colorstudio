@@ -98,31 +98,31 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
           <FadeInStagger className="flex flex-col gap-0" staggerDelay={0.1}>
             {categoryCards.map((category) => (
               <FadeInStaggerItem key={category.id}>
-              <Link
-                key={category.id}
-                href={`/projects/category/${category.id}`}
-                onMouseEnter={() => setActiveCategory(category)}
-                className="group relative block cursor-pointer rounded-lg border border-black bg-[#E04855] p-6 transition-all duration-300 hover:bg-[#c93d4a] hover:scale-[1.01] active:scale-[0.99]"
-              >
-                <h3 className="mb-3 font-heading text-[36px] font-bold text-black">
-                  {category.title}
-                </h3>
-                <p className="mb-4 text-[18px] uppercase leading-relaxed text-black/90">
-                  {category.description}
-                </p>
-                <div className="flex items-center justify-end gap-2 text-black">
-                  <span className="text-sm font-medium uppercase tracking-wider">
-                    Explore
-                  </span>
-                  <Image
-                    src="/Union.svg"
-                    alt=""
-                    width={35}
-                    height={35}
-                    className="shrink-0"
-                  />
-                </div>
-              </Link>
+                <Link
+                  key={category.id}
+                  href={`/projects/category/${category.id}`}
+                  onMouseEnter={() => setActiveCategory(category)}
+                  className="group relative block cursor-pointer rounded-lg border border-black bg-[#E04855] p-6 transition-all duration-300 hover:bg-[#c93d4a] hover:scale-[1.01] active:scale-[0.99]"
+                >
+                  <h3 className="mb-3 font-heading text-[36px] font-bold text-black">
+                    {category.title}
+                  </h3>
+                  <p className="mb-4 text-[18px] uppercase leading-relaxed text-black/90">
+                    {category.description}
+                  </p>
+                  <div className="flex items-center justify-end gap-2 text-black">
+                    <span className="text-sm font-medium uppercase tracking-wider">
+                      Explore
+                    </span>
+                    <Image
+                      src="/Union.svg"
+                      alt=""
+                      width={35}
+                      height={35}
+                      className="shrink-0"
+                    />
+                  </div>
+                </Link>
               </FadeInStaggerItem>
             ))}
           </FadeInStagger>
@@ -144,7 +144,7 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
         <FadeInUp className="lg:hidden" delay={0.1}>
           <div
             ref={carouselRef}
-            className="flex snap-x snap-mandatory flex-row gap-4 overflow-x-auto overflow-y-hidden px-1 pb-2"
+            className="flex snap-x snap-mandatory flex-row gap-4 overflow-x-auto overflow-y-hidden px-1 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
           >
             {categoryCards.map((category) => (
