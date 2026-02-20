@@ -156,16 +156,16 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
         <div className="flex flex-1 flex-col items-center justify-center min-w-0">
           <div className="w-full max-w-4xl min-w-0 px-1">
             {/* Main headline: first line with negative ml (further left); second line centered */}
-            <h1 className="mx-auto w-fit max-w-full font-heading text-5xl leading-tight sm:text-6xl md:text-7xl lg:text-8xl">
+            <h1 className="mx-auto w-fit max-w-full font-heading text-5xl leading-tight sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6.5rem] 2xl:text-[7rem]">
               <span className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center ml-auto lg:-ml-[50%]">
                 <span className="text-cream">Crafting</span>
-                <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl">
+                <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl xl:text-[2.25rem] 2xl:text-[2.5rem]">
                   Stories
                 </span>
               </span>
               <span className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center mt-[-10px] lg:mt-[-20px]">
                 <span className="text-cream">Capturing</span>
-                <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl">
+                <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl xl:text-[2.25rem] 2xl:text-[2.5rem]">
                   Content
                 </span>
               </span>
