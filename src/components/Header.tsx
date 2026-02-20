@@ -160,7 +160,7 @@ export function Header({ projectCategories = [] }: HeaderProps) {
             </div>
 
             <Link
-              href="/about"
+              href="/#what-we-do"
               onClick={() => setIsMenuOpen(false)}
               className="inline-block font-heading text-[56px] text-white transition-all duration-150 ease-out hover:translate-x-1 hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
             >

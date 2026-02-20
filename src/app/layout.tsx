@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { CustomCursor } from "@/components/CustomCursor";
 import { siteConfig } from "@/config/site";
 import { fontVariables } from "@/design-system/fonts";
 import { getProjectCategories } from "@/lib/contentful/data";
@@ -32,6 +33,7 @@ export default async function RootLayout({
       <body
         className={`${fontVariables} font-body antialiased min-h-screen flex flex-col overflow-x-hidden`}
       >
+        <CustomCursor />
         <Header projectCategories={projectCategories} />
         <main className="min-w-0 flex-1 overflow-x-hidden">{children}</main>
         <Footer />

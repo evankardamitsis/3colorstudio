@@ -28,6 +28,16 @@ body {
   font-family: var(--font-body), system-ui, sans-serif;
 }
 
+/* Custom cursor: hide default on desktop, show default over interactive elements */
+@media (min-width: 768px) {
+  body {
+    cursor: none;
+  }
+  a, button, [role="button"], input, select, textarea, [data-custom-cursor-show] {
+    cursor: pointer;
+  }
+}
+
 /* Prose overrides for rich text */
 .prose p:last-child {
   margin-bottom: 0;

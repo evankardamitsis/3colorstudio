@@ -17,11 +17,17 @@ export default async function HomePage() {
   return (
     <>
       <Hero
-        heroImage={homepage.heroImage}
-        heroVideo={homepage.heroVideo}
+        heroImage={homepage.heroImage ?? undefined}
+        heroVideo={homepage.heroVideo ?? undefined}
       />
 
-      <WhatWeDo images={homepage.homepageReels} />
+      <WhatWeDo
+        images={
+          homepage.homepageReels?.length
+            ? homepage.homepageReels
+            : undefined
+        }
+      />
 
       <ProjectsHomeMarquee />
 

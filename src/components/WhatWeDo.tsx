@@ -183,6 +183,7 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
 
   return (
     <section
+      id="what-we-do"
       className="relative w-full overflow-x-visible md:overflow-x-hidden bg-black py-16 md:py-24 lg:py-28"
       aria-labelledby="what-we-do-heading"
     >

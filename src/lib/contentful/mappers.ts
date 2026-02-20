@@ -48,6 +48,7 @@ interface GqlHomepageItem {
   heroImage?: { url: string } | null;
   heroVideo?: { url: string } | null;
   homepageReels?: Array<{ url: string; title?: string | null }> | null;
+  homepageReelsCollection?: { items?: Array<{ url: string; title?: string | null }> | null } | null;
 }
 
 interface GqlTextBlockItem {
@@ -99,13 +100,14 @@ export function mapHomepage(
   item: GqlHomepageItem | null | undefined,
 ): Homepage | null {
   if (!item?.sys?.id) return null;
-  const reels = (item.homepageReels ?? []).map((a) => ({
-    src: a.url,
-    alt: a.title ?? "",
-  }));
+  const reelItems = item.homepageReelsCollection?.items ?? item.homepageReels ?? [];
+  const reels = reelItems.map((a) => ({
+    src: ensureAbsoluteUrl(a?.url) ?? a?.url ?? "",
+    alt: a?.title ?? "",
+  })).filter((r) => r.src);
   return {
-    heroImage: item.heroImage?.url ?? null,
-    heroVideo: item.heroVideo?.url ?? null,
+    heroImage: ensureAbsoluteUrl(item.heroImage?.url) ?? item.heroImage?.url ?? null,
+    heroVideo: ensureAbsoluteUrl(item.heroVideo?.url) ?? item.heroVideo?.url ?? null,
     homepageReels: reels,
   };
 }
@@ -130,6 +132,12 @@ export function mapTextBlockList(
   return items.map(mapTextBlock).filter((b): b is PageTextBlock => b !== null);
 }
 
+function ensureAbsoluteUrl(url: string | null | undefined): string | null {
+  if (!url || typeof url !== "string") return null;
+  if (url.startsWith("//")) return `https:${url}`;
+  return url;
+}
+
 export function mapProjectCategory(
   item: GqlProjectCategoryItem | null | undefined,
 ): ProjectCategory | null {
@@ -138,8 +146,8 @@ export function mapProjectCategory(
     slug: item.slug ?? "",
     title: item.title ?? "",
     subtitle: item.subtitle ?? "",
-    backgroundImage: item.backgroundImage?.url ?? null,
-    backgroundVideo: item.backgroundVideo?.url ?? null,
+    backgroundImage: ensureAbsoluteUrl(item.backgroundImage?.url) ?? null,
+    backgroundVideo: ensureAbsoluteUrl(item.backgroundVideo?.url) ?? null,
   };
 }
 
