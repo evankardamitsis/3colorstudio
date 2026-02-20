@@ -136,7 +136,7 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
     const setInitialScroll = () => {
       if (!isMobile()) return;
       const viewportWidth = window.innerWidth;
-      const itemHalfWidth = 70; // 140px / 2
+      const itemHalfWidth = 90; // 180px / 2
       const paddingLeft = viewportWidth / 2 - itemHalfWidth;
       el.scrollLeft = paddingLeft;
     };
@@ -248,13 +248,13 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
               <div className="relative z-0 w-screen max-w-[100vw] left-1/2 -ml-[50vw] md:left-0 md:ml-0 md:w-full md:max-w-none">
                 <div
                   ref={galleryRef}
-                  className="flex w-full snap-x snap-mandatory gap-4 md:gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:gap-3 cursor-grab active:cursor-grabbing"
+                  className="flex w-full snap-x snap-mandatory gap-4 md:gap-2 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:gap-3 cursor-grab active:cursor-grabbing touch-pan-x overscroll-x-contain"
                   onMouseDown={handleMouseDown}
                   onMouseMove={handleMouseMove}
                   onMouseUp={handleMouseUp}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <div className="flex w-max min-w-full gap-4 md:gap-2 lg:gap-3 pl-[calc(50vw-70px)] md:pl-0 pr-[calc(50vw-70px)] md:pr-0">
+                  <div className="flex w-max min-w-full gap-4 md:gap-2 lg:gap-3 pl-[calc(50vw-90px)] sm:pl-[calc(50vw-100px)] md:pl-0 pr-[50vw] md:pr-0">
                     {images.map((img, i) => {
                       const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(img.src);
                       const isCentered = centeredIndex === i;
@@ -264,8 +264,8 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                           ref={(el) => setReelRef(i, el)}
                           data-reel
                           className={`relative shrink-0 cursor-pointer transition-all duration-500 ease-out snap-center md:snap-start
-                            h-[280px] w-[140px]
-                            sm:h-[320px] sm:w-[160px]
+                            h-[400px] w-[180px]
+                            sm:h-[420px] sm:w-[200px]
                             md:h-[380px] md:min-w-[200px]
                             lg:h-[450px] lg:min-w-[240px]
                             ${isCentered ? "scale-[1.15] z-10 md:scale-100" : "scale-100 z-0 opacity-75 md:opacity-100"}
@@ -315,13 +315,15 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                               alt={img.alt}
                               fill
                               className="object-cover"
-                              sizes="(max-width: 640px) 140px, (max-width: 768px) 160px, (max-width: 1024px) 200px, 240px"
+                              sizes="(max-width: 640px) 180px, (max-width: 768px) 200px, (max-width: 1024px) 200px, 240px"
                               unoptimized
                             />
                           )}
                         </div>
                       );
                     })}
+                    {/* Spacer so last reel can scroll into view on mobile */}
+                    <div className="shrink-0 w-[calc(50vw-90px)] sm:w-[calc(50vw-100px)] md:hidden" aria-hidden />
                   </div>
                 </div>
               </div>

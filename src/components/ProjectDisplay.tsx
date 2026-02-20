@@ -136,11 +136,11 @@ export function ProjectDisplay({
     // Set initial scroll position to show first item at left edge (accounting for padding)
     const setInitialScroll = () => {
       // Calculate padding based on screen size (same as CSS padding: calc(50vw - half_item_width))
-      let itemHalfWidth = 80; // default mobile: 160px / 2
+      let itemHalfWidth = 100; // default mobile: 200px / 2
       if (window.innerWidth >= 1280) itemHalfWidth = 170; // xl: 340px / 2
       else if (window.innerWidth >= 1024) itemHalfWidth = 140; // lg: 280px / 2
       else if (window.innerWidth >= 768) itemHalfWidth = 120; // md: 240px / 2
-      else if (window.innerWidth >= 640) itemHalfWidth = 100; // sm: 200px / 2
+      else if (window.innerWidth >= 640) itemHalfWidth = 110; // sm: 220px / 2
       
       const viewportWidth = window.innerWidth;
       const paddingLeft = (viewportWidth / 2) - itemHalfWidth;
@@ -280,13 +280,13 @@ export function ProjectDisplay({
             <div className="relative z-0 w-screen max-w-[100vw] left-[50vw] -translate-x-1/2">
               <div
                 ref={galleryRef}
-                className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing"
+                className="overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing touch-pan-x overscroll-x-contain"
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="flex w-max min-w-full snap-x snap-mandatory gap-4 sm:gap-4 md:gap-3 pl-[calc(50vw-80px)] sm:pl-[calc(50vw-100px)] md:pl-[calc(50vw-120px)] lg:pl-[calc(50vw-140px)] xl:pl-[calc(50vw-170px)] pr-[calc(50vw-80px)] sm:pr-[calc(50vw-100px)] md:pr-[calc(50vw-120px)] lg:pr-[calc(50vw-140px)] xl:pr-[calc(50vw-170px)]">
+                <div className="flex w-max min-w-full snap-x snap-mandatory gap-4 sm:gap-4 md:gap-3 pl-[calc(50vw-100px)] sm:pl-[calc(50vw-110px)] md:pl-[calc(50vw-120px)] lg:pl-[calc(50vw-140px)] xl:pl-[calc(50vw-170px)] pr-[50vw] md:pr-[calc(50vw-120px)] lg:pr-[calc(50vw-140px)] xl:pr-[calc(50vw-170px)]">
                   {reels.map((reel, i) => {
                     const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(reel.src);
                     const isCentered = centeredIndex === i;
@@ -296,8 +296,8 @@ export function ProjectDisplay({
                         ref={(el) => setReelRef(i, el)}
                         data-reel
                         className={`relative shrink-0 cursor-pointer transition-all duration-500 ease-out snap-center
-                          h-[280px] w-[160px]
-                          sm:h-[360px] sm:w-[200px]
+                          h-[400px] w-[200px]
+                          sm:h-[420px] sm:w-[220px]
                           md:h-[420px] md:w-[240px]
                           lg:h-[500px] lg:w-[280px]
                           xl:h-[560px] xl:w-[340px]
@@ -350,13 +350,15 @@ export function ProjectDisplay({
                             alt={reel.alt}
                             fill
                             className="object-cover rounded-sm"
-                            sizes="(max-width: 640px) 160px, (max-width: 768px) 200px, (max-width: 1024px) 240px, (max-width: 1280px) 280px, 340px"
+                            sizes="(max-width: 640px) 200px, (max-width: 768px) 220px, (max-width: 1024px) 240px, (max-width: 1280px) 280px, 340px"
                             unoptimized={reel.src.startsWith("https://placehold.co")}
                           />
                         )}
                       </div>
                     );
                   })}
+                  {/* Spacer so last reel can scroll into view on mobile */}
+                  <div className="shrink-0 w-[calc(50vw-100px)] sm:w-[calc(50vw-110px)] md:hidden" aria-hidden />
                 </div>
               </div>
             </div>
