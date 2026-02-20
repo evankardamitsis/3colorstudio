@@ -16,7 +16,7 @@ export default function ContactPage() {
       <div className="hero-side-info-left fixed bottom-24 left-[10%] z-10">
         <a
           href={`mailto:${HERO_EMAIL}`}
-          className="block origin-left -rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-widest text-cream/90 transition-colors duration-150 hover:text-[#E72F4E]"
+          className="contact-title block origin-left -rotate-90 whitespace-nowrap text-[10px] font-medium uppercase tracking-widest text-cream/90 transition-colors duration-150 hover:text-[#E72F4E]"
         >
           Email us at {HERO_EMAIL}
         </a>
@@ -24,7 +24,7 @@ export default function ContactPage() {
 
       {/* Right: vertical follow text + social icons */}
       <div className="hero-side-info-right group fixed bottom-24 right-[10%] z-20 flex-col items-end gap-2">
-        <span className="block origin-right rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-[0.25em] text-white transition-colors duration-150 hover:text-[#E72F4E] group-hover:text-[#E72F4E]">
+        <span className="contact-title block origin-right rotate-90 whitespace-nowrap text-[10px] font-medium uppercase tracking-[0.25em] text-white transition-colors duration-150 hover:text-[#E72F4E] group-hover:text-[#E72F4E]">
           FOLLOW 3.COLORSTUDIO
         </span>
         <div className="flex flex-col items-end gap-2 mr-[-8px]">
@@ -94,13 +94,13 @@ export default function ContactPage() {
         <div className="relative mx-auto w-full max-w-[1600px] px-[10%] flex-1 flex flex-col justify-center py-32">
           {/* Contact heading and content - positioned just above video */}
           <div className="relative mx-auto w-full max-w-3xl flex flex-col items-center text-center mb-[-40px] md:mb-[-60px] z-10">
-            <h1 className="mb-12 font-heading text-4xl font-normal text-[#E04855] md:text-5xl lg:text-6xl">
-              Contact <span className="text-2xl md:text-3xl lg:text-4xl">us</span>
+            <h1 className="contact-title mb-12 text-6xl font-normal text-[#E04855] md:text-7xl lg:text-8xl">
+              Contact <span className="text-4xl md:text-5xl lg:text-6xl">us</span>
             </h1>
 
             {/* Email section */}
             <div className="mb-12">
-              <p className="mb-4 font-body text-sm font-medium uppercase tracking-wider text-white md:text-base">
+              <p className="contact-title mb-4 text-sm font-medium uppercase tracking-wider text-white md:text-base">
                 Email Us
               </p>
               <a
@@ -113,7 +113,7 @@ export default function ContactPage() {
 
             {/* Social section */}
             <div className="mb-12">
-              <p className="mb-6 font-body text-sm font-medium uppercase tracking-wider text-white md:text-base">
+              <p className="contact-title mb-6 text-sm font-medium uppercase tracking-wider text-white md:text-base">
                 Find Us On Social
               </p>
               <div className="flex items-center justify-center gap-6">

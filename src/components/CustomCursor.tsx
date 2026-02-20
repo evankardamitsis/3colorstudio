@@ -51,17 +51,28 @@ export function CustomCursor() {
 
   if (!visible || overLink) return null;
 
+  const size = 32;
+  const half = size / 2;
+
   return (
     <div
-      className="pointer-events-none fixed left-0 top-0 z-9999 hidden md:block"
+      className="pointer-events-none fixed hidden md:block"
       aria-hidden
       style={{
-        transform: `translate(${position.x}px, ${position.y}px) translate(-50%, -50%)`,
+        left: position.x - half,
+        top: position.y - half,
+        width: size,
+        height: size,
+        zIndex: 99999,
       }}
     >
       <div
-        className="h-8 w-8 rounded-full bg-cream opacity-60"
-        style={{ mixBlendMode: "difference" }}
+        className="h-full w-full rounded-full border border-white/30"
+        style={{
+          background: "transparent",
+          backdropFilter: "invert(1)",
+          WebkitBackdropFilter: "invert(1)",
+        }}
       />
     </div>
   );
