@@ -75,7 +75,7 @@ export function Header({ projectCategories = [] }: HeaderProps) {
           </p>
         </div>
 
-        <div className="flex shrink-0 items-center mr-6 sm:mr-0">
+        <div className="flex shrink-0 items-center">
           <button
             type="button"
             onClick={() => {
