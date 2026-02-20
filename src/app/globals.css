@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
+html {
+  overflow-x: hidden;
+}
+
 :root {
-  --background: #fafafa;
-  --foreground: #171717;
+  --background: #000;
+  --foreground: #ededed;
 }
 
 /* Design system — typography + hero/header text color */
@@ -14,16 +18,9 @@
   --font-body: var(--font-body), system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   margin: 0;
-  background: var(--background);
+  background: #000;
   color: var(--foreground);
   font-family: var(--font-body), system-ui, sans-serif;
 }

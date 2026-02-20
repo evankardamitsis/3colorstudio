@@ -9,18 +9,18 @@ import {
 } from "framer-motion";
 
 const fadeInUp: Variants = {
-  hidden: { opacity: 0, y: 28, visibility: "hidden" },
-  visible: { opacity: 1, y: 0, visibility: "visible" },
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const fadeIn: Variants = {
-  hidden: { opacity: 0, visibility: "hidden" },
-  visible: { opacity: 1, visibility: "visible" },
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
 };
 
 const fadeInScale: Variants = {
-  hidden: { opacity: 0, scale: 0.96, visibility: "hidden" },
-  visible: { opacity: 1, scale: 1, visibility: "visible" },
+  hidden: { opacity: 0, scale: 0.98 },
+  visible: { opacity: 1, scale: 1 },
 };
 
 
@@ -178,8 +178,8 @@ export function FadeInStagger({
 }
 
 const staggerItemVariants: Variants = {
-  hidden: { opacity: 0, y: 20, visibility: "hidden" },
-  visible: { opacity: 1, y: 0, visibility: "visible" },
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0 },
 };
 
 export interface FadeInStaggerItemProps extends HTMLMotionProps<"div"> {
@@ -224,7 +224,7 @@ export function FadeInOnMount({
 }: FadeInOnMountProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
         duration,
@@ -273,7 +273,7 @@ export function StaggerOnMount({
 }
 
 const staggerOnMountItemVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,

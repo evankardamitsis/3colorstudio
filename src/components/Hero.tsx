@@ -3,12 +3,6 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { siteConfig } from "@/config/site";
-import { motion } from "framer-motion";
-import {
-  StaggerOnMount,
-  StaggerOnMountItem,
-  FadeInOnMount,
-} from "@/components/animations";
 
 const HERO_EMAIL = "hello@3colorstudio.com";
 const DEFAULT_HERO_IMAGE = "/demo_hero_bg.png";
@@ -41,16 +35,11 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
 
   return (
     <section
-      className="relative flex min-h-screen w-full flex-col overflow-x-hidden"
+      className="relative flex min-h-screen w-full flex-col overflow-hidden"
       aria-label="Hero"
     >
       {/* Background image or video */}
-      <motion.div
-        className="absolute inset-0 z-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      >
+      <div className="absolute inset-0 z-0">
         {videoSrc ? (
           <video
             src={videoSrc}
@@ -71,7 +60,7 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
             sizes="100vw"
           />
         )}
-      </motion.div>
+      </div>
 
       {/* Optional subtle overlay for text readability */}
       <div
@@ -80,122 +69,116 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
       />
 
       {/* Left: vertical email text — fixed only while Hero is in view; hidden once past Hero (before ContactSection) */}
-      <FadeInOnMount delay={0.5} duration={0.5}>
       <div
-        className={`hero-side-info-left fixed bottom-24 left-[10%] z-30 transition-opacity duration-300 ${showSideInfo ? "md:opacity-100" : "md:pointer-events-none md:opacity-0"}`}
-      >
-        <a
-          href={`mailto:${HERO_EMAIL}`}
-          className="block origin-left -rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-widest text-cream/90 transition-colors duration-150 hover:text-[#E72F4E]"
+          className={`hero-side-info-left fixed bottom-24 left-[10%] z-30 transition-opacity duration-300 ${showSideInfo ? "md:opacity-100" : "md:pointer-events-none md:opacity-0"}`}
         >
-          Email us at {HERO_EMAIL}
-        </a>
-      </div>
-      </FadeInOnMount>
+          <a
+            href={`mailto:${HERO_EMAIL}`}
+            className="block origin-left -rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-widest text-cream/90 transition-colors duration-150 hover:text-[#E72F4E]"
+          >
+            Email us at {HERO_EMAIL}
+          </a>
+        </div>
 
       {/* Right: vertical follow text + social icons — fixed only while Hero is in view; hidden once past Hero (before ContactSection) */}
-      <FadeInOnMount delay={0.55} duration={0.5}>
       <div
-        className={`hero-side-info-right fixed bottom-24 right-[10%] z-30 group flex-col items-end gap-2 transition-opacity duration-300 ${showSideInfo ? "md:opacity-100" : "md:pointer-events-none md:opacity-0"}`}
-      >
-        <span className="block origin-right rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-[0.25em] text-white transition-colors duration-150 hover:text-[#E72F4E] group-hover:text-[#E72F4E]">
-          FOLLOW 3.COLORSTUDIO
-        </span>
-        <div className="flex flex-col items-end gap-2 mr-[-8px]">
-          {siteConfig.links.instagram && siteConfig.links.instagram !== "#" ? (
-            <a
-              href={siteConfig.links.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
-              aria-label="Instagram"
-            >
-              <Image
-                src="/instagram.svg"
-                alt=""
-                width={24}
-                height={24}
-                className="h-4 w-4 block"
-                aria-hidden
-              />
-            </a>
-          ) : (
-            <span className="inline-block h-4 w-4">
-              <Image
-                src="/instagram.svg"
-                alt=""
-                width={24}
-                height={24}
-                className="h-4 w-4 block"
-                aria-hidden
-              />
-            </span>
-          )}
-          {siteConfig.links.facebook && siteConfig.links.facebook !== "#" ? (
-            <a
-              href={siteConfig.links.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
-              aria-label="Facebook"
-            >
-              <Image
-                src="/facebook.svg"
-                alt=""
-                width={24}
-                height={24}
-                className="h-4 w-4 block"
-                aria-hidden
-              />
-            </a>
-          ) : (
-            <span className="inline-block h-4 w-4">
-              <Image
-                src="/facebook.svg"
-                alt=""
-                width={24}
-                height={24}
-                className="h-4 w-4 block"
-                aria-hidden
-              />
+          className={`hero-side-info-right fixed bottom-24 right-[10%] z-30 group flex-col items-end gap-2 transition-opacity duration-300 ${showSideInfo ? "md:opacity-100" : "md:pointer-events-none md:opacity-0"}`}
+        >
+          <span className="block origin-right rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-[0.25em] text-white transition-colors duration-150 hover:text-[#E72F4E] group-hover:text-[#E72F4E]">
+            FOLLOW 3.COLORSTUDIO
+          </span>
+          <div className="flex flex-col items-end gap-2 mr-[-8px]">
+            {siteConfig.links.instagram && siteConfig.links.instagram !== "#" ? (
+              <a
+                href={siteConfig.links.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
+                aria-label="Instagram"
+              >
+                <Image
+                  src="/instagram.svg"
+                  alt=""
+                  width={24}
+                  height={24}
+                  className="h-4 w-4 block"
+                  aria-hidden
+                />
+              </a>
+            ) : (
+              <span className="inline-block h-4 w-4">
+                <Image
+                  src="/instagram.svg"
+                  alt=""
+                  width={24}
+                  height={24}
+                  className="h-4 w-4 block"
+                  aria-hidden
+                />
+              </span>
+            )}
+            {siteConfig.links.facebook && siteConfig.links.facebook !== "#" ? (
+              <a
+                href={siteConfig.links.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
+                aria-label="Facebook"
+              >
+                <Image
+                  src="/facebook.svg"
+                  alt=""
+                  width={24}
+                  height={24}
+                  className="h-4 w-4 block"
+                  aria-hidden
+                />
+              </a>
+            ) : (
+              <span className="inline-block h-4 w-4">
+                <Image
+                  src="/facebook.svg"
+                  alt=""
+                  width={24}
+                  height={24}
+                  className="h-4 w-4 block"
+                  aria-hidden
+                />
             </span>
           )}
         </div>
       </div>
-      </FadeInOnMount>
 
       {/* Center column: middle content + bottom CTA */}
       <div className="relative z-10 flex min-h-0 min-w-0 flex-1 flex-col overflow-x-hidden px-4 sm:px-[10%] pt-0">
         {/* Middle: headline + description (per reference: serif left + sans right, indent line 2) */}
         <div className="flex flex-1 flex-col items-center justify-center min-w-0">
-          <StaggerOnMount className="w-full max-w-4xl min-w-0 px-1" staggerDelay={0.14}>
+          <div className="w-full max-w-4xl min-w-0 px-1">
             {/* Main headline: first line with negative ml (further left); second line centered */}
             <h1 className="mx-auto w-fit max-w-full font-heading text-5xl leading-tight sm:text-6xl md:text-7xl lg:text-8xl">
-              <StaggerOnMountItem className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center ml-auto lg:-ml-[50%]">
+              <span className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center ml-auto lg:-ml-[50%]">
                 <span className="text-cream">Crafting</span>
                 <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl">
                   Stories
                 </span>
-              </StaggerOnMountItem>
-              <StaggerOnMountItem className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center mt-[-10px] lg:mt-[-20px]">
+              </span>
+              <span className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center mt-[-10px] lg:mt-[-20px]">
                 <span className="text-cream">Capturing</span>
                 <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl">
                   Content
                 </span>
-              </StaggerOnMountItem>
+              </span>
             </h1>
 
             {/* Sub-headline: centered, white, small caps */}
-            <StaggerOnMountItem>
-              <p className="mt-8 text-center font-body text-xs font-medium uppercase tracking-[0.2em] text-white sm:text-sm">
-                A film production agency dedicated to hotel brands
-              </p>
-            </StaggerOnMountItem>
-          </StaggerOnMount>
+            <p className="mt-8 text-center font-body text-xs font-medium uppercase tracking-[0.2em] text-white sm:text-sm">
+              A film production agency dedicated to hotel brands
+            </p>
+          </div>
         </div>
 
         {/* Bottom: Explore More + icon */}
-        <FadeInOnMount delay={0.6} className="group flex flex-col items-center pb-12 cursor-pointer transition-transform duration-300 hover:-translate-y-1 active:translate-y-0">
+        <div className="group flex flex-col items-center pb-12 cursor-pointer transition-transform duration-300 hover:-translate-y-1 active:translate-y-0">
           <span className="font-body text-[12px] font-medium uppercase tracking-widest text-cream transition-colors duration-150 group-hover:text-[#E72F4E] mb-2">
             Explore More
           </span>
@@ -209,7 +192,7 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
               aria-hidden
             />
           </div>
-        </FadeInOnMount>
+        </div>
       </div>
     </section>
   );

@@ -29,13 +29,13 @@ export default async function RootLayout({
   const projectCategories = await getProjectCategories();
 
   return (
-    <html lang="en" className="overflow-x-hidden">
+    <html lang="en">
       <body
-        className={`${fontVariables} font-body antialiased min-h-screen flex flex-col overflow-x-hidden`}
+        className={`${fontVariables} font-body antialiased min-h-screen flex flex-col`}
       >
         <CustomCursor />
         <Header projectCategories={projectCategories} />
-        <main className="min-w-0 flex-1 overflow-x-hidden">{children}</main>
+        <main className="min-w-0 flex-1">{children}</main>
         <Footer />
       </body>
     </html>
