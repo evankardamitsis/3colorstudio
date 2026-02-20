@@ -77,9 +77,25 @@ body {
   line-height: 1;
 }
 
+/* Projects home marquee — larger on mobile, no vertical padding on mobile */
+.projects-marquee-text {
+  font-size: 96px;
+  color: #E72F4E;
+  font-family: "Schnyder M", "Schnyder", var(--font-heading), Georgia, serif;
+  font-weight: 500;
+  line-height: 1;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 @media (min-width: 640px) {
   .marquee-text {
     font-size: 96px;
+  }
+  .projects-marquee-text {
+    font-size: 96px;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
   }
 }
 
@@ -87,10 +103,16 @@ body {
   .marquee-text {
     font-size: 120px;
   }
+  .projects-marquee-text {
+    font-size: 120px;
+  }
 }
 
 @media (min-width: 1024px) {
   .marquee-text {
+    font-size: 190px;
+  }
+  .projects-marquee-text {
     font-size: 190px;
   }
 }

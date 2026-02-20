@@ -9,18 +9,18 @@ import {
 } from "framer-motion";
 
 const fadeInUp: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 28, visibility: "hidden" },
+  visible: { opacity: 1, y: 0, visibility: "visible" },
 };
 
 const fadeIn: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
+  hidden: { opacity: 0, visibility: "hidden" },
+  visible: { opacity: 1, visibility: "visible" },
 };
 
 const fadeInScale: Variants = {
-  hidden: { opacity: 0, scale: 0.96 },
-  visible: { opacity: 1, scale: 1 },
+  hidden: { opacity: 0, scale: 0.96, visibility: "hidden" },
+  visible: { opacity: 1, scale: 1, visibility: "visible" },
 };
 
 
@@ -161,6 +161,7 @@ export function FadeInStagger({
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={{
+        hidden: {},
         visible: {
           transition: {
             staggerChildren: staggerDelay,
@@ -177,8 +178,8 @@ export function FadeInStagger({
 }
 
 const staggerItemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 20, visibility: "hidden" },
+  visible: { opacity: 1, y: 0, visibility: "visible" },
 };
 
 export interface FadeInStaggerItemProps extends HTMLMotionProps<"div"> {

@@ -16,51 +16,51 @@ export function ContactSection({ hideVideo = false }: ContactSectionProps) {
       <div className="relative mx-auto w-full max-w-[1600px] px-[10%]">
         {!hideVideo && (
           <FadeInUp>
-          <div className="relative mx-auto aspect-4/3 w-full max-w-3xl overflow-hidden">
-            <video
-              src="/contact_video_square.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="h-full w-full object-cover object-center"
-              aria-hidden
-            />
-          </div>
+            <div className="relative mx-auto aspect-4/3 w-full max-w-3xl overflow-hidden">
+              <video
+                src="/contact_video_square.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="h-full w-full object-cover object-center"
+                aria-hidden
+              />
+            </div>
           </FadeInUp>
         )}
 
         <div className={`flex flex-col items-center pb-12 text-center ${hideVideo ? "pt-12 md:pt-16 lg:pt-20" : "pt-24 md:pt-32 lg:pt-40 md:pb-2"}`}>
           <FadeInUp delay={0.1}>
-          <h2 className="mb-12 font-heading text-4xl font-normal text-[#E04855] md:text-5xl lg:text-6xl">
-            Contact <span className="text-2xl md:text-3xl lg:text-4xl">us</span>
-          </h2>
+            <h2 className="mb-12 font-heading text-6xl font-normal text-[#E72F4E] md:text-7xl lg:text-8xl">
+              Contact <span className="text-4xl md:text-5xl lg:text-6xl">us</span>
+            </h2>
           </FadeInUp>
           <FadeInUp delay={0.15}>
-          <p className="mb-10 max-w-2xl font-body text-sm leading-relaxed text-[#E04855] uppercase md:text-base lg:text-[18px]">
-            We would love to hear more about your{" "}
-            <strong className="font-semibold">vision</strong> and the experience
-            you want your guests to remember. Our{" "}
-            <strong className="font-semibold">work</strong> focuses on
-            authenticity, atmosphere, and{" "}
-            <strong className="font-semibold">storytelling</strong>, creating
-            visuals that reflect the true identity of each hospitality brand.
-          </p>
+            <p className="mb-10 max-w-2xl font-body text-sm leading-relaxed text-[#E72F4E] uppercase md:text-base lg:text-[18px]">
+              We would love to hear more about your{" "}
+              <strong className="font-semibold">vision</strong> and the experience
+              you want your guests to remember. Our{" "}
+              <strong className="font-semibold">work</strong> focuses on
+              authenticity, atmosphere, and{" "}
+              <strong className="font-semibold">storytelling</strong>, creating
+              visuals that reflect the true identity of each hospitality brand.
+            </p>
           </FadeInUp>
           <FadeInUp delay={0.2}>
-          <Link
-            href="/contact"
-            className="inline-block transition-all duration-300 hover:opacity-90 hover:scale-105 active:scale-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E04855] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-            aria-label="Contact us"
-          >
-            <Image
-              src={CONTACT_BUTTON_SVG}
-              alt="Contact us"
-              width={176}
-              height={167}
-              className="h-auto w-[140px] md:w-[176px]"
-            />
-          </Link>
+            <Link
+              href="/contact"
+              className="inline-block transition-all duration-300 hover:opacity-90 hover:scale-105 hover:rotate-12 active:scale-100 active:rotate-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E04855] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              aria-label="Contact us"
+            >
+              <Image
+                src={CONTACT_BUTTON_SVG}
+                alt="Contact us"
+                width={176}
+                height={167}
+                className="h-auto w-[140px] md:w-[176px]"
+              />
+            </Link>
           </FadeInUp>
         </div>
       </div>

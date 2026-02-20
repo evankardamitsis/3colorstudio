@@ -24,12 +24,12 @@ export function ProjectsHomeMarquee() {
         <div className="w-full overflow-x-hidden overflow-y-hidden whitespace-nowrap">
           <div className="inline-flex animate-marquee">
             <span
-              className="marquee-text inline-block px-8 py-12"
+              className="projects-marquee-text inline-block px-8"
             >
               {marqueeText}
             </span>
             <span
-              className="marquee-text inline-block px-8 py-12"
+              className="projects-marquee-text inline-block px-8"
             >
               {marqueeText}
             </span>

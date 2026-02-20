@@ -153,6 +153,26 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
     };
   }, [images.length]);
 
+  // Autoplay centered video on mobile
+  useEffect(() => {
+    if (images.length === 0) return;
+    const isMobile = () => window.innerWidth < 768;
+    if (!isMobile()) return;
+
+    const centeredReel = images[centeredIndex];
+    const isVideo = centeredReel && /\.(mp4|webm|mov|avi|mkv)$/i.test(centeredReel.src);
+
+    videoRefs.current.forEach((video, index) => {
+      if (index === centeredIndex && isVideo) {
+        video.play().catch(() => {
+          // Ignore autoplay errors (e.g. user gesture required)
+        });
+      } else {
+        video.pause();
+      }
+    });
+  }, [centeredIndex, images]);
+
   const scroll = (dir: "left" | "right") => {
     const el = galleryRef.current;
     if (!el || images.length === 0) return;
@@ -193,19 +213,19 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
           {/* Descriptive text */}
           <FadeInUp>
             <p className="max-w-4xl text-center font-body text-sm uppercase leading-relaxed text-white md:text-base">
-            We produce and shoot{" "}
-            <em className="font-body font-medium not-italic text-white">
-              compelling narratives
-            </em>{" "}
-            that bring hotel brands to life. Filming captivating visuals we
-            showcase the authenticity of a hotel experience, elevate the brand
-            identity and engage with the guests. By fusing{" "}
-            <em className="font-body font-medium not-italic text-white">
-              imaginative inspiration
-            </em>{" "}
-            with a vision for the future, we produce striking and enduring
-            visual tales.
-          </p>
+              We produce and shoot{" "}
+              <em className="font-body font-medium not-italic text-white">
+                compelling narratives
+              </em>{" "}
+              that bring hotel brands to life. Filming captivating visuals we
+              showcase the authenticity of a hotel experience, elevate the brand
+              identity and engage with the guests. By fusing{" "}
+              <em className="font-body font-medium not-italic text-white">
+                imaginative inspiration
+              </em>{" "}
+              with a vision for the future, we produce striking and enduring
+              visual tales.
+            </p>
           </FadeInUp>
 
           {/* Reels: on mobile overflow evenly from both sides; vertical title on lg only */}
@@ -213,15 +233,15 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
             <div className="relative mx-auto w-full max-w-[288px] sm:max-w-[328px] md:max-w-[408px] lg:max-w-[996px] overflow-visible">
               {/* Vertical title: absolute, left of gallery, hidden below lg */}
               <FadeIn delay={0.15}>
-              <h2
-                id="what-we-do-heading"
-                className="absolute right-full top-0 hidden min-h-[250px] items-center justify-end pr-4 font-heading font-normal text-cream origin-left -rotate-90 whitespace-nowrap text-5xl lg:flex"
-                style={{ width: "100px" }}
-              >
-                <span className="text-[78px]">What</span>{" "}
-                <span className="ml-4 text-4xl">WE</span>{" "}
-                <span className="ml-4 text-4xl">DO</span>
-              </h2>
+                <h2
+                  id="what-we-do-heading"
+                  className="absolute right-full top-0 hidden min-h-[250px] items-center justify-end pr-4 font-heading font-normal text-cream origin-left -rotate-90 whitespace-nowrap text-5xl lg:flex"
+                  style={{ width: "100px" }}
+                >
+                  <span className="text-[78px]">What</span>{" "}
+                  <span className="ml-4 text-4xl font-body">WE</span>{" "}
+                  <span className="ml-4 text-4xl font-body">DO</span>
+                </h2>
               </FadeIn>
 
               {/* Mobile: full viewport width, centered, overflow evenly from both sides; desktop: constrained */}
@@ -250,55 +270,55 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                             lg:h-[450px] lg:min-w-[240px]
                             ${isCentered ? "scale-[1.15] z-10 md:scale-100" : "scale-100 z-0 opacity-75 md:opacity-100"}
                             md:transition-opacity md:duration-200 hover:opacity-90`}
-                      onClick={(e) => {
-                        // Prevent lightbox from opening if user was dragging
-                        if (isDragging) {
-                          e.preventDefault();
-                          return;
-                        }
-                        setLightboxIndex(i);
-                        setLightboxOpen(true);
-                      }}
-                      onMouseEnter={() => {
-                        if (isVideo) {
-                          const video = videoRefs.current.get(i);
-                          if (video) {
-                            video.play().catch(() => {
-                              // Ignore autoplay errors
-                            });
-                          }
-                        }
-                      }}
-                      onMouseLeave={() => {
-                        if (isVideo) {
-                          const video = videoRefs.current.get(i);
-                          if (video) {
-                            video.pause();
-                          }
-                        }
-                      }}
-                    >
-                      {isVideo ? (
-                        <video
-                          ref={(el) => setVideoRef(i, el)}
-                          src={img.src}
-                          className="h-full w-full object-cover"
-                          muted
-                          playsInline
-                          loop
-                          preload="metadata"
-                          aria-label={img.alt}
-                        />
-                      ) : (
-                        <Image
-                          src={img.src}
-                          alt={img.alt}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 640px) 140px, (max-width: 768px) 160px, (max-width: 1024px) 200px, 240px"
-                          unoptimized
-                        />
-                      )}
+                          onClick={(e) => {
+                            // Prevent lightbox from opening if user was dragging
+                            if (isDragging) {
+                              e.preventDefault();
+                              return;
+                            }
+                            setLightboxIndex(i);
+                            setLightboxOpen(true);
+                          }}
+                          onMouseEnter={() => {
+                            if (isVideo) {
+                              const video = videoRefs.current.get(i);
+                              if (video) {
+                                video.play().catch(() => {
+                                  // Ignore autoplay errors
+                                });
+                              }
+                            }
+                          }}
+                          onMouseLeave={() => {
+                            if (isVideo) {
+                              const video = videoRefs.current.get(i);
+                              if (video) {
+                                video.pause();
+                              }
+                            }
+                          }}
+                        >
+                          {isVideo ? (
+                            <video
+                              ref={(el) => setVideoRef(i, el)}
+                              src={img.src}
+                              className="h-full w-full object-cover"
+                              muted
+                              playsInline
+                              loop
+                              preload="metadata"
+                              aria-label={img.alt}
+                            />
+                          ) : (
+                            <Image
+                              src={img.src}
+                              alt={img.alt}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 640px) 140px, (max-width: 768px) 160px, (max-width: 1024px) 200px, 240px"
+                              unoptimized
+                            />
+                          )}
                         </div>
                       );
                     })}

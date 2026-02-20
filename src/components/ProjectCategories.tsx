@@ -92,8 +92,8 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
   if (categoryCards.length === 0) return null;
 
   return (
-    <section className="project-categories-striped w-full overflow-x-hidden border-2 border-black py-16 md:py-24">
-      <div className="mx-auto w-full max-w-[1600px] px-[10%]">
+    <section className="project-categories-striped w-full overflow-x-hidden border-2 border-black py-[3%] md:py-24">
+      <div className="mx-auto w-full max-w-[1600px] px-3 lg:px-[10%]">
         <div className="hidden lg:grid lg:grid-cols-2 lg:gap-0 lg:items-stretch">
           <FadeInStagger className="flex flex-col gap-0" staggerDelay={0.1}>
             {categoryCards.map((category) => (
@@ -144,16 +144,27 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
         <FadeInUp className="lg:hidden" delay={0.1}>
           <div
             ref={carouselRef}
-            className="flex snap-x snap-mandatory flex-row gap-6 overflow-x-auto overflow-y-hidden px-[5%] pb-2"
+            className="flex snap-x snap-mandatory flex-row gap-4 overflow-x-auto overflow-y-hidden px-1 pb-2"
             style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
           >
             {categoryCards.map((category) => (
               <Link
                 key={category.id}
                 href={`/projects/category/${category.id}`}
-                className="flex min-h-[520px] w-[85vw] max-w-[400px] shrink-0 snap-start flex-col rounded-lg border border-black bg-[#E04855]"
+                className="flex min-h-[520px] w-[calc(100vw-2rem)] max-w-[400px] shrink-0 snap-start flex-col rounded-lg border border-black bg-[#E04855]"
               >
-                <div className="flex shrink-0 flex-col px-8 py-8 sm:px-10 sm:py-10">
+                {/* Image first on mobile */}
+                <div className="relative min-h-0 min-w-full flex-1 basis-0">
+                  <Image
+                    src={category.image}
+                    alt={category.title}
+                    fill
+                    className="rounded-t-lg object-cover"
+                    sizes="100vw"
+                    unoptimized={category.image.startsWith("https://placehold.co")}
+                  />
+                </div>
+                <div className="flex shrink-0 flex-col px-4 py-8 sm:px-10 sm:py-10">
                   <h3 className="mb-3 font-heading text-[36px] font-bold text-black">
                     {category.title}
                   </h3>
@@ -172,16 +183,6 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
                       className="shrink-0"
                     />
                   </div>
-                </div>
-                <div className="relative min-h-0 flex-1 w-full">
-                  <Image
-                    src={category.image}
-                    alt={category.title}
-                    fill
-                    className="rounded-b-lg object-cover"
-                    sizes="100vw"
-                    unoptimized={category.image.startsWith("https://placehold.co")}
-                  />
                 </div>
               </Link>
             ))}

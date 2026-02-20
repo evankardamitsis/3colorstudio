@@ -65,9 +65,9 @@ export function Header({ projectCategories = [] }: HeaderProps) {
             <Image
               src={LOGO_SRC}
               alt=""
-              width={108}
-              height={49}
-              className="h-8 w-auto sm:h-9"
+              width={140}
+              height={64}
+              className="h-11 w-auto sm:h-12"
             />
           </Link>
           <p className="font-body text-[10px] sm:text-[12px] font-medium uppercase tracking-wider text-cream shrink-0 md:ml-24">
@@ -82,12 +82,12 @@ export function Header({ projectCategories = [] }: HeaderProps) {
               setVisibilityHidden(false);
               setIsMenuOpen(true);
             }}
-            className="group flex items-center gap-2 font-body text-xs font-medium uppercase tracking-wider text-cream transition-all duration-150 hover:text-[#E72F4E] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-cream focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded"
+            className="group flex items-center gap-3 font-body text-sm font-medium uppercase tracking-wider text-cream transition-all duration-150 hover:text-[#E72F4E] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-cream focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded"
             aria-label="Open menu"
             aria-expanded={isMenuOpen}
           >
             <span className="transition-all duration-150 ease-out group-hover:translate-x-0.5">Menu</span>
-            <div className="h-9 w-9 shrink-0 transition-all duration-150 ease-out group-hover:scale-110 group-active:scale-95">
+            <div className="h-12 w-12 shrink-0 transition-all duration-150 ease-out group-hover:scale-110 group-active:scale-95">
               <Image
                 src={BURGER_ICON_SRC}
                 alt=""
