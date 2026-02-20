@@ -71,80 +71,80 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
 
       {/* Left: vertical email text — fixed only while Hero is in view; hidden once past Hero (before ContactSection) */}
       <div
-          className={`hero-side-info-left fixed bottom-24 left-[10%] z-30 transition-opacity duration-300 ${showSideInfo ? "md:opacity-100" : "md:pointer-events-none md:opacity-0"}`}
+        className={`hero-side-info-left fixed bottom-24 left-[10%] z-30 transition-opacity duration-300 ${showSideInfo ? "md:opacity-100" : "md:pointer-events-none md:opacity-0"}`}
+      >
+        <a
+          href={`mailto:${HERO_EMAIL}`}
+          className="block origin-left -rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-widest text-cream/90 transition-colors duration-150 hover:text-[#E72F4E]"
         >
-          <a
-            href={`mailto:${HERO_EMAIL}`}
-            className="block origin-left -rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-widest text-cream/90 transition-colors duration-150 hover:text-[#E72F4E]"
-          >
-            Email us at {HERO_EMAIL}
-          </a>
-        </div>
+          Email us at {HERO_EMAIL}
+        </a>
+      </div>
 
       {/* Right: vertical follow text + social icons — fixed only while Hero is in view; hidden once past Hero (before ContactSection) */}
       <div
-          className={`hero-side-info-right fixed bottom-24 right-[10%] z-30 group flex-col items-end gap-2 transition-opacity duration-300 ${showSideInfo ? "md:opacity-100" : "md:pointer-events-none md:opacity-0"}`}
-        >
-          <span className="block origin-right rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-[0.25em] text-white transition-colors duration-150 hover:text-[#E72F4E] group-hover:text-[#E72F4E]">
-            FOLLOW 3.COLORSTUDIO
-          </span>
-          <div className="flex flex-col items-end gap-2 mr-[-8px]">
-            {siteConfig.links.instagram && siteConfig.links.instagram !== "#" ? (
-              <a
-                href={siteConfig.links.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
-                aria-label="Instagram"
-              >
-                <Image
-                  src="/instagram.svg"
-                  alt=""
-                  width={24}
-                  height={24}
-                  className="h-4 w-4 block"
-                  aria-hidden
-                />
-              </a>
-            ) : (
-              <span className="inline-block h-4 w-4">
-                <Image
-                  src="/instagram.svg"
-                  alt=""
-                  width={24}
-                  height={24}
-                  className="h-4 w-4 block"
-                  aria-hidden
-                />
-              </span>
-            )}
-            {siteConfig.links.facebook && siteConfig.links.facebook !== "#" ? (
-              <a
-                href={siteConfig.links.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
-                aria-label="Facebook"
-              >
-                <Image
-                  src="/facebook.svg"
-                  alt=""
-                  width={24}
-                  height={24}
-                  className="h-4 w-4 block"
-                  aria-hidden
-                />
-              </a>
-            ) : (
-              <span className="inline-block h-4 w-4">
-                <Image
-                  src="/facebook.svg"
-                  alt=""
-                  width={24}
-                  height={24}
-                  className="h-4 w-4 block"
-                  aria-hidden
-                />
+        className={`hero-side-info-right fixed bottom-24 right-[10%] z-30 group flex-col items-end gap-2 transition-opacity duration-300 ${showSideInfo ? "md:opacity-100" : "md:pointer-events-none md:opacity-0"}`}
+      >
+        <span className="block origin-right rotate-90 whitespace-nowrap font-body text-[10px] font-medium uppercase tracking-[0.25em] text-white transition-colors duration-150 hover:text-[#E72F4E] group-hover:text-[#E72F4E]">
+          FOLLOW 3.COLORSTUDIO
+        </span>
+        <div className="flex flex-col items-end gap-2 mr-[-8px]">
+          {siteConfig.links.instagram && siteConfig.links.instagram !== "#" ? (
+            <a
+              href={siteConfig.links.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
+              aria-label="Instagram"
+            >
+              <Image
+                src="/instagram.svg"
+                alt=""
+                width={24}
+                height={24}
+                className="h-4 w-4 block"
+                aria-hidden
+              />
+            </a>
+          ) : (
+            <span className="inline-block h-4 w-4">
+              <Image
+                src="/instagram.svg"
+                alt=""
+                width={24}
+                height={24}
+                className="h-4 w-4 block"
+                aria-hidden
+              />
+            </span>
+          )}
+          {siteConfig.links.facebook && siteConfig.links.facebook !== "#" ? (
+            <a
+              href={siteConfig.links.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
+              aria-label="Facebook"
+            >
+              <Image
+                src="/facebook.svg"
+                alt=""
+                width={24}
+                height={24}
+                className="h-4 w-4 block"
+                aria-hidden
+              />
+            </a>
+          ) : (
+            <span className="inline-block h-4 w-4">
+              <Image
+                src="/facebook.svg"
+                alt=""
+                width={24}
+                height={24}
+                className="h-4 w-4 block"
+                aria-hidden
+              />
             </span>
           )}
         </div>
@@ -159,13 +159,13 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
             <h1 className="mx-auto w-fit max-w-full font-heading text-5xl leading-tight sm:text-6xl md:text-7xl lg:text-8xl xl:text-[6.5rem] 2xl:text-[7rem]">
               <span className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center ml-auto lg:-ml-[50%]">
                 <span className="text-cream">Crafting</span>
-                <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl xl:text-[2.25rem] 2xl:text-[2.5rem]">
+                <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
                   Stories
                 </span>
               </span>
               <span className="flex items-baseline gap-3 sm:gap-4 flex-wrap justify-center mt-[-10px] lg:mt-[-20px]">
                 <span className="text-cream">Capturing</span>
-                <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl xl:text-[2.25rem] 2xl:text-[2.5rem]">
+                <span className="font-body font-light text-2xl uppercase tracking-wider text-white sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
                   Content
                 </span>
               </span>
