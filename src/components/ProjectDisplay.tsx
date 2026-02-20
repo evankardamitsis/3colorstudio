@@ -286,7 +286,7 @@ export function ProjectDisplay({
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="flex w-max min-w-full snap-x snap-mandatory gap-4 sm:gap-4 md:gap-3 pl-[calc(50vw-100px)] sm:pl-[calc(50vw-110px)] md:pl-[calc(50vw-120px)] lg:pl-[calc(50vw-140px)] xl:pl-[calc(50vw-170px)] pr-[50vw] md:pr-[calc(50vw-120px)] lg:pr-[calc(50vw-140px)] xl:pr-[calc(50vw-170px)]">
+                <div className="flex w-max min-w-full snap-x snap-mandatory gap-4 sm:gap-4 md:gap-3 pl-[calc(50vw-100px)] sm:pl-[calc(50vw-110px)] md:pl-[calc(50vw-120px)] lg:pl-[calc(50vw-140px)] xl:pl-[calc(50vw-170px)] pr-[50vw] md:pr-[calc(50vw-120px+240px)] lg:pr-[calc(50vw-140px+280px)] xl:pr-[calc(50vw-170px+340px)]">
                   {reels.map((reel, i) => {
                     const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(reel.src);
                     const isCentered = centeredIndex === i;
