@@ -301,12 +301,12 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                           {isVideo ? (
                             <video
                               ref={(el) => setVideoRef(i, el)}
-                              src={img.src}
+                              src={`${img.src}#t=0.001`}
                               className="h-full w-full object-cover"
                               muted
                               playsInline
                               loop
-                              preload="metadata"
+                              preload="auto"
                               aria-label={img.alt}
                             />
                           ) : (

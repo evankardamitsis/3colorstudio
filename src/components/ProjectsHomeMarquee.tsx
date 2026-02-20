@@ -10,11 +10,12 @@ export function ProjectsHomeMarquee() {
     <section className="relative w-full h-[1080px] min-h-[700px] overflow-hidden lg:h-[1200px]">
       <div className="absolute inset-0 z-0">
         <video
-          src="/projects_home_video.mp4"
+          src="/projects_home_video.mp4#t=0.001"
           autoPlay
           loop
           muted
           playsInline
+          preload="auto"
           className="h-full w-full object-cover object-center"
           aria-hidden
         />

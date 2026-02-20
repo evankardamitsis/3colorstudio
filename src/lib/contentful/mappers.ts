@@ -168,9 +168,9 @@ export function mapToCategoryProject(
   // Handle both gallery (direct) and galleryCollection (linkedFrom) formats
   const galleryItems = item.galleryCollection?.items ?? item.gallery ?? [];
   const reels = galleryItems.map((a) => ({
-    src: a.url,
-    alt: a.title ?? "",
-  }));
+    src: ensureAbsoluteUrl(a?.url) ?? a?.url ?? "",
+    alt: a?.title ?? "",
+  })).filter((r) => r.src);
   return {
     id: item.sys.id,
     title: item.projectTitle ?? "",

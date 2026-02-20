@@ -18,11 +18,12 @@ export function ContactSection({ hideVideo = false }: ContactSectionProps) {
           <FadeInUp>
             <div className="relative mx-auto aspect-4/3 w-full max-w-3xl overflow-hidden">
               <video
-                src="/contact_video_square.mp4"
+                src="/contact_video_square.mp4#t=0.001"
                 autoPlay
                 loop
                 muted
                 playsInline
+                preload="auto"
                 className="h-full w-full object-cover object-center"
                 aria-hidden
               />

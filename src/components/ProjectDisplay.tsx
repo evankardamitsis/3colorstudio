@@ -251,11 +251,12 @@ export function ProjectDisplay({
           <div className="relative mb-8 sm:mb-10 md:mb-12 w-full overflow-hidden rounded-lg aspect-video sm:aspect-21/9">
             {featuredVideo ? (
               <video
-                src={featuredVideo}
+                src={`${featuredVideo}#t=0.001`}
                 autoPlay
                 loop
                 muted
                 playsInline
+                preload="auto"
                 className="h-full w-full object-cover"
                 aria-hidden
               />
@@ -336,7 +337,7 @@ export function ProjectDisplay({
                         {isVideo ? (
                           <video
                             ref={(el) => setVideoRef(i, el)}
-                            src={reel.src}
+                            src={`${reel.src}#t=0.001`}
                             className="h-full w-full object-cover rounded-sm"
                             muted
                             playsInline

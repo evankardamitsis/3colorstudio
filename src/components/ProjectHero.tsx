@@ -39,11 +39,12 @@ export function ProjectHero({
       >
         {backgroundVideo ? (
           <video
-            src={backgroundVideo}
+            src={`${backgroundVideo}#t=0.001`}
             autoPlay
             loop
             muted
             playsInline
+            preload="auto"
             className="h-full w-full object-cover object-center"
             aria-hidden
           />

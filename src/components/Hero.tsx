@@ -42,11 +42,12 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
       <div className="absolute inset-0 z-0">
         {videoSrc ? (
           <video
-            src={videoSrc}
+            src={`${videoSrc}#t=0.001`}
             autoPlay
             loop
             muted
             playsInline
+            preload="auto"
             className="h-full w-full object-cover object-center"
             aria-hidden
           />
