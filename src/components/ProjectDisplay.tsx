@@ -234,7 +234,7 @@ export function ProjectDisplay({
   };
 
   return (
-    <section className="w-full bg-black py-12 sm:py-16 md:py-24 lg:py-32 overflow-x-visible">
+    <section className="w-full bg-black py-12 sm:py-16 md:py-24 lg:py-32 overflow-x-hidden">
       <div className="mx-auto w-full px-4 sm:px-6 md:px-[10%]">
         {/* Project title */}
         <h2 className="mb-4 sm:mb-6 text-center font-heading text-2xl sm:text-[28px] md:text-[32px] font-normal text-white px-2">

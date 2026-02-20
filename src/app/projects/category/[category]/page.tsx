@@ -47,7 +47,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   return (
-    <>
+    <div className="overflow-x-hidden">
       <ProjectHero
         categoryTitle={categoryData.title}
         subtitle={categoryData.subtitle}
@@ -60,6 +60,6 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <ProjectsEndlessScroll allProjects={allProjects} itemsPerPage={2} />
       </div>
       <ContactSection hideVideo={true} />
-    </>
+    </div>
   );
 }

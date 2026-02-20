@@ -165,7 +165,7 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
                   />
                 </div>
                 <div className="flex shrink-0 flex-col px-4 py-8 sm:px-10 sm:py-10">
-                  <h3 className="mb-3 font-heading text-[36px] font-bold text-black">
+                  <h3 className="mb-3 font-heading text-[24px] sm:text-[36px] font-bold text-black">
                     {category.title}
                   </h3>
                   <p className="mb-4 text-[14px] sm:text-[18px] leading-relaxed text-black/90 uppercase">
