@@ -168,7 +168,7 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
                   <h3 className="mb-3 font-heading text-[36px] font-bold text-black">
                     {category.title}
                   </h3>
-                  <p className="mb-4 text-[18px] leading-relaxed text-black/90 uppercase">
+                  <p className="mb-4 text-[14px] sm:text-[18px] leading-relaxed text-black/90 uppercase">
                     {category.description}
                   </p>
                   <div className="flex items-center justify-end gap-2 text-black">
