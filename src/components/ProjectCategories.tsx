@@ -102,7 +102,7 @@ export function ProjectCategories({ categories }: ProjectCategoriesProps) {
                   key={category.id}
                   href={`/projects/category/${category.id}`}
                   onMouseEnter={() => setActiveCategory(category)}
-                  className="group relative block cursor-pointer rounded-lg border border-black bg-[#E04855] p-6 transition-all duration-300 hover:bg-[#c93d4a] hover:scale-[1.01] active:scale-[0.99]"
+                  className="group relative block cursor-pointer rounded-lg border border-black bg-[#E04855] p-6 transition-colors duration-300 hover:bg-[#c93d4a]"
                 >
                   <h3 className="mb-3 font-heading text-[36px] font-bold text-black">
                     {category.title}

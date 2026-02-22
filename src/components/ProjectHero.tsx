@@ -142,7 +142,7 @@ export function ProjectHero({
         <FadeInOnMount delay={0.4} className="flex flex-col items-center pb-12">
           <Link
             href={ctaLink}
-            className="group flex flex-col items-center gap-3 transition-all duration-300 hover:opacity-90 hover:translate-y-[-2px] active:translate-y-0"
+            className="group flex flex-col items-center gap-3 transition-colors duration-300 hover:opacity-90"
           >
             <div className="flex items-center gap-3">
               <span className="h-px w-8 bg-white shrink-0" aria-hidden />

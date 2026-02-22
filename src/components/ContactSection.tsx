@@ -51,7 +51,7 @@ export function ContactSection({ hideVideo = false }: ContactSectionProps) {
           <FadeInUp delay={0.2}>
             <Link
               href="/contact"
-              className="inline-block transition-all duration-300 hover:opacity-90 hover:scale-105 hover:rotate-12 active:scale-100 active:rotate-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E04855] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              className="inline-block transition-colors duration-300 hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E04855] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
               aria-label="Contact us"
             >
               <Image

@@ -370,7 +370,7 @@ export function ProjectDisplay({
                 <button
                   type="button"
                   onClick={() => scroll("left")}
-                  className="group cursor-pointer flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full border border-white text-white transition-all duration-300 hover:border-[#E72F4E] hover:text-[#E72F4E] hover:scale-110 active:scale-95"
+                  className="group cursor-pointer flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full border border-white text-white transition-colors duration-300 hover:border-[#E72F4E] hover:text-[#E72F4E]"
                   aria-label="Previous reel"
                 >
                   <svg
@@ -391,7 +391,7 @@ export function ProjectDisplay({
                 <button
                   type="button"
                   onClick={() => scroll("right")}
-                  className="group cursor-pointer flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full border border-white text-white transition-all duration-300 hover:border-[#E72F4E] hover:text-[#E72F4E] hover:scale-110 active:scale-95"
+                  className="group cursor-pointer flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-full border border-white text-white transition-colors duration-300 hover:border-[#E72F4E] hover:text-[#E72F4E]"
                   aria-label="Next reel"
                 >
                   <svg

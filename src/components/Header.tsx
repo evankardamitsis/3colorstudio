@@ -55,7 +55,7 @@ export function Header({ projectCategories = [] }: HeaderProps) {
 
   return (
     <>
-      <header className="fixed top-6 left-0 right-0 z-50 flex w-full items-center justify-between px-4 sm:px-[10%] py-4">
+      <header className="fixed top-6 left-0 right-0 z-101 flex w-full items-center justify-between px-4 sm:px-[10%] py-4">
         <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-4">
           <Link
             href="/"
@@ -79,58 +79,50 @@ export function Header({ projectCategories = [] }: HeaderProps) {
           <button
             type="button"
             onClick={() => {
-              setVisibilityHidden(false);
-              setIsMenuOpen(true);
+              if (isMenuOpen) {
+                setIsMenuOpen(false);
+              } else {
+                setVisibilityHidden(false);
+                setIsMenuOpen(true);
+              }
             }}
-            className="group flex items-center gap-2 sm:gap-3 font-body text-xs sm:text-sm font-medium uppercase tracking-wider text-cream transition-all duration-150 hover:text-[#E72F4E] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-cream focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded"
-            aria-label="Open menu"
+            className="group flex items-center gap-2 sm:gap-3 font-body text-xs sm:text-sm font-medium uppercase tracking-wider text-cream transition-all duration-150 hover:text-[#E72F4E] focus:outline-none focus-visible:ring-2 focus-visible:ring-cream focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMenuOpen}
           >
-            <span className="transition-all duration-150 ease-out group-hover:translate-x-0.5">Menu</span>
-            <div className="h-9 w-9 sm:h-12 sm:w-12 shrink-0 transition-all duration-150 ease-out group-hover:scale-110 group-active:scale-95">
-              <Image
-                src={BURGER_ICON_SRC}
-                alt=""
-                width={48}
-                height={48}
-                className="h-full w-full transition-all duration-150 group-hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
-                aria-hidden
-              />
+            <div className="relative h-9 w-9 sm:h-12 sm:w-12 shrink-0">
+              {isMenuOpen ? (
+                <CloseIcon className="h-full w-full text-cream transition-opacity duration-200 group-hover:opacity-80" />
+              ) : (
+                <Image
+                  src={BURGER_ICON_SRC}
+                  alt=""
+                  width={48}
+                  height={48}
+                  className="h-full w-full transition-opacity duration-200 group-hover:opacity-80"
+                  aria-hidden
+                />
+              )}
             </div>
           </button>
         </div>
       </header>
 
-      {/* Full-screen menu overlay */}
+      {/* Full-screen menu overlay — cross dissolve */}
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Main menu"
         aria-hidden={visibilityHidden}
-        className="fixed inset-0 z-100 flex flex-col bg-[#E72F4E] text-white transition-[transform] duration-400 ease-out"
+        className="fixed inset-0 z-100 flex flex-col bg-[#E72F4E] text-white transition-opacity duration-400 ease-out"
         style={{
           visibility: visibilityHidden ? "hidden" : "visible",
-          transform: isMenuOpen ? "translateY(0)" : "translateY(-100%)",
+          opacity: isMenuOpen ? 1 : 0,
           pointerEvents: isMenuOpen ? "auto" : "none",
         }}
       >
-        {/* Top right: Close */}
-        <div className="flex shrink-0 items-center justify-end px-[10%] py-6 md:py-8">
-          <button
-            type="button"
-            onClick={() => setIsMenuOpen(false)}
-            className="group flex items-center gap-2 font-body text-[12px] font-medium uppercase tracking-wider text-white transition-all duration-150 hover:opacity-100 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#E72F4E] rounded"
-            aria-label="Close menu"
-          >
-            <span className="transition-transform duration-150 ease-out group-hover:-translate-x-0.5">Close</span>
-            <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center transition-transform duration-150 ease-out group-hover:scale-110 group-hover:rotate-90 group-active:scale-95">
-              <CloseIcon className="h-full w-full" />
-            </span>
-          </button>
-        </div>
-
-        {/* Center: Main nav (left-aligned) */}
-        <div className="flex flex-col justify-start px-[10%] md:flex-1">
+        {/* Center: Main nav (vertically centered, left-aligned) */}
+        <div className="flex flex-1 flex-col justify-center px-[10%]">
           <nav className="flex flex-col gap-4 md:gap-6 lg:gap-8" aria-label="Main navigation">
             {/* Projects + sub */}
             <div>
@@ -138,7 +130,7 @@ export function Header({ projectCategories = [] }: HeaderProps) {
                 <Link
                   href="/projects"
                   onClick={() => setIsMenuOpen(false)}
-                  className="inline-block font-heading text-[56px] text-white transition-all duration-150 ease-out hover:translate-x-1 hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
+                  className="inline-block font-heading text-[56px] text-white transition-all duration-150 ease-out hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
                 >
                   Projects
                 </Link>
@@ -150,7 +142,7 @@ export function Header({ projectCategories = [] }: HeaderProps) {
                     <Link
                       href={href}
                       onClick={() => setIsMenuOpen(false)}
-                      className="inline-block font-body text-[24px] font-medium uppercase tracking-wider text-white transition-all duration-150 ease-out hover:translate-x-1 hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
+                      className="inline-block font-body text-[24px] font-medium uppercase tracking-wider text-white transition-all duration-150 ease-out hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
                     >
                       {label}
                     </Link>
@@ -162,7 +154,7 @@ export function Header({ projectCategories = [] }: HeaderProps) {
             <Link
               href="/#what-we-do"
               onClick={() => setIsMenuOpen(false)}
-              className="inline-block font-heading text-[56px] text-white transition-all duration-150 ease-out hover:translate-x-1 hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
+              className="inline-block font-heading text-[56px] text-white transition-all duration-150 ease-out hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
             >
               About
             </Link>
@@ -170,7 +162,7 @@ export function Header({ projectCategories = [] }: HeaderProps) {
             <Link
               href="/contact"
               onClick={() => setIsMenuOpen(false)}
-              className="inline-block font-heading text-[56px] text-white transition-all duration-150 ease-out hover:translate-x-1 hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
+              className="inline-block font-heading text-[56px] text-white transition-all duration-150 ease-out hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
             >
               Contact
             </Link>

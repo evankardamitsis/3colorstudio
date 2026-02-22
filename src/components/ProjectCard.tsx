@@ -25,7 +25,7 @@ export function ProjectCard({ project, priority = false }: ProjectCardProps) {
               src={coverUrl}
               alt={project.coverImage?.title ?? title}
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+              className="object-cover transition-colors duration-300"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               priority={priority}
               unoptimized={coverUrl.startsWith("/")}

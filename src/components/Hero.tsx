@@ -179,7 +179,7 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
         </div>
 
         {/* Bottom: Explore More + icon */}
-        <div className="group flex flex-col items-center pb-12 cursor-pointer transition-transform duration-300 hover:-translate-y-1 active:translate-y-0">
+        <div className="group flex flex-col items-center pb-12 cursor-pointer transition-colors duration-300">
           <span className="font-body text-[12px] font-medium uppercase tracking-widest text-cream transition-colors duration-150 group-hover:text-[#E72F4E] mb-2">
             Explore More
           </span>
