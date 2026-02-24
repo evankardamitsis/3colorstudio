@@ -234,7 +234,7 @@ export function ProjectDisplay({
   };
 
   return (
-    <section className="w-full bg-black py-12 sm:py-16 md:py-24 lg:py-32 overflow-x-hidden">
+    <section className="w-full bg-black py-12 sm:py-16 md:py-24 lg:py-32">
       <div className="mx-auto w-full px-4 sm:px-6 md:px-[10%]">
         {/* Project title */}
         <h2 className="mb-4 sm:mb-6 text-center font-heading text-2xl sm:text-[28px] md:text-[32px] font-normal text-white px-2">
@@ -275,10 +275,12 @@ export function ProjectDisplay({
           </div>
         )}
 
-        {/* Project reels - centered carousel with snap and enlarge on all screens */}
-        {reels.length > 0 && (
-          <>
-            <div className="relative z-0 w-screen max-w-[100vw] left-[50vw] -translate-x-1/2">
+      </div>
+
+      {/* Project reels - full viewport width, overflow from both sides on large screens */}
+      {reels.length > 0 && (
+        <>
+          <div className="relative z-0 w-screen" style={{ marginLeft: "calc(-50vw + 50%)" }}>
               <div
                 ref={galleryRef}
                 className="overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing touch-pan-x overscroll-x-contain"
@@ -287,7 +289,7 @@ export function ProjectDisplay({
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseLeave}
               >
-                <div className="flex w-max min-w-full snap-x snap-mandatory gap-4 sm:gap-4 md:gap-3 pl-[calc(50vw-100px)] sm:pl-[calc(50vw-110px)] md:pl-[calc(50vw-120px)] lg:pl-[calc(50vw-140px)] xl:pl-[calc(50vw-170px)] pr-[50vw] md:pr-[calc(50vw-120px+240px)] lg:pr-[calc(50vw-140px+280px)] xl:pr-[calc(50vw-170px+340px)]">
+                <div className="flex w-max min-w-full snap-x snap-mandatory gap-4 sm:gap-4 md:gap-3 pl-[calc(50vw-100px)] sm:pl-[calc(50vw-110px)] md:pl-[calc(50vw-120px)] lg:pl-[calc(50vw-140px)] xl:pl-[calc(50vw-170px)] pr-[calc(50vw-100px)] sm:pr-[calc(50vw-110px)] md:pr-[calc(50vw-120px)] lg:pr-[calc(50vw-140px)] xl:pr-[calc(50vw-170px)]">
                   {reels.map((reel, i) => {
                     const isVideo = /\.(mp4|webm|mov|avi|mkv)$/i.test(reel.src);
                     const isCentered = centeredIndex === i;
@@ -364,8 +366,8 @@ export function ProjectDisplay({
               </div>
             </div>
 
-            {/* Nav arrows: below reels, right-aligned to content (z-30 above hero side info z-20) */}
-            <div className="relative z-30 mt-4 sm:mt-5 md:mt-6 flex w-full justify-end pr-4 sm:pr-6 md:pr-0">
+            {/* Nav arrows: below reels, right-aligned to match content padding */}
+            <div className="relative z-30 mt-4 sm:mt-5 md:mt-6 flex w-full justify-end px-4 sm:px-6 md:px-[10%]">
               <div className="flex gap-2 sm:gap-3">
                 <button
                   type="button"
@@ -413,7 +415,6 @@ export function ProjectDisplay({
             </div>
           </>
         )}
-      </div>
 
       {/* Lightbox */}
       <Lightbox

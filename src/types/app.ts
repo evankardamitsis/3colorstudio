@@ -53,4 +53,5 @@ export interface Homepage {
   heroImage: string | null;
   heroVideo: string | null;
   homepageReels: Array<{ src: string; alt: string }>;
+  hotelLogos: Array<{ src: string; alt: string }>;
 }

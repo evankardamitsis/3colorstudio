@@ -139,7 +139,7 @@ export const GET_PROJECTS_BY_CATEGORY = `
 `;
 
 // —— Homepage (singleton: first entry) ——
-// homepageReels: Media (many) — Contentful exposes as homepageReelsCollection
+// homepageReels, hotelLogos: Media (many) — Contentful exposes as *Collection
 export const GET_HOMEPAGE = `
   query GetHomepage {
     homepageCollection(limit: 1) {
@@ -148,6 +148,12 @@ export const GET_HOMEPAGE = `
         heroImage { url }
         heroVideo { url }
         homepageReelsCollection(limit: 50) {
+          items {
+            url
+            title
+          }
+        }
+        hotelLogosCollection(limit: 20) {
           items {
             url
             title

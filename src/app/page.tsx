@@ -35,7 +35,7 @@ export default async function HomePage() {
 
       <ContactSection />
 
-      <HotelBrands />
+      <HotelBrands logos={homepage.hotelLogos?.length ? homepage.hotelLogos : undefined} />
     </>
   );
 }

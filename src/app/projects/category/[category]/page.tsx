@@ -47,7 +47,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   return (
-    <div className="overflow-x-hidden">
+    <div>
       <ProjectHero
         categoryTitle={categoryData.title}
         subtitle={categoryData.subtitle}

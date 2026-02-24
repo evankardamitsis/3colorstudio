@@ -49,6 +49,8 @@ interface GqlHomepageItem {
   heroVideo?: { url: string } | null;
   homepageReels?: Array<{ url: string; title?: string | null }> | null;
   homepageReelsCollection?: { items?: Array<{ url: string; title?: string | null }> | null } | null;
+  hotelLogos?: Array<{ url: string; title?: string | null }> | null;
+  hotelLogosCollection?: { items?: Array<{ url: string; title?: string | null }> | null } | null;
 }
 
 interface GqlTextBlockItem {
@@ -105,10 +107,16 @@ export function mapHomepage(
     src: ensureAbsoluteUrl(a?.url) ?? a?.url ?? "",
     alt: a?.title ?? "",
   })).filter((r) => r.src);
+  const logoItems = item.hotelLogosCollection?.items ?? item.hotelLogos ?? [];
+  const hotelLogos = logoItems.map((a) => ({
+    src: ensureAbsoluteUrl(a?.url) ?? a?.url ?? "",
+    alt: a?.title ?? "",
+  })).filter((r) => r.src);
   return {
     heroImage: ensureAbsoluteUrl(item.heroImage?.url) ?? item.heroImage?.url ?? null,
     heroVideo: ensureAbsoluteUrl(item.heroVideo?.url) ?? item.heroVideo?.url ?? null,
     homepageReels: reels,
+    hotelLogos,
   };
 }
 
