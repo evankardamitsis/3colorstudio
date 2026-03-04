@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { FadeInUp } from "@/components/animations";
 import { AnimatedContactButton } from "@/components/AnimatedContactButton";
 
@@ -8,8 +9,13 @@ interface ContactSectionProps {
 }
 
 export function ContactSection({ hideVideo = false }: ContactSectionProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+
   return (
-    <section className="relative w-full overflow-x-hidden bg-black pt-32 pb-4 md:py-32 lg:py-40">
+    <section
+      ref={sectionRef}
+      className="relative w-full overflow-visible bg-black pt-32 pb-4 md:py-32 lg:py-40"
+    >
       <div className="relative mx-auto w-full max-w-[1600px] px-[10%]">
         {!hideVideo && (
           <FadeInUp>
@@ -46,7 +52,7 @@ export function ContactSection({ hideVideo = false }: ContactSectionProps) {
             </p>
           </FadeInUp>
           <FadeInUp delay={0.2}>
-            <AnimatedContactButton />
+            <AnimatedContactButton scrollTargetRef={sectionRef} />
           </FadeInUp>
         </div>
       </div>

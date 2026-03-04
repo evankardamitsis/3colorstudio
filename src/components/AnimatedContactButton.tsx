@@ -39,13 +39,18 @@ const CENTER_ICON_PATH =
 
 const SVG_CENTER = { x: 88, y: 83.5 };
 
-export function AnimatedContactButton() {
+interface AnimatedContactButtonProps {
+  /** Ref to the scroll container (e.g. ContactSection). Larger target = slower rotation. */
+  scrollTargetRef?: React.RefObject<HTMLElement | null>;
+}
+
+export function AnimatedContactButton({ scrollTargetRef }: AnimatedContactButtonProps = {}) {
   const ref = useRef<HTMLAnchorElement>(null);
   const { scrollYProgress } = useScroll({
-    target: ref,
+    target: scrollTargetRef ?? ref,
     offset: ["start end", "end start"],
   });
-  const rotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, 90]);
 
   return (
     <Link
@@ -61,6 +66,7 @@ export function AnimatedContactButton() {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="h-auto w-[140px] md:w-[176px]"
+        style={{ overflow: "visible" }}
       >
         <motion.g
           style={{
