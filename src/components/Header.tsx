@@ -127,13 +127,9 @@ export function Header({ projectCategories = [] }: HeaderProps) {
             {/* Projects + sub */}
             <div>
               <div className="flex items-center gap-3">
-                <Link
-                  href="/projects"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="inline-block font-heading text-[56px] text-white transition-all duration-150 ease-out hover:opacity-90 hover:underline hover:underline-offset-2 hover:decoration-1"
-                >
+                <span className="font-heading text-[56px] text-white">
                   Projects
-                </Link>
+                </span>
                 <span className="h-px w-8 bg-white shrink-0" aria-hidden />
               </div>
               <ul className="mt-3 flex flex-col gap-2 pl-2 md:mt-4">
