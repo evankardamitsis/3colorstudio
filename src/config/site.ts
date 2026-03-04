@@ -12,7 +12,6 @@ export const siteConfig = {
     instagram:
       process.env.NEXT_PUBLIC_INSTAGRAM ??
       "https://www.instagram.com/3.colorstudio/?hl=en",
-    facebook: process.env.NEXT_PUBLIC_FACEBOOK ?? "#",
     behance: process.env.NEXT_PUBLIC_BEHANCE ?? "#",
     linkedin: process.env.NEXT_PUBLIC_LINKEDIN ?? "#",
   },

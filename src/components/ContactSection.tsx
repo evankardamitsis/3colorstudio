@@ -1,10 +1,7 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
 import { FadeInUp } from "@/components/animations";
-
-const CONTACT_BUTTON_SVG = "/TextFlex_%20CONTACT%20US%20CONTACT%20US%20CONTACT%20US.svg";
+import { AnimatedContactButton } from "@/components/AnimatedContactButton";
 
 interface ContactSectionProps {
   hideVideo?: boolean;
@@ -49,19 +46,7 @@ export function ContactSection({ hideVideo = false }: ContactSectionProps) {
             </p>
           </FadeInUp>
           <FadeInUp delay={0.2}>
-            <Link
-              href="/contact"
-              className="inline-block transition-colors duration-300 hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#E04855] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-              aria-label="Contact us"
-            >
-              <Image
-                src={CONTACT_BUTTON_SVG}
-                alt="Contact us"
-                width={176}
-                height={167}
-                className="h-auto w-[140px] md:w-[176px]"
-              />
-            </Link>
+            <AnimatedContactButton />
           </FadeInUp>
         </div>
       </div>

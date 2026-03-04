@@ -114,15 +114,15 @@ export function Header({ projectCategories = [] }: HeaderProps) {
         aria-modal="true"
         aria-label="Main menu"
         aria-hidden={visibilityHidden}
-        className="fixed inset-0 z-100 flex flex-col bg-[#E72F4E] text-white transition-opacity duration-400 ease-out"
+        className="fixed inset-0 z-100 flex min-h-dvh flex-col bg-[#E72F4E] text-white transition-opacity duration-400 ease-out"
         style={{
           visibility: visibilityHidden ? "hidden" : "visible",
           opacity: isMenuOpen ? 1 : 0,
           pointerEvents: isMenuOpen ? "auto" : "none",
         }}
       >
-        {/* Center: Main nav (vertically centered, left-aligned) */}
-        <div className="flex flex-1 flex-col justify-center px-[10%]">
+        {/* Center: Main nav (vertically centered on full viewport) */}
+        <div className="flex min-h-0 flex-1 flex-col justify-center px-[10%]">
           <nav className="flex flex-col gap-4 md:gap-6 lg:gap-8" aria-label="Main navigation">
             {/* Projects + sub */}
             <div>
@@ -170,7 +170,7 @@ export function Header({ projectCategories = [] }: HeaderProps) {
         </div>
 
         {/* Bottom left: Logo + (Follow… + social below) */}
-        <div className="flex shrink-0 flex-wrap items-end gap-4 px-[10%] mt-32 py-4 md:mt-0 md:py-8 lg:py-10">
+        <div className="absolute bottom-0 left-0 right-0 flex shrink-0 flex-wrap items-end gap-4 px-[10%] py-4 md:py-8 lg:py-10">
           <Link
             href="/"
             onClick={() => setIsMenuOpen(false)}
@@ -199,17 +199,6 @@ export function Header({ projectCategories = [] }: HeaderProps) {
                   aria-label="Instagram"
                 >
                   <Image src="/instagram.svg" alt="" width={24} height={24} className="h-6 w-6" />
-                </a>
-              )}
-              {siteConfig.links.facebook && siteConfig.links.facebook !== "#" && (
-                <a
-                  href={siteConfig.links.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white hover:opacity-90 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#E72F4E] rounded"
-                  aria-label="Facebook"
-                >
-                  <Image src="/facebook.svg" alt="" width={24} height={24} className="h-6 w-6" />
                 </a>
               )}
             </div>

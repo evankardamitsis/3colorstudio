@@ -118,35 +118,6 @@ export function Hero({ heroImage, heroVideo }: HeroProps = {}) {
               />
             </span>
           )}
-          {siteConfig.links.facebook && siteConfig.links.facebook !== "#" ? (
-            <a
-              href={siteConfig.links.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block cursor-pointer transition-all duration-150 hover:filter-[brightness(0)_saturate(100%)_invert(27%)_sepia(95%)_saturate(1352%)_hue-rotate(330deg)_brightness(95%)_contrast(90%)]"
-              aria-label="Facebook"
-            >
-              <Image
-                src="/facebook.svg"
-                alt=""
-                width={24}
-                height={24}
-                className="h-4 w-4 block"
-                aria-hidden
-              />
-            </a>
-          ) : (
-            <span className="inline-block h-4 w-4">
-              <Image
-                src="/facebook.svg"
-                alt=""
-                width={24}
-                height={24}
-                className="h-4 w-4 block"
-                aria-hidden
-              />
-            </span>
-          )}
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useSyncExternalStore } from "react";
 import { Lightbox } from "./Lightbox";
 import { FadeInUp, FadeIn } from "@/components/animations";
 
@@ -29,6 +29,18 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [centeredIndex, setCenteredIndex] = useState(0);
+
+  // Only enable mouse-drag scroll on desktop (md+ viewport, fine pointer). On mobile/touch,
+  // native touch scroll is used—mouse handlers block it via preventDefault in mousemove.
+  const useMouseDrag = useSyncExternalStore(
+    (onStoreChange) => {
+      const mq = window.matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)");
+      mq.addEventListener("change", onStoreChange);
+      return () => mq.removeEventListener("change", onStoreChange);
+    },
+    () => window.matchMedia("(min-width: 768px) and (hover: hover) and (pointer: fine)").matches,
+    () => false // SSR: assume touch, avoid blocking scroll on hydration
+  );
 
   const setVideoRef = (index: number, element: HTMLVideoElement | null) => {
     if (element) {
@@ -248,11 +260,11 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
               <div className="relative z-0 w-screen max-w-[100vw] left-1/2 -ml-[50vw] md:left-0 md:ml-0 md:w-full md:max-w-none">
                 <div
                   ref={galleryRef}
-                  className="flex w-full snap-x snap-mandatory gap-4 md:gap-2 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:gap-3 cursor-grab active:cursor-grabbing touch-pan-x overscroll-x-contain"
-                  onMouseDown={handleMouseDown}
-                  onMouseMove={handleMouseMove}
-                  onMouseUp={handleMouseUp}
-                  onMouseLeave={handleMouseLeave}
+                  className={`flex w-full snap-x snap-mandatory gap-4 md:gap-2 overflow-x-scroll overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [-webkit-overflow-scrolling:touch] lg:gap-3 touch-manipulation overscroll-x-contain ${useMouseDrag ? "cursor-grab active:cursor-grabbing" : ""}`}
+                  onMouseDown={useMouseDrag ? handleMouseDown : undefined}
+                  onMouseMove={useMouseDrag ? handleMouseMove : undefined}
+                  onMouseUp={useMouseDrag ? handleMouseUp : undefined}
+                  onMouseLeave={useMouseDrag ? handleMouseLeave : undefined}
                 >
                   <div className="flex w-max min-w-full gap-4 md:gap-2 lg:gap-3 pl-[calc(50vw-90px)] sm:pl-[calc(50vw-100px)] md:pl-0 pr-[50vw] md:pr-0">
                     {images.map((img, i) => {
@@ -263,7 +275,7 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                           key={i}
                           ref={(el) => setReelRef(i, el)}
                           data-reel
-                          className={`relative shrink-0 cursor-pointer transition-all duration-500 ease-out snap-center md:snap-start
+                          className={`relative shrink-0 cursor-pointer touch-manipulation transition-all duration-500 ease-out snap-center md:snap-start
                             h-[400px] w-[180px]
                             sm:h-[420px] sm:w-[200px]
                             md:h-[380px] md:min-w-[200px]
@@ -302,7 +314,7 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                             <video
                               ref={(el) => setVideoRef(i, el)}
                               src={`${img.src}#t=0.001`}
-                              className="h-full w-full object-cover"
+                              className="h-full w-full object-cover touch-manipulation"
                               muted
                               playsInline
                               loop
@@ -314,7 +326,7 @@ export function WhatWeDo({ images = DEFAULT_GALLERY }: WhatWeDoProps) {
                               src={img.src}
                               alt={img.alt}
                               fill
-                              className="object-cover"
+                              className="object-cover touch-manipulation"
                               sizes="(max-width: 640px) 180px, (max-width: 768px) 200px, (max-width: 1024px) 200px, 240px"
                               unoptimized
                             />
